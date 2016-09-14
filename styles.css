@@ -1,0 +1,40 @@
+.block_studentstracker .studentstracker_header {
+    margin:10px 0px 20px 0px;
+}
+.block_studentstracker .studentstracker_footer {
+    margin-top: 20px;
+}
+.block_studentstracker .content {
+    text-decoration: none;
+}
+.block_studentstracker .content ul {
+    margin-left: 0;
+}
+.block_studentstracker .content ul li {
+    list-style-type:none;
+    padding:2px 5px 2px 5px;
+    margin-bottom:4px;
+    border-radius:4px;
+    opacity: 0.8;
+}
+.block_studentstracker .content ul li span {
+    color: #333;
+}
+.block_studentstracker .content ul li a {
+    text-decoration: none;
+}
+.block_studentstracker .studentstracker-never:hover, .studentstracker-four-days:hover, .studentstracker-two-days:hover {
+    opacity: 1;
+}
+.block_studentstracker .badge {
+    padding-right: 9px;
+    padding-left: 9px;
+    border-radius: 9px;
+    margin-right: 5px;
+}
+.block_studentstracker .badge.badge-warning {
+    background-color: #F89406;
+}
+.block_studentstracker .badge.badge-success {
+    background-color: #468847;
+}
