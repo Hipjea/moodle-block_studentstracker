@@ -61,10 +61,10 @@ class block_studentstracker extends block_base {
         }
 
         $context = context_course::instance($COURSE->id);
+        $roles = !empty($this->config->roles) ? $this->config->roles : array(1);
+        $isgranted = studentstracker::has_role($roles, $context->id, $USER->id);
 
-        var_dump(studentstracker::has_role($this->config->roles, $context->id, $USER->id));
-
-        if (!has_capability('moodle/course:manageactivities', $context)) {
+        if ($isgranted == false && !is_siteadmin($USER->id)) {
             return $this->content;
         } else {
             $usercount = 0;
@@ -77,7 +77,7 @@ class block_studentstracker extends block_base {
             $colordays = !empty($this->config->color_days) ? $this->config->color_days : '#FFD9BA';
             $colordayscritical = !empty($this->config->color_days_critical) ? $this->config->color_days_critical : '#FECFCF';
             $colornever = !empty($this->config->color_never) ? $this->config->color_never : '#D0D0D0';
-            $role = !empty($this->config->role) ? (int)$this->config->role : 0;
+            $trackedroles = !empty($this->config->role) ? $this->config->role : array(5);
 
             if (!empty($this->config->text_header)) {
                 $this->text_header = $this->config->text_header;
@@ -102,35 +102,8 @@ class block_studentstracker extends block_base {
 
             $enrols = get_enrolled_users($context);
             foreach ($enrols as $enrol) {
-                if ($role === 0) {
-                    if (!has_capability('moodle/course:manageactivities', $context, $enrol)) {
-                        if ($enrol->lastaccess != 0) {
-                            if ( (intval($enrol->lastaccess) < strtotime($days, time()))
-                             && (intval($enrol->lastaccess) >= strtotime($dayscritical, time())) ) {
-                                $lastaccess = date('d/m/Y H:i', $enrol->lastaccess);
-                                $output = "<li class='studentstracker-first' style='background:".$colordays."'>";
-                                $output .= $this->messaging($enrol)."<span> - $lastaccess</span></li>";
-                                array_push($this->content->items, $output);
-                                $usercount++;
-                                unset($output);
-                            } else if (intval($enrol->lastaccess) < strtotime($days, time())) {
-                                $lastaccess = date('d/m/Y H:i', $enrol->lastaccess);
-                                $output = "<li class='studentstracker-critical' style='background:".$colordayscritical."'>";
-                                $output .= $this->messaging($enrol)."<span> - $lastaccess</span></li>";
-                                array_push($this->content->items, $output);
-                                $usercount++;
-                                unset($output);
-                            }
-                        } else {
-                            $output = "<a class='studentstracker-target'>";
-                            $output .= "<li class='studentstracker-never' style='background:".$colornever."'>";
-                            $output .= $this->messaging($enrol)."<span> - $this->text_never</span></li>";
-                            array_push($this->content->items, $output);
-                            $usercount++;
-                            unset($output);
-                        }
-                    }
-                } else {
+                $hasrole = studentstracker::has_role($trackedroles, $context->id, $enrol->id);
+                if ($hasrole == true) {
                     if ($enrol->lastaccess != 0) {
                         if ( (intval($enrol->lastaccess) < strtotime($days, time()))
                          && (intval($enrol->lastaccess) >= strtotime($dayscritical, time())) ) {
@@ -149,7 +122,8 @@ class block_studentstracker extends block_base {
                             unset($output);
                         }
                     } else {
-                        $output = "<li class='studentstracker-never' style='background:".$colornever."'>";
+                        $output = "<a class='studentstracker-target'>";
+                        $output .= "<li class='studentstracker-never' style='background:".$colornever."'>";
                         $output .= $this->messaging($enrol)."<span> - $this->text_never</span></li>";
                         array_push($this->content->items, $output);
                         $usercount++;

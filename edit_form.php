@@ -73,15 +73,18 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->setDefault('config_text_footer', 'Contact them !');
         $mform->setType('config_text_footer', PARAM_TEXT);
 
-        $values = array(get_string('no'), get_string('yes'));
-        $mform->addElement('select', 'config_role', get_string('block_studentstracker_role', $this->block->blockname), $values);
-
         $roles = studentstracker::get_roles();
-        $roles_array = array();
-        foreach($roles as $role) {
-            $roles_array[$role->id] = $role->shortname;
+        $rolesarray = array();
+        foreach ($roles as $role) {
+            $rolesarray[$role->id] = $role->shortname;
         }
-        $select = $mform->addElement('select', 'config_roles', get_string('block_studentstracker_roles'), $roles_array, null);
+
+        $select = $mform->addElement('select', 'config_role', get_string('block_studentstracker_role'), $rolesarray, null);
         $select->setMultiple(true);
+        $mform->setDefault('config_role', array(5));
+
+        $select = $mform->addElement('select', 'config_roles', get_string('block_studentstracker_roles'), $rolesarray, null);
+        $select->setMultiple(true);
+        $mform->setDefault('config_roles', array(1, 2, 3));
     }
 }

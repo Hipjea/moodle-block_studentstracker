@@ -34,14 +34,14 @@ class studentstracker {
     public static function has_role($rids, $cid, $uid) {
         global $DB;
         $params = array();
-        foreach($rids as $role) {
+        foreach ($rids as $role) {
             array_push($params, (int)$role);
         }
         array_push($params, $cid, (int)$uid);
         $roles = join(',', array_fill(0, count($rids), '?'));
-        $records = $DB->count_records_sql("SELECT COUNT(id) FROM {role_assignments} WHERE roleid IN($roles) AND contextid=? AND userid=?",
+        $r = $DB->count_records_sql("SELECT COUNT(id) FROM {role_assignments} WHERE roleid IN($roles) AND contextid=? AND userid=?",
         $params);
-        if ($records > 0) {
+        if ($r > 0) {
             return true;
         } else {
             return false;
