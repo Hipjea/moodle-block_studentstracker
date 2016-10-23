@@ -25,7 +25,6 @@
 defined('MOODLE_INTERNAL') || die;
 
 class studentstracker {
-
     public static function get_roles() {
         global $DB;
         return $DB->get_records_sql('SELECT id,shortname FROM {role} ORDER BY id');
@@ -49,13 +48,12 @@ class studentstracker {
     }
 
     public static function is_in_groups($trackedgroups, $courseid, $enrolid) {
-        $user_groups = groups_get_user_groups($courseid, $userid=$enrolid);
+        $usergroups = groups_get_user_groups($courseid, $userid = $enrolid);
         foreach ($trackedgroups as $group) {
-            if (in_array(intval($group), $user_groups[0], true)) {
+            if (in_array(intval($group), $usergroups[0], true)) {
                 return true;
             }
         }
         return false;
     }
-
 }

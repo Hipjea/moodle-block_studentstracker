@@ -106,8 +106,10 @@ class block_studentstracker extends block_base {
             $enrols = get_enrolled_users($context);
             foreach ($enrols as $enrol) {
                 $hasrole = studentstracker::has_role($trackedroles, $context->id, $enrol->id);
-                if (sizeof($trackedgroups) > 0) {
-                    if (!(studentstracker::is_in_groups($trackedgroups, $COURSE->id, $enrol->id))) continue;
+                if (count($trackedgroups) > 0) {
+                    if (!(studentstracker::is_in_groups($trackedgroups, $COURSE->id, $enrol->id))) {
+                        continue;
+                    }
                 }
                 if ($hasrole == true) {
                     if ($enrol->lastaccess != 0) {

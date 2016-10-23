@@ -87,7 +87,7 @@ class block_studentstracker_edit_form extends block_edit_form {
         $select->setMultiple(true);
         $mform->setDefault('config_roles', array(1, 2, 3));
 
-        $groups = groups_get_all_groups($this->block->courseid, $userid=0, $groupingid=0, $fields='g.*');
+        $groups = groups_get_all_groups($this->block->courseid, $userid = 0, $groupingid = 0, $fields = 'g.*');
         $groupsarray = array();
         foreach ($groups as $group) {
             $groupsarray[$group->id] = $group->name;
