@@ -25,5 +25,6 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2015051100;
-$plugin->requires  = 2015051100;
+$plugin->requires  = 2014111012;
 $plugin->component = 'block_studentstracker';
+$plugin->maturity = MATURITY_STABLE;
