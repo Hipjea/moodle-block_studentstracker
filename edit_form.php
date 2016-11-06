@@ -89,6 +89,7 @@ class block_studentstracker_edit_form extends block_edit_form {
 
         $groups = groups_get_all_groups($this->block->courseid, $userid = 0, $groupingid = 0, $fields = 'g.*');
         $groupsarray = array();
+        $groupsarray[0] = get_string('block_studentstracker_no_groups');
         foreach ($groups as $group) {
             $groupsarray[$group->id] = $group->name;
         }

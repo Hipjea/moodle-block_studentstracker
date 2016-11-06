@@ -40,3 +40,4 @@ $string['block_studentstracker_text_footer'] = 'Contact them!';
 $string['block_studentstracker_role'] = 'Track every roles ?';
 $string['block_studentstracker_roles'] = 'Roles allowed to see toe block';
 $string['block_studentstracker_groups'] = 'Groups to track';
+$string['block_studentstracker_no_groups'] = 'None (all users)';

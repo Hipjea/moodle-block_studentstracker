@@ -102,11 +102,10 @@ class block_studentstracker extends block_base {
             } else {
                 $this->text_footer = get_string('block_studentstracker_text_footer', 'block_studentstracker');
             }
-
             $enrols = get_enrolled_users($context);
             foreach ($enrols as $enrol) {
                 $hasrole = studentstracker::has_role($trackedroles, $context->id, $enrol->id);
-                if (count($trackedgroups) > 0) {
+                if ((in_array("0", $trackedgroups) == false) && (count($trackedgroups) > 0)) {
                     if (!(studentstracker::is_in_groups($trackedgroups, $COURSE->id, $enrol->id))) {
                         continue;
                     }
