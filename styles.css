@@ -29,28 +29,26 @@
 .block_studentstracker .badge {
     padding-right: 9px;
     padding-left: 9px;
-    border-radius: 9px;
+    border-radius: 6px;
     margin-right: 5px;
 }
 .block_studentstracker .badge.badge-warning {
     background-color: #F89406;
-}
-.block_studentstracker .badge.badge-success {
-    background-color: #468847;
+    box-shadow: inset 0 0px #C17100, 0px 4px #985900, 0 2px 4px rgba(0,0,0,.3);
 }
 #studentstracker-list li {
     display: block;
 }
-#studentstracker_showmore button, 
-#studentstracker_showless button {
+#tracker_showmore button, #tracker_showless button {
     font-weight: bold;
-    color: #333;
+    color: white;
     width: 20%;
     text-align: center;
     text-decoration: none;
     border-radius: 6px;
     display: block;
-    padding: 2px;
+    padding: 0;
+    height: 23px;
     color: #fff;
     font-weight: bold;
     border: none;
@@ -60,12 +58,12 @@
     font-family: 'Open Sans', sans-serif;
     text-shadow: -1px 1px #009bd6;
 }
-#studentstracker_showless button:hover {
+#tracker_showmore button:hover, #tracker_showless button:hover {
     background: #1c8eba;
     box-shadow: inset 0 1px #40b5e2, 0px 5px #0076a3, 0 3px 5px rgba(0,0,0,.3);
     text-shadow: -1px 1px #197da4;
 }
-#studentstracker_showless button:active {
+#tracker_showmore button:active, #tracker_showless button:active {
     box-shadow: none;
     position: relative;
     top: 5px;

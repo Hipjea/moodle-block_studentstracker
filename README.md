@@ -12,9 +12,18 @@ The block is customizable :
 	<li>choose the roles and groups you want to track</li>
 	<li>choose the roles able to see the block</li>
 	<li>set the number of days from last connection required to track users</li>
+	<li>set an amount of results to display (the rest can be toggled with a button)</li>
 </ul>
 
 It also includes a link to open the direct Moodle message dialog, allowing teachers and managers to contact the tracked users in very a fast and easy way.
+
+##Languages
+
+<ul>
+	<li>English</li>
+	<li>French</li>
+	<li>Portuguese</li>
+</ul>
 
 ##Install
 

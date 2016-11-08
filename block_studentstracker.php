@@ -24,7 +24,6 @@
 
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
 
-
 class block_studentstracker extends block_base {
     public function init() {
         global $COURSE;
@@ -95,17 +94,17 @@ class block_studentstracker extends block_base {
             } else {
                 $this->text_header_fine = get_string('text_header_fine', 'block_studentstracker');
             }
-            if (!empty($this->config->text_never)) {
-                $this->text_never = $this->config->text_never;
+            if (!empty($this->config->text_never_content)) {
+                $this->text_never_content = $this->config->text_never_content;
             } else {
-                $this->text_never = get_string('text_never', 'block_studentstracker');
+                $this->text_never_content = get_string('text_never_content', 'block_studentstracker');
             }
             if (!empty($this->config->text_footer)) {
                 $this->text_footer = $this->config->text_footer;
             } else {
                 $this->text_footer = get_string('text_footer', 'block_studentstracker');
             }
-            
+
             $enrols = get_enrolled_users($context);
             foreach ($enrols as $enrol) {
                 $hasrole = studentstracker::has_role($trackedroles, $context->id, $enrol->id);
@@ -134,7 +133,7 @@ class block_studentstracker extends block_base {
                         }
                     } else {
                         $output = "<li class='studentstracker-never' style='background:".$colornever."'>";
-                        $output .= $this->messaging($enrol)."<span> - $this->text_never</span></li>";
+                        $output .= $this->messaging($enrol)."<span> - $this->text_never_content</span></li>";
                         array_push($this->content->items, $output);
                         $usercount++;
                         unset($output);
@@ -157,7 +156,7 @@ class block_studentstracker extends block_base {
                 $this->content->text .= $item;
             }
             $this->content->text .= "</ul>";
-            $this->content->text .= "<center><div id=\"studentstracker_showmore\"></div>\n<div id=\"studentstracker_showless\"></div></center>";
+            $this->content->text .= "<center><div id=\"tracker_showmore\"></div>\n<div id=\"tracker_showless\"></div></center>";
             $this->content->text .= $footertext;
 
             return $this->content;
