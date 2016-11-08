@@ -85,23 +85,24 @@ class block_studentstracker extends block_base {
             if (!empty($this->config->text_header)) {
                 $this->text_header = $this->config->text_header;
             } else {
-                $this->text_header = get_string('block_studentstracker_text_header', 'block_studentstracker');
+                $this->text_header = get_string('text_header', 'block_studentstracker');
             }
             if (!empty($this->config->text_header_fine)) {
                 $this->text_header_fine = $this->config->text_header_fine;
             } else {
-                $this->text_header_fine = get_string('block_studentstracker_text_header_fine', 'block_studentstracker');
+                $this->text_header_fine = get_string('text_header_fine', 'block_studentstracker');
             }
             if (!empty($this->config->text_never)) {
                 $this->text_never = $this->config->text_never;
             } else {
-                $this->text_never = get_string('block_studentstracker_text_never', 'block_studentstracker');
+                $this->text_never = get_string('text_never', 'block_studentstracker');
             }
             if (!empty($this->config->text_footer)) {
                 $this->text_footer = $this->config->text_footer;
             } else {
-                $this->text_footer = get_string('block_studentstracker_text_footer', 'block_studentstracker');
+                $this->text_footer = get_string('text_footer', 'block_studentstracker');
             }
+            
             $enrols = get_enrolled_users($context);
             foreach ($enrols as $enrol) {
                 $hasrole = studentstracker::has_role($trackedroles, $context->id, $enrol->id);

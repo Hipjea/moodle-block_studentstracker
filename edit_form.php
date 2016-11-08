@@ -34,42 +34,42 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->setDefault('config_title', 'Students tracker');
         $mform->setType('config_title', PARAM_TEXT);
 
-        $mform->addElement('text', 'config_days', get_string('block_studentstracker_days', $this->block->blockname));
+        $mform->addElement('text', 'config_days', get_string('days', $this->block->blockname));
         $mform->setDefault('config_days', 3);
         $mform->setType('config_days', PARAM_INT);
 
         $mform->addElement('text', 'config_days_critical',
-         get_string('block_studentstracker_days_critical', $this->block->blockname));
+         get_string('days_critical', $this->block->blockname));
         $mform->setDefault('config_days_critical', 6);
         $mform->setType('config_days_critical', PARAM_INT);
 
-        $mform->addElement('text', 'config_color_days', get_string('block_studentstracker_color_days', $this->block->blockname));
+        $mform->addElement('text', 'config_color_days', get_string('color_days', $this->block->blockname));
         $mform->setDefault('config_color_days', '#FFD9BA');
         $mform->setType('config_color_days', PARAM_RAW);
 
         $mform->addElement('text', 'config_color_days_critical',
-         get_string('block_studentstracker_color_days_critical', $this->block->blockname));
+         get_string('color_days_critical', $this->block->blockname));
         $mform->setDefault('config_color_days_critical', '#FECFCF');
         $mform->setType('config_color_days_critical', PARAM_RAW);
 
-        $mform->addElement('text', 'config_color_never', get_string('block_studentstracker_color_never', $this->block->blockname));
+        $mform->addElement('text', 'config_color_never', get_string('color_never', $this->block->blockname));
         $mform->setDefault('config_color_never', '#D0D0D0');
         $mform->setType('config_color_never', PARAM_RAW);
 
-        $mform->addElement('text', 'config_text_header', get_string('block_studentstracker_text_header', $this->block->blockname));
+        $mform->addElement('text', 'config_text_header', get_string('text_header', $this->block->blockname));
         $mform->setDefault('config_text_header', 'users absent');
         $mform->setType('config_text_header', PARAM_TEXT);
 
         $mform->addElement('text', 'config_text_header_fine',
-         get_string('block_studentstracker_text_header_fine', $this->block->blockname));
+         get_string('text_header_fine', $this->block->blockname));
         $mform->setDefault('config_text_header_fine', 'Everything is fine!');
         $mform->setType('config_text_header_fine', PARAM_TEXT);
 
-        $mform->addElement('text', 'config_text_never', get_string('block_studentstracker_text_never', $this->block->blockname));
+        $mform->addElement('text', 'config_text_never', get_string('text_never', $this->block->blockname));
         $mform->setDefault('config_text_never', 'no access');
         $mform->setType('config_text_never', PARAM_TEXT);
 
-        $mform->addElement('text', 'config_text_footer', get_string('block_studentstracker_text_footer', $this->block->blockname));
+        $mform->addElement('text', 'config_text_footer', get_string('text_footer', $this->block->blockname));
         $mform->setDefault('config_text_footer', 'Contact them !');
         $mform->setType('config_text_footer', PARAM_TEXT);
 
@@ -79,21 +79,21 @@ class block_studentstracker_edit_form extends block_edit_form {
             $rolesarray[$role->id] = $role->shortname;
         }
 
-        $select = $mform->addElement('select', 'config_role', get_string('block_studentstracker_role'), $rolesarray, null);
+        $select = $mform->addElement('select', 'config_role', get_string('role', 'block_studentstracker'), $rolesarray, null);
         $select->setMultiple(true);
         $mform->setDefault('config_role', array(5));
 
-        $select = $mform->addElement('select', 'config_roles', get_string('block_studentstracker_roles'), $rolesarray, null);
+        $select = $mform->addElement('select', 'config_roles', get_string('roles', 'block_studentstracker'), $rolesarray, null);
         $select->setMultiple(true);
         $mform->setDefault('config_roles', array(1, 2, 3));
 
         $groups = groups_get_all_groups($this->block->courseid, $userid = 0, $groupingid = 0, $fields = 'g.*');
         $groupsarray = array();
-        $groupsarray[0] = get_string('block_studentstracker_no_groups');
+        $groupsarray[0] = get_string('nogroups', 'block_studentstracker');
         foreach ($groups as $group) {
             $groupsarray[$group->id] = $group->name;
         }
-        $select = $mform->addElement('select', 'config_groups', get_string('block_studentstracker_groups'), $groupsarray, null);
+        $select = $mform->addElement('select', 'config_groups', get_string('groups', 'block_studentstracker'), $groupsarray, null);
         $select->setMultiple(true);
         $mform->setDefault('config_groups', array());
     }
