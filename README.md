@@ -17,7 +17,7 @@ The block is customizable :
 
 It also includes a link to open the direct Moodle message dialog, allowing teachers and managers to contact the tracked users in very a fast and easy way.
 
-##Languages
+##Settings translations
 
 <ul>
 	<li>English</li>
