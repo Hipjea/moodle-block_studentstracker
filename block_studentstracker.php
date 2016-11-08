@@ -62,6 +62,8 @@ class block_studentstracker extends block_base {
             return $this->content;
         }
 
+        $PAGE->requires->js_call_amd('block_studentstracker/ui', 'init', array());
+
         $context = context_course::instance($COURSE->id);
         $roles = !empty($this->config->roles) ? $this->config->roles : array(1);
         $isgranted = studentstracker::has_role($roles, $context->id, $USER->id);
