@@ -56,7 +56,7 @@ class block_studentstracker extends block_base {
     }
 
     public function get_content() {
-        global $CFG, $COURSE, $USER;
+        global $CFG, $COURSE, $USER, $PAGE;
 
         if ($this->content !== null) {
             return $this->content;
@@ -81,6 +81,7 @@ class block_studentstracker extends block_base {
             $colornever = !empty($this->config->color_never) ? $this->config->color_never : '#D0D0D0';
             $trackedroles = !empty($this->config->role) ? $this->config->role : array(5);
             $trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
+            $truncate = !empty($this->config->truncate) ? $this->config->truncate : 0;
 
             if (!empty($this->config->text_header)) {
                 $this->text_header = $this->config->text_header;
@@ -130,8 +131,7 @@ class block_studentstracker extends block_base {
                             unset($output);
                         }
                     } else {
-                        $output = "<a class='studentstracker-target'>";
-                        $output .= "<li class='studentstracker-never' style='background:".$colornever."'>";
+                        $output = "<li class='studentstracker-never' style='background:".$colornever."'>";
                         $output .= $this->messaging($enrol)."<span> - $this->text_never</span></li>";
                         array_push($this->content->items, $output);
                         $usercount++;
@@ -150,11 +150,12 @@ class block_studentstracker extends block_base {
             }
 
             $this->content->text = $headertext;
-            $this->content->text .= "<ul id='studentstracker-list'>";
+            $this->content->text .= "<ul id='studentstracker-list' data-show=". $truncate .">";
             foreach ($this->content->items as $item) {
                 $this->content->text .= $item;
             }
             $this->content->text .= "</ul>";
+            $this->content->text .= "<center><div id=\"studentstracker_showmore\"></div>\n<div id=\"studentstracker_showless\"></div></center>";
             $this->content->text .= $footertext;
 
             return $this->content;

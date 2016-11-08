@@ -30,46 +30,46 @@ class block_studentstracker_edit_form extends block_edit_form {
 
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
-        $mform->addElement('text', 'config_title', get_string('blocktitle', $this->block->blockname));
+        $mform->addElement('text', 'config_title', get_string('blocktitle', 'block_studentstracker'));
         $mform->setDefault('config_title', 'Students tracker');
         $mform->setType('config_title', PARAM_TEXT);
 
-        $mform->addElement('text', 'config_days', get_string('days', $this->block->blockname));
+        $mform->addElement('text', 'config_days', get_string('days', 'block_studentstracker'));
         $mform->setDefault('config_days', 3);
         $mform->setType('config_days', PARAM_INT);
 
         $mform->addElement('text', 'config_days_critical',
-         get_string('days_critical', $this->block->blockname));
+         get_string('days_critical', 'block_studentstracker'));
         $mform->setDefault('config_days_critical', 6);
         $mform->setType('config_days_critical', PARAM_INT);
 
-        $mform->addElement('text', 'config_color_days', get_string('color_days', $this->block->blockname));
+        $mform->addElement('text', 'config_color_days', get_string('color_days', 'block_studentstracker'));
         $mform->setDefault('config_color_days', '#FFD9BA');
         $mform->setType('config_color_days', PARAM_RAW);
 
         $mform->addElement('text', 'config_color_days_critical',
-         get_string('color_days_critical', $this->block->blockname));
+         get_string('color_days_critical', 'block_studentstracker'));
         $mform->setDefault('config_color_days_critical', '#FECFCF');
         $mform->setType('config_color_days_critical', PARAM_RAW);
 
-        $mform->addElement('text', 'config_color_never', get_string('color_never', $this->block->blockname));
+        $mform->addElement('text', 'config_color_never', get_string('color_never', 'block_studentstracker'));
         $mform->setDefault('config_color_never', '#D0D0D0');
         $mform->setType('config_color_never', PARAM_RAW);
 
-        $mform->addElement('text', 'config_text_header', get_string('text_header', $this->block->blockname));
-        $mform->setDefault('config_text_header', 'users absent');
+        $mform->addElement('text', 'config_text_header', get_string('text_header', 'block_studentstracker'));
+        $mform->setDefault('config_text_header', get_string('text_header', 'block_studentstracker'));
         $mform->setType('config_text_header', PARAM_TEXT);
 
         $mform->addElement('text', 'config_text_header_fine',
-         get_string('text_header_fine', $this->block->blockname));
-        $mform->setDefault('config_text_header_fine', 'Everything is fine!');
+         get_string('text_header_fine', 'block_studentstracker'));
+        $mform->setDefault('config_text_header_fine', get_string('text_header_fine', 'block_studentstracker'));
         $mform->setType('config_text_header_fine', PARAM_TEXT);
 
-        $mform->addElement('text', 'config_text_never', get_string('text_never', $this->block->blockname));
-        $mform->setDefault('config_text_never', 'no access');
+        $mform->addElement('text', 'config_text_never', get_string('text_never', 'block_studentstracker'));
+        $mform->setDefault('config_text_never', get_string('text_never_content', 'block_studentstracker'));
         $mform->setType('config_text_never', PARAM_TEXT);
 
-        $mform->addElement('text', 'config_text_footer', get_string('text_footer', $this->block->blockname));
+        $mform->addElement('text', 'config_text_footer', get_string('text_footer', 'block_studentstracker'));
         $mform->setDefault('config_text_footer', 'Contact them !');
         $mform->setType('config_text_footer', PARAM_TEXT);
 
@@ -96,5 +96,9 @@ class block_studentstracker_edit_form extends block_edit_form {
         $select = $mform->addElement('select', 'config_groups', get_string('groups', 'block_studentstracker'), $groupsarray, null);
         $select->setMultiple(true);
         $mform->setDefault('config_groups', array());
+
+        $mform->addElement('text', 'config_truncate', get_string('truncate', 'block_studentstracker'));
+        $mform->setDefault('config_truncate', 0);
+        $mform->setType('config_truncate', PARAM_INT);
     }
 }
