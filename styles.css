@@ -9,12 +9,14 @@
 }
 .block_studentstracker .content ul {
     margin-left: 0;
+    padding-left: 0;
 }
 .block_studentstracker .content ul li {
     list-style-type:none;
     padding:2px 5px 2px 5px;
     margin-bottom:4px;
     border-radius:4px;
+    margin-left: 0 !important;
     opacity: 0.8;
 }
 .block_studentstracker .content ul li span {
@@ -25,6 +27,9 @@
 }
 .block_studentstracker .studentstracker-never:hover, .studentstracker-four-days:hover, .studentstracker-two-days:hover {
     opacity: 1;
+}
+.block_studentstracker .studentstracker-never {
+    background: #E0E0E0 !important;
 }
 .block_studentstracker .badge {
     padding-right: 9px;
@@ -55,7 +60,6 @@
     background: #00aeef;
     box-shadow: inset 0 1px #3dcaff, 0px 5px #0076a3, 0 3px 5px rgba(0,0,0,.3);
     transition: background-color .25s;
-    font-family: 'Open Sans', sans-serif;
     text-shadow: -1px 1px #009bd6;
 }
 #tracker_showmore button:hover, #tracker_showless button:hover {

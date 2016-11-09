@@ -113,6 +113,7 @@ class block_studentstracker extends block_base {
                         continue;
                     }
                 }
+
                 if ($hasrole == true) {
                     if ($enrol->lastaccess != 0) {
                         if ( (intval($enrol->lastaccess) < strtotime($days, time()))
@@ -165,11 +166,12 @@ class block_studentstracker extends block_base {
 
     private function messaging($user) {
         global $DB;
-        require_once('../message/lib.php');
-        message_messenger_requirejs();
-        $url = new moodle_url('message/index.php', array('id' => $user->id));
-        $attributes = message_messenger_sendmessage_link_params($user);
-        return html_writer::link($url, "<img src=\"../pix/t/message.png\"> $user->firstname $user->lastname", $attributes);
+        $userid = optional_param('user2', $user->id, PARAM_INT);
+        $url = new moodle_url('/message/index.php');
+        if ($user->id) {
+            $url->param('id', $userid);
+        }
+        return html_writer::link($url, "<img src=\"../pix/t/message.png\"> $user->firstname $user->lastname", array());
     }
 
     public function applicable_formats() {
