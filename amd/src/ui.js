@@ -34,7 +34,7 @@ define([], function() {
                 }
             }
 
-            if (toshow > 0) {
+            if (toshow > 0 && toshow < block_li.length) {
                 var showmore = document.getElementById("tracker_showmore");
                 var btn = document.createElement("button");
                 /* jshint ignore:start */
