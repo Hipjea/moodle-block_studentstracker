@@ -13,7 +13,6 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
  * Classes to enforce the various access rules that can apply to a quiz.
  *
@@ -21,17 +20,13 @@
  * @copyright  2015 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
-
 class block_studentstracker_edit_form extends block_edit_form {
     protected function specific_definition($mform) {
         global $CFG;
-
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
-
         $mform->addElement('text', 'config_title', get_string('blocktitle', 'block_studentstracker'));
-        $mform->setDefault('config_title', 'Students tracker');
+        $mform->setDefault('config_title', get_string('pluginname', 'block_studentstracker'));
         $mform->setType('config_title', PARAM_TEXT);
 
         $mform->addElement('text', 'config_days', get_string('days', 'block_studentstracker'));
@@ -70,7 +65,7 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->setType('config_text_never', PARAM_TEXT);
 
         $mform->addElement('text', 'config_text_footer', get_string('text_footer', 'block_studentstracker'));
-        $mform->setDefault('config_text_footer', 'Contact them !');
+        $mform->setDefault('config_text_footer', get_string('text_footer_content', 'block_studentstracker'));
         $mform->setType('config_text_footer', PARAM_TEXT);
 
         $roles = studentstracker::get_roles();
@@ -82,7 +77,6 @@ class block_studentstracker_edit_form extends block_edit_form {
         $select = $mform->addElement('select', 'config_role', get_string('role', 'block_studentstracker'), $rolesarray, null);
         $select->setMultiple(true);
         $mform->setDefault('config_role', array(5));
-
         $select = $mform->addElement('select', 'config_roles', get_string('roles', 'block_studentstracker'), $rolesarray, null);
         $select->setMultiple(true);
         $mform->setDefault('config_roles', array(1, 2, 3));
@@ -93,10 +87,11 @@ class block_studentstracker_edit_form extends block_edit_form {
         foreach ($groups as $group) {
             $groupsarray[$group->id] = $group->name;
         }
+
         $select = $mform->addElement('select', 'config_groups', get_string('groups', 'block_studentstracker'), $groupsarray, null);
         $select->setMultiple(true);
         $mform->setDefault('config_groups', array());
-
+        
         $mform->addElement('text', 'config_truncate', get_string('truncate', 'block_studentstracker'));
         $mform->setDefault('config_truncate', 0);
         $mform->setType('config_truncate', PARAM_INT);
