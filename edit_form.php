@@ -31,7 +31,7 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
 
         $mform->addElement('text', 'config_title', get_string('blocktitle', 'block_studentstracker'));
-        $mform->setDefault('config_title', 'Students tracker');
+        $mform->setDefault('config_title', get_string('pluginname', 'block_studentstracker'));
         $mform->setType('config_title', PARAM_TEXT);
 
         $mform->addElement('text', 'config_days', get_string('days', 'block_studentstracker'));
@@ -70,7 +70,7 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->setType('config_text_never', PARAM_TEXT);
 
         $mform->addElement('text', 'config_text_footer', get_string('text_footer', 'block_studentstracker'));
-        $mform->setDefault('config_text_footer', 'Contact them !');
+        $mform->setDefault('config_text_footer', get_string('text_footer_content', 'block_studentstracker'));
         $mform->setType('config_text_footer', PARAM_TEXT);
 
         $roles = studentstracker::get_roles();
