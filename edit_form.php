@@ -91,7 +91,7 @@ class block_studentstracker_edit_form extends block_edit_form {
         $select = $mform->addElement('select', 'config_groups', get_string('groups', 'block_studentstracker'), $groupsarray, null);
         $select->setMultiple(true);
         $mform->setDefault('config_groups', array());
-        
+
         $mform->addElement('text', 'config_truncate', get_string('truncate', 'block_studentstracker'));
         $mform->setDefault('config_truncate', 0);
         $mform->setType('config_truncate', PARAM_INT);
