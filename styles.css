@@ -16,7 +16,7 @@
     padding:2px 5px 2px 5px;
     margin-bottom:4px;
     border-radius:4px;
-    margin-left: 0 !important;
+    margin-left: 0;
     opacity: 0.8;
 }
 .block_studentstracker .content ul li span {
@@ -29,7 +29,7 @@
     opacity: 1;
 }
 .block_studentstracker .studentstracker-never {
-    background: #E0E0E0 !important;
+    background: #E0E0E0;
 }
 .block_studentstracker .badge {
     padding-right: 9px;

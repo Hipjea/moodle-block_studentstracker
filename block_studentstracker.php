@@ -115,19 +115,18 @@ class block_studentstracker extends block_base {
                 }
 
                 if ($hasrole == true) {
-				   $enrol->lastaccesscourse = $this->get_last_access($context->instanceid, $enrol->id);
-	       		   
-	       		   if ($enrol->lastaccesscourse != 0) {
-                       if ( (intval($enrol->lastaccesscourse) < strtotime($days, time()))
-                         && (intval($enrol->lastaccesscourse) >= strtotime($dayscritical, time())) ) {
-	                    	$lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
+                    $enrol->lastaccesscourse = $this->get_last_access($context->instanceid, $enrol->id);
+                    if ($enrol->lastaccesscourse != 0) {
+                        if ( (intval($enrol->lastaccesscourse) < strtotime($days, time()))
+                        && (intval($enrol->lastaccesscourse) >= strtotime($dayscritical, time())) ) {
+                            $lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
                             $output = "<li class='studentstracker-first' style='background:".$colordays."'>";
                             $output .= $this->messaging($enrol)."<span> - $lastaccess</span></li>";
                             array_push($this->content->items, $output);
                             $usercount++;
                             unset($output);
                         } else if (intval($enrol->lastaccesscourse) < strtotime($days, time())) {
-           		    		$lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
+                            $lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
                             $output = "<li class='studentstracker-critical' style='background:".$colordayscritical."'>";
                             $output .= $this->messaging($enrol)."<span> - $lastaccess</span></li>";
                             array_push($this->content->items, $output);
@@ -180,11 +179,9 @@ class block_studentstracker extends block_base {
         return array('all' => false, 'course' => true, 'course-index' => false);
     }
 
-    private function get_last_access($courseid, $userid){
+    private function get_last_access($courseid, $userid) {
         global $DB;
         $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', array('courseid' => $courseid, 'userid' => $userid));
         return $lastaccess;
     }
-
-
 }
