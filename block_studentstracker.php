@@ -83,7 +83,7 @@ class block_studentstracker extends block_base {
             $trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
             $truncate = !empty($this->config->truncate) ? $this->config->truncate : 6;
             
-	    	if (!empty($this->config->text_header)) {
+            if (!empty($this->config->text_header)) {
                 $this->text_header = $this->config->text_header;
             } else {
                 $this->text_header = get_string('text_header', 'block_studentstracker');
