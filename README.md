@@ -2,9 +2,9 @@
 
 This plugin adds a new block type for Moodle. Its aim is to give the teachers and staff a simple tool to view how many students didn't visit a course for a long time and so, try to reduce student's leaving.
 
-<img src="screenshot.png">
+<img alt="" src="https://moodle.org/pluginfile.php/50/local_plugins/version_releasenotes/14208/screenshot%20%283%29.png">
 
-##Features
+## Features
 
 The block is customizable :
 <ul>
@@ -17,14 +17,10 @@ The block is customizable :
 
 It also includes a link to open the direct Moodle message dialog, allowing teachers and managers to contact the tracked users in very a fast and easy way.
 
-##Settings translations
+<img alt="" src="https://moodle.org/pluginfile.php/50/local_plugins/version_releasenotes/14208/Capture%20d%E2%80%99e%CC%81cran%202017-06-14%20a%CC%80%2009.39.20.png">
 
-<ul>
-	<li>English</li>
-	<li>French</li>
-	<li>Portuguese</li>
-</ul>
+<img alt="" src="https://moodle.org/pluginfile.php/50/local_plugins/version_releasenotes/14208/Capture%20d%E2%80%99e%CC%81cran%202017-06-14%20a%CC%80%2009.39.36.png">
 
-##Install
+## Install
 
 Clone or unzip the repository inside your Moodle block folder (example /var/www/moodle/blocks).
