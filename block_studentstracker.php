@@ -107,40 +107,50 @@ class block_studentstracker extends block_base {
 
             $enrols = get_enrolled_users($context);
             foreach ($enrols as $enrol) {
-                $hasrole = studentstracker::has_role($trackedroles, $context->id, $enrol->id);
+                $enrol->hasrole = studentstracker::has_role($trackedroles, $context->id, $enrol->id);
                 if ((in_array("0", $trackedgroups) == false) && (count($trackedgroups) > 0)) {
                     if (!(studentstracker::is_in_groups($trackedgroups, $COURSE->id, $enrol->id))) {
                         continue;
                     }
                 }
+                $enrol->lastaccesscourse = $this->get_last_access($context->instanceid, $enrol->id);    
+			}
 
-                if ($hasrole == true) {
-                    $enrol->lastaccesscourse = $this->get_last_access($context->instanceid, $enrol->id);
-                    if ($enrol->lastaccesscourse != 0) {
-                        if ( (intval($enrol->lastaccesscourse) < strtotime($days, time()))
-                        && (intval($enrol->lastaccesscourse) >= strtotime($dayscritical, time())) ) {
-                            $lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
-                            $output = "<li class='studentstracker-first' style='background:".$colordays."'>";
-                            $output .= $this->messaging($enrol)."<span> - $lastaccess</span></li>";
-                            array_push($this->content->items, $output);
-                            $usercount++;
-                            unset($output);
-                        } else if (intval($enrol->lastaccesscourse) < strtotime($days, time())) {
-                            $lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
-                            $output = "<li class='studentstracker-critical' style='background:".$colordayscritical."'>";
-                            $output .= $this->messaging($enrol)."<span> - $lastaccess</span></li>";
-                            array_push($this->content->items, $output);
-                            $usercount++;
-                            unset($output);
-                        }
-                    } else {
+            foreach ($enrols as $enrol) {
+                if ($enrol->hasrole == true) {
+                    if ($enrol->lastaccesscourse < 1){
                         $output = "<li class='studentstracker-never' style='background:".$colornever."'>";
-                        $output .= $this->messaging($enrol)."<span> - $this->text_never_content</span></li>";
+                        $output .= $this->messaging($enrol)."<span> &nbsp;&nbsp;".$this->profile($enrol,$context)." - $this->text_never_content</span></li>";
                         array_push($this->content->items, $output);
                         $usercount++;
                         unset($output);
                     }
                 }
+            }
+            foreach ($enrols as $enrol) {
+                if ($enrol->hasrole == true) { 
+		    if (intval($enrol->lastaccesscourse) > 1 && intval($enrol->lastaccesscourse) < strtotime($days, time())&& (intval($enrol->lastaccesscourse) < strtotime($dayscritical, time())) ) {
+			    $lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
+                            $output = "<li class='studentstracker-critical' style='background:".$colordayscritical."'>";
+			    $output .= $this->messaging($enrol)."<span> &nbsp;&nbsp;".$this->profile($enrol,$context)." - $lastaccess</span></li>";
+                            array_push($this->content->items, $output);
+                            $usercount++;
+                            unset($output);
+			}
+                   }
+            }
+            foreach ($enrols as $enrol) {
+                if ($enrol->hasrole == true) {
+                    if ( (intval($enrol->lastaccesscourse) < strtotime($days, time()))
+                         && (intval($enrol->lastaccesscourse) >= strtotime($dayscritical, time())) ) {
+			    $lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
+                            $output = "<li class='studentstracker-first' style='background:".$colordays."'>";
+                            $output .= $this->messaging($enrol)."<span> &nbsp;&nbsp;".$this->profile($enrol,$context)." - $lastaccess</span></li>";
+                            array_push($this->content->items, $output);
+                            $usercount++;
+                            unset($output);
+                        }
+                   }
             }
 
             if ($usercount > 0) {
@@ -172,7 +182,13 @@ class block_studentstracker extends block_base {
         if ($user->id) {
             $url->param('id', $userid);
         }
-        return html_writer::link($url, "<img src=\"../pix/t/message.png\"> $user->firstname $user->lastname", array());
+        return html_writer::link($url, "<img src=\"../pix/t/message.png\">", array());	//$user->firstname $user->lastname", array());
+    }
+    
+    private function profile($user,$context) {
+        global $DB;
+        $url = new moodle_url('/user/view.php',array('id' => $user->id, 'course' => $context->instanceid));
+        return html_writer::link($url, "$user->firstname $user->lastname",array());
     }
 
     public function applicable_formats() {
