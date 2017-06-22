@@ -29,7 +29,7 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->setDefault('config_title', get_string('pluginname', 'block_studentstracker'));
         $mform->setType('config_title', PARAM_TEXT);
 
-		$mform->addElement('text', 'config_color_days', get_string('color_days', 'block_studentstracker'));
+        $mform->addElement('text', 'config_color_days', get_string('color_days', 'block_studentstracker'));
         $mform->setDefault('config_color_days', get_config('studentstracker','colordays'));
         $mform->setType('config_color_days', PARAM_RAW);
 
@@ -42,9 +42,9 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->setDefault('config_color_never', get_config('studentstracker','colordaysnever'));
         $mform->setType('config_color_never', PARAM_RAW);
 
-		if(has_capability('block/studentstracker:editadvance', context_course::instance($COURSE->id)) or is_siteadmin($USER->id)){
+        if(has_capability('block/studentstracker:editadvance', context_course::instance($COURSE->id)) or is_siteadmin($USER->id)){
 		
-		$mform->addElement('text', 'config_days', get_string('days', 'block_studentstracker'));
+        $mform->addElement('text', 'config_days', get_string('days', 'block_studentstracker'));
         $mform->setDefault('config_days', get_config('studentstracker','trackingdays'));
         $mform->setType('config_days', PARAM_INT);
 
@@ -94,6 +94,6 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->addElement('text', 'config_truncate', get_string('truncate', 'block_studentstracker'));
         $mform->setDefault('config_truncate', 6);
         $mform->setType('config_truncate', PARAM_INT);
-		}
+        }
     }
 }

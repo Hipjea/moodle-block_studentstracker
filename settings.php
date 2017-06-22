@@ -14,15 +14,13 @@ if ($ADMIN->fulltree) {
         'studentstracker/trackingdays',
         get_string('days', 'block_studentstracker'),
         get_string('days_desc', 'block_studentstracker'),
-        '3'
-	));
+        '3'));
 
  $settings->add(new admin_setting_configtext(
         'studentstracker/trackingdayscritical',
         get_string('days_critical', 'block_studentstracker'),
         get_string('days_critical_desc', 'block_studentstracker'),
-        '6'
-	));
+        '6'));
 
  $settings->add(new admin_setting_configcolourpicker(
         'studentstracker/colordays',
@@ -30,19 +28,19 @@ if ($ADMIN->fulltree) {
         get_string('color_days_desc', 'block_studentstracker'),
         '#FFD9BA',null));
 
-         $settings->add(new admin_setting_configcolourpicker(
+ $settings->add(new admin_setting_configcolourpicker(
         'studentstracker/colordayscritical',
         get_string('color_days_critical', 'block_studentstracker'),
         get_string('color_days_critical_desc', 'block_studentstracker'),
         '#FECFCF',null));
 
-  $settings->add(new admin_setting_configcolourpicker(
+ $settings->add(new admin_setting_configcolourpicker(
         'studentstracker/colordaysnever',
         get_string('color_never', 'block_studentstracker'),
         get_string('color_never_desc', 'block_studentstracker'),
         '#D0D0D0',null));
 
-  $settings->add(new admin_setting_configmultiselect(
+ $settings->add(new admin_setting_configmultiselect(
         'studentstracker/roletrack',
         get_string('roletrack', 'block_studentstracker'),
         get_string('roletrack_desc', 'block_studentstracker'),

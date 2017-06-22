@@ -80,7 +80,7 @@ class block_studentstracker extends block_base {
             $colordayscritical = !empty($this->config->color_days_critical) ? $this->config->color_days_critical : get_config('studentstracker','colordayscritical');	
             $colornever = !empty($this->config->color_never) ? $this->config->color_never : get_config('studentstracker','colordaysnever');	
             $trackedroles = !empty($this->config->role) ? $this->config->role : explode(",",get_config('studentstracker','roletrack'));	
-	    	$trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
+            $trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
             $truncate = !empty($this->config->truncate) ? $this->config->truncate : 6;
             
 	    	if (!empty($this->config->text_header)) {
@@ -110,10 +110,10 @@ class block_studentstracker extends block_base {
                 if ((in_array("0", $trackedgroups) == false) && (count($trackedgroups) > 0)) {
                     if (!(studentstracker::is_in_groups($trackedgroups, $COURSE->id, $enrol->id))) {
                         continue;
-					}
+                    }
                 }
-			$enrol->lastaccesscourse = $this->get_last_access($context->instanceid, $enrol->id);
-			}
+            $enrol->lastaccesscourse = $this->get_last_access($context->instanceid, $enrol->id);
+            }
 
             foreach ($enrols as $enrol) {
                 if ($enrol->hasrole == true) {
@@ -135,8 +135,8 @@ class block_studentstracker extends block_base {
                             array_push($this->content->items, $output);
                             $usercount++;
                             unset($output);
-			}
-                   }
+                    }
+                }
             }
             foreach ($enrols as $enrol) {
                 if ($enrol->hasrole == true) {
@@ -148,8 +148,8 @@ class block_studentstracker extends block_base {
                             array_push($this->content->items, $output);
                             $usercount++;
                             unset($output);
-                        }
-                   }
+                    }
+                }
             }
 
             if ($usercount > 0) {
