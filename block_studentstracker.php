@@ -64,8 +64,7 @@ class block_studentstracker extends block_base {
         $PAGE->requires->js_call_amd('block_studentstracker/ui', 'init', array());
 
         $context = context_course::instance($COURSE->id);
-        $roles = !empty($this->config->roles) ? $this->config->roles : array(1);
-        $isgranted = studentstracker::has_role($roles, $context->id, $USER->id);
+		if (has_capability('block/studentstracker:view', $context)) $isgranted = true;
 
         if ($isgranted == false && !is_siteadmin($USER->id)) {
             return $this->content;
@@ -75,16 +74,16 @@ class block_studentstracker extends block_base {
             $this->content = new stdClass();
             $this->content->items = array();
 
-            $days = !empty($this->config->days) ? '-'.$this->config->days.' day' : '-3 day';
-            $dayscritical = !empty($this->config->days_critical) ? '-'.$this->config->days_critical.' day' : '-6 day';
-            $colordays = !empty($this->config->color_days) ? $this->config->color_days : '#FFD9BA';
-            $colordayscritical = !empty($this->config->color_days_critical) ? $this->config->color_days_critical : '#FECFCF';
-            $colornever = !empty($this->config->color_never) ? $this->config->color_never : '#D0D0D0';
-            $trackedroles = !empty($this->config->role) ? $this->config->role : array(5);
-            $trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
-            $truncate = !empty($this->config->truncate) ? $this->config->truncate : 0;
-
-            if (!empty($this->config->text_header)) {
+            $days = !empty($this->config->days) ? '-'.$this->config->days.' day' : '-'.get_config('studentstracker','trackingdays').' day';
+            $dayscritical = !empty($this->config->days_critical) ? '-'.$this->config->days_critical.' day' : '-'.get_config('studentstracker','trackingdays').' day';
+            $colordays = !empty($this->config->color_days) ? $this->config->color_days : get_config('studentstracker','colordays');
+            $colordayscritical = !empty($this->config->color_days_critical) ? $this->config->color_days_critical : get_config('studentstracker','colordayscritical');	
+            $colornever = !empty($this->config->color_never) ? $this->config->color_never : get_config('studentstracker','colordaysnever');	
+            $trackedroles = !empty($this->config->role) ? $this->config->role : explode(",",get_config('studentstracker','roletrack'));	
+	    	$trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
+            $truncate = !empty($this->config->truncate) ? $this->config->truncate : 6;
+            
+	    	if (!empty($this->config->text_header)) {
                 $this->text_header = $this->config->text_header;
             } else {
                 $this->text_header = get_string('text_header', 'block_studentstracker');
@@ -111,9 +110,9 @@ class block_studentstracker extends block_base {
                 if ((in_array("0", $trackedgroups) == false) && (count($trackedgroups) > 0)) {
                     if (!(studentstracker::is_in_groups($trackedgroups, $COURSE->id, $enrol->id))) {
                         continue;
-                    }
+					}
                 }
-                $enrol->lastaccesscourse = $this->get_last_access($context->instanceid, $enrol->id);    
+			$enrol->lastaccesscourse = $this->get_last_access($context->instanceid, $enrol->id);
 			}
 
             foreach ($enrols as $enrol) {
