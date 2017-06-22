@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Classes to enforce the various access rules that can apply to a quiz.
+ * Version file
  *
  * @package    block_studentstracker
  * @copyright  2015 Pierre Duverneix

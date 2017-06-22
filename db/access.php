@@ -25,10 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-
     'block/studentstracker:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
-
         'captype' => 'write',
         'contextlevel' => CONTEXT_BLOCK,
         'archetypes' => array(
@@ -39,8 +37,7 @@ $capabilities = array(
 
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
-	'block/studentstracker:view' => array(
- 
+    'block/studentstracker:view' => array(
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
@@ -52,8 +49,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         )
     ),
-	'block/studentstracker:editadvance' => array(
-
+    'block/studentstracker:editadvance' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
         'legacy' => array(
