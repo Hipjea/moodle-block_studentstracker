@@ -1,0 +1,10 @@
+{
+    "name": "hipjea/moodle-block_studentstracker",
+    "type": "moodle-block",
+    "require": {
+        "composer/installers": "~1.0"
+    },
+    "extra": {
+        "installer-name": "studentstracker"
+    }
+}
