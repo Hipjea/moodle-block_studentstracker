@@ -80,16 +80,24 @@ class studentstracker {
         return html_writer::link($url, "$user->firstname $user->lastname", array());
     }
 
-    public static function output_info($user) {
+    public static function output_info($user, $dateformat) {
         if (isset($user->lastaccess)) {
             $out = '<a class="btn btn-link p-0 pl-1" role="button" data-container="body" ';
             $out .= 'data-toggle="popover" data-placement="right"';
-            $out .= ' data-content="<div class="no-overflow">' . get_string('lastaccess', 'core') . ' : ';
-            $out .= date('d/m/Y H:i', $user->lastaccess).'</div>"';
+            $out .= ' data-content="<div class=&quot;no-overflow&quot;>';
+            $out .= '<a href=&quot;mailto:'.$user->email.'&quot;>'.$user->email.'</a></p>';
+            $out .= '<p class=&quot;mb-0&quot;>'. get_string('lastaccess', 'core') . ' : ';
+            $out .= date($dateformat, $user->lastaccess).'</p></div>"';
             $out .= ' data-html="true" tabindex="0" data-trigger="focus" data-original-title="" title="">';
             $out .= '<i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i></a>';
-            return $out;
+        } else {
+            $out = '<a class="btn btn-link p-0 pl-1" role="button" data-container="body" ';
+            $out .= 'data-toggle="popover" data-placement="right"';
+            $out .= ' data-content="<div class=&quot;no-overflow&quot;>';
+            $out .= '<p class=&quot;mb-0&quot;><a href=&quot;mailto:'.$user->email.'&quot;>'.$user->email.'</a></p></div>"';
+            $out .= ' data-html="true" tabindex="0" data-trigger="focus" data-original-title="" title="">';
+            $out .= '<i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i></a>';
         }
-        return '';
+        return $out;
     }
 }
