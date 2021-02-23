@@ -54,3 +54,5 @@ $string['color_never_desc'] = '';
 $string['studentstracker:view'] = 'View Students tracker results';
 $string['studentstracker:editadvance'] = 'Advanced editing within block';
 $string['lastaccess_date'] = 'Last access date';
+$string['dateformat'] = 'Date format';
+$string['dateformat_desc'] = 'Change the date format used in the block\'s display';

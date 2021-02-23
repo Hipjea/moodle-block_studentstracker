@@ -92,6 +92,15 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->addElement('text', 'config_truncate', get_string('truncate', 'block_studentstracker'));
             $mform->setDefault('config_truncate', 6);
             $mform->setType('config_truncate', PARAM_INT);
+
+            $choices['d/m/Y H:i'] = 'd/m/Y H:i';
+            $choices['m/d/Y H:i'] = 'm/d/Y H:i';
+            $choices['d/m/Y'] = 'd/m/Y';
+            $choices['m/d/Y'] = 'm/d/Y';
+            $select = $mform->addElement('select', 'config_dateformat',
+                get_string('dateformat', 'block_studentstracker'), $choices, null);
+            $select->setMultiple(false);
+            $mform->setDefault('config_dateformat', get_config('studentstracker', 'dateformat'));
         }
     }
 }
