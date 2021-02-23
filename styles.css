@@ -39,10 +39,6 @@
     border-radius: 6px;
     margin-right: 5px;
 }
-.block_studentstracker .badge.badge-warning {
-    background-color: #F89406;
-    box-shadow: inset 0 0px #C17100, 0px 4px #985900, 0 2px 4px rgba(0, 0, 0, .3);
-}
 #studentstracker-list li {
     display: block;
 }
@@ -59,14 +55,12 @@
     color: #fff;
     border: none;
     background: #00aeef;
-    box-shadow: inset 0 1px #3dcaff, 0px 5px #0076a3, 0 3px 5px rgba(0, 0, 0, .3);
     transition: background-color .25s;
     text-shadow: -1px 1px #009bd6;
 }
 #tracker_showmore button:hover,
 #tracker_showless button:hover {
     background: #1c8eba;
-    box-shadow: inset 0 1px #40b5e2, 0px 5px #0076a3, 0 3px 5px rgba(0, 0, 0, .3);
     text-shadow: -1px 1px #197da4;
 }
 #tracker_showmore button:active,

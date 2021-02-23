@@ -18,7 +18,7 @@
  * Studentstracker block
  *
  * @package    block_studentstracker
- * @copyright  2015 Pierre Duverneix
+ * @copyright  2021 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -120,45 +120,38 @@ class block_studentstracker extends block_base {
                         continue;
                     }
                 }
-                $enrol->lastaccesscourse = $this->get_last_access($context->instanceid, $enrol->id);
-            }
+                $enrol->lastaccesscourse = studentstracker::get_last_access($context->instanceid, $enrol->id);
 
-            foreach ($enrols as $enrol) {
                 if ($enrol->hasrole == true) {
+                        // Never access level.
                     if ($enrol->lastaccesscourse < 1) {
                         $output = "<li class='studentstracker-never' style='background:".$colornever."'>";
-                        $output .= $this->messaging($enrol)."<span> &nbsp;&nbsp;".$this->profile($enrol, $context).
+                        $output .= studentstracker::messaging($enrol)."<span>".studentstracker::profile($enrol, $context).
                             " - $this->text_never_content</span></li>";
                         array_push($this->content->items, $output);
                         $usercount++;
                         unset($output);
-                    }
-                }
-            }
-            foreach ($enrols as $enrol) {
-                if ($enrol->hasrole == true) {
-                    if (intval($enrol->lastaccesscourse) > 1 && intval($enrol->lastaccesscourse) < strtotime($days, time())
+
+                        // Critical access level.
+                    } else if (intval($enrol->lastaccesscourse) > 1 && intval($enrol->lastaccesscourse) < strtotime($days, time())
                         && (intval($enrol->lastaccesscourse) < strtotime($dayscritical, time())) ) {
                         $lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
                         $output = "<li class='studentstracker-critical' style='background:".
                             $colordayscritical."'>";
-                        $output .= $this->messaging($enrol)."<span> &nbsp;&nbsp;".$this->profile($enrol, $context).
-                            " - $lastaccess</span></li>";
+                        $output .= studentstracker::messaging($enrol).studentstracker::output_info($enrol)."<span>";
+                        $output .= studentstracker::profile($enrol, $context)." - $lastaccess</span></li>";
                             array_push($this->content->items, $output);
-                            $usercount++;
-                            unset($output);
-                    }
-                }
-            }
-            foreach ($enrols as $enrol) {
-                if ($enrol->hasrole == true) {
-                    if ( (intval($enrol->lastaccesscourse) < strtotime($days, time()))
+                        $usercount++;
+                        unset($output);
+
+                        // First access level.
+                    } else if ( (intval($enrol->lastaccesscourse) < strtotime($days, time()))
                          && (intval($enrol->lastaccesscourse) >= strtotime($dayscritical, time())) ) {
                         $lastaccess = date('d/m/Y H:i', $enrol->lastaccesscourse);
                         $output = "<li class='studentstracker-first' style='background:".
                             $colordays."'>";
-                        $output .= $this->messaging($enrol)."<span> &nbsp;&nbsp;".
-                            $this->profile($enrol, $context)." - $lastaccess</span></li>";
+                        $output .= studentstracker::messaging($enrol)."<span>".
+                            studentstracker::profile($enrol, $context)." - $lastaccess</span></li>";
                         array_push($this->content->items, $output);
                         $usercount++;
                         unset($output);
@@ -188,29 +181,7 @@ class block_studentstracker extends block_base {
         }
     }
 
-    private function messaging($user) {
-        global $DB;
-        $userid = optional_param('user2', $user->id, PARAM_INT);
-        $url = new moodle_url('/message/index.php');
-        if ($user->id) {
-            $url->param('id', $userid);
-        }
-        return html_writer::link($url, "<img src=\"../pix/t/message.png\">", array());
-    }
-
-    private function profile($user, $context) {
-        global $DB;
-        $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
-        return html_writer::link($url, "$user->firstname $user->lastname", array());
-    }
-
     public function applicable_formats() {
         return array('all' => false, 'course' => true, 'course-index' => false);
-    }
-
-    private function get_last_access($courseid, $userid) {
-        global $DB;
-        $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', array('courseid' => $courseid, 'userid' => $userid));
-        return $lastaccess;
     }
 }

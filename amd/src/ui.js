@@ -25,28 +25,32 @@
 define([], function() {
     return {
         init: function() {
-            var self = this;
-            var toshow = parseInt(document.getElementById("studentstracker-list").dataset.show);
-            var block_li = document.getElementById("studentstracker-list").getElementsByTagName("li");
-            for(var i = 0, j = block_li.length; i < j; i++) {
+            let self = this;
+            let toshow = parseInt(document.getElementById("studentstracker-list").dataset.show);
+            let block_li = document.getElementById("studentstracker-list").getElementsByTagName("li");
+            for (let i = 0, j = block_li.length; i < j; i++) {
                 if (i > parseInt(toshow - 1) && toshow !== 0) {
                     block_li[i].style.display = "none";
                 }
             }
 
             if (toshow > 0 && toshow < block_li.length) {
-                var showmore = document.getElementById("tracker_showmore");
-                var btn = document.createElement("button");
-                /* jshint ignore:start */
-                btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path fill="#FFFFFF" d="M1683 808l-742 741q-19 19-45 19t-45-19l-742-741q-19-19-19-45.5t19-45.5l166-165q19-19 45-19t45 19l531 531 531-531q19-19 45-19t45 19l166 165q19 19 19 45.5t-19 45.5z"/></svg>';
-                /* jshint ignore:end */
+                let showmore = document.getElementById("tracker_showmore");
+                let btn = document.createElement("button");
+                let svgarrowd = '<svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">';
+                svgarrowd = svgarrowd + '<path fill="#FFFFFF" d="M1683 808l-742 741q-19 19-45 19t-45-19l-742-741q-19-19-19';
+                svgarrowd = svgarrowd + '-45.5t19-45.5l166-165q19-19 45-19t45 19l531 531 531-531q19-19 45-19t45 19l166 165q19';
+                svgarrowd = svgarrowd + ' 19 19 45.5t-19 45.5z"/></svg>';
+                btn.innerHTML = svgarrowd;
                 showmore.appendChild(btn);
-                var showless = document.getElementById("tracker_showless");
-                var btnless = document.createElement("button");
+                let showless = document.getElementById("tracker_showless");
+                let btnless = document.createElement("button");
 
-                /* jshint ignore:start */
-                btnless.innerHTML = '<svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path fill="#FFFFFF" d="M1683 1331l-166 165q-19 19-45 19t-45-19l-531-531-531 531q-19 19-45 19t-45-19l-166-165q-19-19-19-45.5t19-45.5l742-741q19-19 45-19t45 19l742 741q19 19 19 45.5t-19 45.5z"/></svg>';
-                /* jshint ignore:end */
+                let svgarrowu = '<svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">';
+                svgarrowu = svgarrowu + '<path fill="#FFFFFF" d="M1683 1331l-166 165q-19 19-45 19t-45-19l-531-531-531 ';
+                svgarrowu = svgarrowu + '531q-19 19-45 19t-45-19l-166-165q-19-19-19-45.5t19-45.5l742-741q19-19 45-19t45 ';
+                svgarrowu = svgarrowu + '19l742 741q19 19 19 45.5t-19 45.5z"/></svg>';
+                btnless.innerHTML = svgarrowu;
                 showless.appendChild(btnless);
                 showless.style.display = "none";
 
@@ -65,15 +69,15 @@ define([], function() {
         },
 
         showMore: function() {
-            var block_li = document.getElementById("studentstracker-list").getElementsByTagName("li");
-            for(var i = 0, j = block_li.length; i < j; i++) {
+            let block_li = document.getElementById("studentstracker-list").getElementsByTagName("li");
+            for(let i = 0, j = block_li.length; i < j; i++) {
                   block_li[i].style.display = "block";
             }
         },
 
         showLess: function(toshow) {
-            var block_li = document.getElementById("studentstracker-list").getElementsByTagName("li");
-            for(var i = 0, j = block_li.length; i < j; i++) {
+            let block_li = document.getElementById("studentstracker-list").getElementsByTagName("li");
+            for(let i = 0, j = block_li.length; i < j; i++) {
                 if (i > parseInt(toshow - 1) && toshow !== 0) {
                     block_li[i].style.display = "none";
                 }

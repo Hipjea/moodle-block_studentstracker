@@ -17,7 +17,7 @@
  * Classes to enforce the various access rules that can apply to a quiz.
  *
  * @package    block_studentstracker
- * @copyright  2015 Pierre Duverneix
+ * @copyright  2021 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
