@@ -18,7 +18,7 @@
  * Settings file
  *
  * @package    block_studentstracker
- * @copyright  2015 Pierre Duverneix
+ * @copyright  2021 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

@@ -17,7 +17,7 @@
  * Classes to enforce the various access rules that can apply to a quiz.
  *
  * @package    block_studentstracker
- * @copyright  2015 Pierre Duverneix
+ * @copyright  2021 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 $string['studentstracker:addinstance'] = 'Add a new block Students tracker';
@@ -31,25 +31,26 @@ $string['color_days'] = 'Days color';
 $string['color_days_critical'] = 'Critical days color';
 $string['color_never'] = 'No access color';
 $string['header'] = 'Text near the users counter';
-$string['text_header'] = 'Users absent';
+$string['text_header'] = 'Absent users';
 $string['header_fine'] = 'Text if everything\'s fine';
-$string['text_header_fine'] = 'Everything is fine!';
+$string['text_header_fine'] = 'Everything is fine';
 $string['text_never'] = 'Text if the user never accessed the course at all';
 $string['text_never_content'] = 'no access';
 $string['footer'] = 'Footer text';
 $string['text_footer'] = 'Contact invitation message';
-$string['text_footer_content'] = 'Contact them!';
+$string['text_footer_content'] = 'Contact them';
 $string['role'] = 'Track every roles ?';
 $string['roles'] = 'Roles allowed to see the block';
 $string['groups'] = 'Groups to track';
 $string['nogroups'] = 'None (all users)';
 $string['truncate'] = 'Show only n results';
 $string['roleview'] = "Roles allowed to see block";
-$string['roleview_desc'] = "";
+$string['roleview_desc'] = '';
 $string['roletrack'] = "Roles to track";
-$string['roletrack_desc'] = "";
+$string['roletrack_desc'] = '';
 $string['color_days_desc'] = '';
 $string['color_days_critical_desc'] = '';
 $string['color_never_desc'] = '';
 $string['studentstracker:view'] = 'View Students tracker results';
 $string['studentstracker:editadvance'] = 'Advanced editing within block';
+$string['lastaccess_date'] = 'Last access date';

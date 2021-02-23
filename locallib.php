@@ -19,6 +19,7 @@
  *
  * @package    block_studentstracker
  * @author     Pierre Duverneix
+ * @copyright  2021 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -55,5 +56,40 @@ class studentstracker {
             }
         }
         return false;
+    }
+
+    public static function get_last_access($courseid, $userid) {
+        global $DB;
+        $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', array('courseid' => $courseid, 'userid' => $userid));
+        return $lastaccess;
+    }
+
+    public static function messaging($user) {
+        global $DB;
+        $userid = optional_param('user2', $user->id, PARAM_INT);
+        $url = new moodle_url('/message/index.php');
+        if ($user->id) {
+            $url->param('id', $userid);
+        }
+        return html_writer::link($url, "<img src=\"../pix/t/message.png\">", array());
+    }
+
+    public static function profile($user, $context) {
+        global $DB;
+        $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
+        return html_writer::link($url, "$user->firstname $user->lastname", array());
+    }
+
+    public static function output_info($user) {
+        if (isset($user->lastaccess)) {
+            $out = '<a class="btn btn-link p-0 pl-1" role="button" data-container="body" ';
+            $out .= 'data-toggle="popover" data-placement="right"';
+            $out .= ' data-content="<div class="no-overflow">' . get_string('lastaccess', 'core') . ' : ';
+            $out .= date('d/m/Y H:i', $user->lastaccess).'</div>"';
+            $out .= ' data-html="true" tabindex="0" data-trigger="focus" data-original-title="" title="">';
+            $out .= '<i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i></a>';
+            return $out;
+        }
+        return '';
     }
 }
