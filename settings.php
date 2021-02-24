@@ -81,10 +81,10 @@ if ($ADMIN->fulltree) {
     $choices['d/m/Y'] = 'd/m/Y';
     $choices['m/d/Y'] = 'm/d/Y';
 
-    $setting = new admin_setting_configselect(
+    $settings->add(new admin_setting_configselect(
         'studentstracker/dateformat',
         get_string('dateformat', 'block_studentstracker'),
         get_string('dateformat_desc', 'block_studentstracker'),
         $default,
-        $choices);
+        $choices));
 }
