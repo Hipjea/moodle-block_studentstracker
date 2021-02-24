@@ -124,34 +124,32 @@ class block_studentstracker extends block_base {
                 $enrol->lastaccesscourse = studentstracker::get_last_access($context->instanceid, $enrol->id);
 
                 if ($enrol->hasrole == true) {
+                    $output = true;
                         // Never access level.
                     if ($enrol->lastaccesscourse < 1) {
-                        $output = "<li class='studentstracker-never' style='background:".$colornever."'>";
-                        $output .= studentstracker::messaging($enrol).studentstracker::output_info($enrol, $dateformat)."<span>";
-                        $output .= studentstracker::profile($enrol, $context);
-                        $output .= '<span class="text-right">'.$this->text_never_content.'</span></span></li>';
-                        array_push($this->content->items, $output);
-                        $usercount++;
-                        unset($output);
+                        $rowcolor = $colornever;
+                        $rowclass = 'studentstracker-never';
+                        $lastaccess = $this->text_never_content;
 
                         // Critical access level.
                     } else if (intval($enrol->lastaccesscourse) > 1 && intval($enrol->lastaccesscourse) < strtotime($days, time())
                         && (intval($enrol->lastaccesscourse) < strtotime($dayscritical, time())) ) {
+                        $rowcolor = $colordayscritical;
+                        $rowclass = 'studentstracker-critical';
                         $lastaccess = date($dateformat, $enrol->lastaccesscourse);
-                        $output = "<li class='studentstracker-critical' style='background:".$colordayscritical."'>";
-                        $output .= '<span class="pull-left">';
-                        $output .= studentstracker::messaging($enrol).studentstracker::output_info($enrol, $dateformat);
-                        $output .= studentstracker::profile($enrol, $context).'</span>';
-                        $output .= '<span class="text-right">'.$lastaccess.'</span></li>';
-                        array_push($this->content->items, $output);
-                        $usercount++;
-                        unset($output);
 
                         // First access level.
                     } else if ( (intval($enrol->lastaccesscourse) < strtotime($days, time()))
                          && (intval($enrol->lastaccesscourse) >= strtotime($dayscritical, time())) ) {
+                        $rowcolor = $colordays;
+                        $rowclass = 'studentstracker-first';
                         $lastaccess = date($dateformat, $enrol->lastaccesscourse);
-                        $output = "<li class='studentstracker-first' style='background:".$colordays."'>";
+                    } else {
+                        $output = false;
+                    }
+
+                    if ($output != false) {
+                        $output = "<li class='$rowclass' style='background:".$rowcolor."'>";
                         $output .= '<span class="pull-left">';
                         $output .= studentstracker::messaging($enrol).studentstracker::output_info($enrol, $dateformat);
                         $output .= studentstracker::profile($enrol, $context).'</span>';
