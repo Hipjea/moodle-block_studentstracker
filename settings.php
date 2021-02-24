@@ -75,7 +75,7 @@ if ($ADMIN->fulltree) {
         array('5'),
         $rolesarray));
 
-    $default = '';
+    $default = 'd/m/Y H:i';
     $choices['d/m/Y H:i'] = 'd/m/Y H:i';
     $choices['m/d/Y H:i'] = 'm/d/Y H:i';
     $choices['d/m/Y'] = 'd/m/Y';
