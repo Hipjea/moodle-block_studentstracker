@@ -61,6 +61,9 @@ class studentstracker {
     public static function get_last_access($courseid, $userid) {
         global $DB;
         $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', array('courseid' => $courseid, 'userid' => $userid));
+        if ($lastaccess < 1) {
+            return 0;
+        }
         return $lastaccess;
     }
 
@@ -74,10 +77,11 @@ class studentstracker {
         return html_writer::link($url, "<img src=\"../pix/t/message.png\">", array());
     }
 
-    public static function profile($user, $context) {
+    public static function profile($user, $context, $output) {
         global $DB;
         $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
-        return html_writer::link($url, "$user->firstname $user->lastname", array());
+        return html_writer::link($url, $output->user_picture($user, array('size'=>15, 'alttext'=>false, 'link'=>false)) .
+                                "$user->firstname $user->lastname", array());
     }
 
     public static function output_info($user, $dateformat) {
@@ -99,5 +103,20 @@ class studentstracker {
             $out .= '<i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i></a>';
         }
         return $out;
+    }
+
+    public static function sort_objects($key) {
+        if ($key == 'date_desc') {
+            return function ($a, $b) use ($key) {
+                return strnatcmp($b->lastaccesscourse, $a->lastaccesscourse);
+            };
+        } else if ($key == 'date_asc') {
+            return function ($a, $b) use ($key) {
+                return strnatcmp($a->lastaccesscourse, $b->lastaccesscourse);
+            };
+        }
+        return function ($a, $b) use ($key) {
+            return strnatcmp($a->{$key}, $b->{$key});
+        };
     }
 }

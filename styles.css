@@ -70,3 +70,11 @@
     position: relative;
     top: 5px;
 }
+.block_studentstracker .content ul li a .userpicture {
+    transition: all .2s ease-in-out;
+}
+.block_studentstracker .content ul li a:hover .userpicture {
+    -ms-transform: scale(1.75); /* IE 9 */
+    -webkit-transform: scale(1.75); /* Safari 3-8 */
+    transform: scale(1.75);
+}
