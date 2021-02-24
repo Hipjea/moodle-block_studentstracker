@@ -111,7 +111,7 @@ class block_studentstracker extends block_base {
             if (!empty($this->config->text_footer_content)) {
                 $this->text_footer = $this->config->text_footer_content;
             } else {
-                $this->text_footer = get_string('text_footer_content', 'block_studentstracker');
+                $this->text_footer = '';
             }
 
             $enrols = get_enrolled_users($context, '', 0, 'u.*', null, 0, 0, true);

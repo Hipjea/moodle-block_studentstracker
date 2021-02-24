@@ -78,3 +78,7 @@
     -webkit-transform: scale(1.75); /* Safari 3-8 */
     transform: scale(1.75);
 }
+.block_studentstracker .content ul li .text-right {
+    color: rgba(0,0,0,.8);
+    font-size: 0.9em;
+}
