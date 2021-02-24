@@ -80,11 +80,27 @@ if ($ADMIN->fulltree) {
     $choices['m/d/Y H:i'] = 'm/d/Y H:i';
     $choices['d/m/Y'] = 'd/m/Y';
     $choices['m/d/Y'] = 'm/d/Y';
-
     $settings->add(new admin_setting_configselect(
         'studentstracker/dateformat',
         get_string('dateformat', 'block_studentstracker'),
         get_string('dateformat_desc', 'block_studentstracker'),
+        $default,
+        $choices));
+
+    unset($default);
+    unset($choices);
+
+    $default = 'date_desc';
+    $choices['id'] = 'id';
+    $choices['lastname'] = get_string('lastname', 'core');
+    $choices['firstname'] = get_string('firstname', 'core');
+    $choices['email'] = get_string('email', 'core');
+    $choices['date_asc'] = get_string('date_asc', 'block_studentstracker');
+    $choices['date_desc'] = get_string('date_desc', 'block_studentstracker');
+    $settings->add(new admin_setting_configselect(
+        'studentstracker/sorting',
+        get_string('sorting', 'block_studentstracker'),
+        get_string('sorting_desc', 'block_studentstracker'),
         $default,
         $choices));
 }

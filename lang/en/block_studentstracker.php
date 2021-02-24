@@ -56,3 +56,7 @@ $string['studentstracker:editadvance'] = 'Advanced editing within block';
 $string['lastaccess_date'] = 'Last access date';
 $string['dateformat'] = 'Date format';
 $string['dateformat_desc'] = 'Change the date format used in the block\'s display';
+$string['date_asc'] = 'Date ascending';
+$string['date_desc'] = 'Date descending';
+$string['sorting'] = 'Sorting criteria';
+$string['sorting_desc'] = 'Sorting criteria to list the users.';

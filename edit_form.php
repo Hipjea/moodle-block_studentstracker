@@ -101,6 +101,20 @@ class block_studentstracker_edit_form extends block_edit_form {
                 get_string('dateformat', 'block_studentstracker'), $choices, null);
             $select->setMultiple(false);
             $mform->setDefault('config_dateformat', get_config('studentstracker', 'dateformat'));
+
+            unset($choices);
+
+            $default = 'date_desc';
+            $choices['id'] = 'id';
+            $choices['lastname'] = get_string('lastname', 'core');
+            $choices['firstname'] = get_string('firstname', 'core');
+            $choices['email'] = get_string('email', 'core');
+            $choices['date_asc'] = get_string('date_asc', 'block_studentstracker');
+            $choices['date_desc'] = get_string('date_desc', 'block_studentstracker');
+            $select = $mform->addElement('select', 'config_sorting',
+                get_string('sorting', 'block_studentstracker'), $choices, null);
+            $select->setMultiple(false);
+            $mform->setDefault('config_sorting', get_config('studentstracker', 'sorting'));
         }
     }
 }

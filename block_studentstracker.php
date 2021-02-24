@@ -55,7 +55,7 @@ class block_studentstracker extends block_base {
     }
 
     public function get_content() {
-        global $CFG, $COURSE, $USER, $PAGE;
+        global $CFG, $COURSE, $USER, $PAGE, $OUTPUT;
 
         if ($this->content !== null) {
             return $this->content;
@@ -91,6 +91,7 @@ class block_studentstracker extends block_base {
                 'studentstracker', 'roletrack'));
             $trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
             $truncate = !empty($this->config->truncate) ? $this->config->truncate : 6;
+            $sorting = !empty($this->config->sorting) ? $this->config->sorting : 'date_desc';
 
             if (!empty($this->config->text_header)) {
                 $this->text_header = $this->config->text_header;
@@ -122,7 +123,10 @@ class block_studentstracker extends block_base {
                     }
                 }
                 $enrol->lastaccesscourse = studentstracker::get_last_access($context->instanceid, $enrol->id);
+            }
 
+            usort($enrols, studentstracker::sort_objects($sorting));
+            foreach ($enrols as $enrol) {
                 if ($enrol->hasrole == true) {
                     $output = true;
                         // Never access level.
@@ -152,7 +156,7 @@ class block_studentstracker extends block_base {
                         $output = "<li class='$rowclass' style='background:".$rowcolor."'>";
                         $output .= '<span class="pull-left">';
                         $output .= studentstracker::messaging($enrol).studentstracker::output_info($enrol, $dateformat);
-                        $output .= studentstracker::profile($enrol, $context).'</span>';
+                        $output .= studentstracker::profile($enrol, $context, $OUTPUT).'</span>';
                         $output .= '<span class="text-right">'.$lastaccess.'</span></li>';
                         array_push($this->content->items, $output);
                         $usercount++;
