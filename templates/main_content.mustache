@@ -1,0 +1,19 @@
+<div class="studentstracker_header">
+    {{# usercount }}<span class="badge badge-warning">{{{ usercount }}}</span>{{/ usercount }} {{{ text_header }}}
+</div>
+
+{{> block_studentstracker/students_list }}
+
+<div class="text-center">
+    <div id="tracker_showmore"></div>
+    <div id="tracker_showless"></div>
+</div>
+
+<div class="studentstracker_footer">{{{ text_footer }}}</div>
+
+{{#js}}
+require(['jquery', 'block_studentstracker/ui'], function($, st) {
+    st.init();
+    
+});
+{{/js}}

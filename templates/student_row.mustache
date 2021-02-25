@@ -1,0 +1,20 @@
+<li class="{{{ rowclass }}}" style="background:{{{ rowcolor }}}">
+    <span class="pull-left">
+        {{{ messaging }}}
+        <a class="btn btn-link p-0 pl-1" 
+            role="button" 
+            data-container="body" 
+            data-toggle="popover" 
+            data-placement="right"
+            data-html="true" 
+            tabindex="0" 
+            data-trigger="focus" 
+            data-original-title="" 
+            title="" 
+            data-content='{{> block_studentstracker/user_infos }}'>
+            <i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i>
+        </a>
+        {{{ picture }}}
+    </span>
+    <span class="text-right">{{{ lastaccess }}}</span>
+</li>

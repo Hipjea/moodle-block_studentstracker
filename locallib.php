@@ -26,6 +26,102 @@
 defined('MOODLE_INTERNAL') || die;
 
 class studentstracker {
+
+    private $usercount;
+    private $users;
+    private $dateformat;
+    private $colordays;
+    private $colordayscritical;
+    private $colornever;
+    private $textnever;
+    private $trackedroles;
+    private $trackedgroups;
+    private $textheader;
+    private $textfooter;
+    private $sorting;
+
+    /**
+     * Constructor.
+     */
+    public function __construct() {
+    }
+
+    public function __get($property) {
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
+    }
+    
+    public function __set($property, $value) {
+        if (property_exists($this, $property)) {
+            $this->$property = $value;
+        }
+        return $this;
+    }
+
+    public function get_enrolled_users($context) {
+        global $OUTPUT;
+
+        $usercount = 0;
+        $users = get_enrolled_users($context, '', 0, 'u.*', null, 0, 0, true);
+
+        foreach ($users as $enrol) {
+            $enrol->hasrole = self::has_role($this->trackedroles, $context->id, $enrol->id);
+            if ((in_array("0", $this->trackedgroups) == false) && (count($this->trackedgroups) > 0)) {
+                if (!(self::is_in_groups($this->trackedgroups, $COURSE->id, $enrol->id))) {
+                    continue;
+                }
+            }
+            $enrol->lastaccesscourse = self::get_last_access($context->instanceid, $enrol->id);
+            $enrol->messaging = self::messaging($enrol);
+            $enrol->date_lastaccess = date($this->dateformat, $enrol->lastaccess);
+            $enrol->picture = self::profile($enrol, $context, $OUTPUT);
+
+            if ($enrol->lastaccesscourse < 1) {
+                $enrol->rowcolor = $this->colornever;
+                $enrol->rowclass = 'studentstracker-never';
+                $enrol->lastaccess = $this->textnever;
+            }
+            // Critical access level.
+            else if (intval($enrol->lastaccesscourse) > 1 && intval($enrol->lastaccesscourse) < strtotime($this->days, time())
+                && (intval($enrol->lastaccesscourse) < strtotime($this->dayscritical, time())) ) {
+                $enrol->rowcolor = $this->colordayscritical;
+                $enrol->rowclass = 'studentstracker-critical';
+                $enrol->lastaccess = date($this->dateformat, $enrol->lastaccesscourse);
+            }
+            // First access level.
+            else if ( (intval($enrol->lastaccesscourse) < strtotime($this->days, time()))
+                && (intval($enrol->lastaccesscourse) >= strtotime($this->dayscritical, time())) ) {
+                $enrol->rowcolor = $this->colordays;
+                $enrol->rowclass = 'studentstracker-first';
+                $enrol->lastaccess = date($this->dateformat, $enrol->lastaccesscourse);
+            } else {
+                $output = false;
+            }
+
+            if ($enrol->hasrole) {
+                $usercount++;
+            }
+        }
+
+        if (isset($this->sorting)) {
+            usort($users, self::sort_objects($this->sorting));
+        }
+
+        $this->usercount = $usercount;
+        $this->users = $users;
+
+        return $this;
+    }
+
+    public function generate_content() {
+        return new \block_studentstracker\output\main_content($this->usercount,
+            $this->users,
+            1,
+            $this->textheader,
+            $this->textfooter);
+    }
+
     public static function get_roles() {
         global $DB;
         return $DB->get_records_sql('SELECT id,shortname FROM {role} ORDER BY id');
@@ -48,9 +144,9 @@ class studentstracker {
         }
     }
 
-    public static function is_in_groups($trackedgroups, $courseid, $enrolid) {
+    public static function is_in_groups($courseid, $enrolid) {
         $usergroups = groups_get_user_groups($courseid, $userid = $enrolid);
-        foreach ($trackedgroups as $group) {
+        foreach ($this->trackedgroups as $group) {
             if (in_array(intval($group), $usergroups[0], true)) {
                 return true;
             }
@@ -82,27 +178,6 @@ class studentstracker {
         $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
         return html_writer::link($url, $output->user_picture($user, array('size'=>15, 'alttext'=>false, 'link'=>false)) .
                                 "$user->firstname $user->lastname", array());
-    }
-
-    public static function output_info($user, $dateformat) {
-        if (isset($user->lastaccess)) {
-            $out = '<a class="btn btn-link p-0 pl-1" role="button" data-container="body" ';
-            $out .= 'data-toggle="popover" data-placement="right"';
-            $out .= ' data-content="<div class=&quot;no-overflow&quot;>';
-            $out .= '<a href=&quot;mailto:'.$user->email.'&quot;>'.$user->email.'</a></p>';
-            $out .= '<p class=&quot;mb-0&quot;>'. get_string('lastaccess', 'core') . ' : ';
-            $out .= date($dateformat, $user->lastaccess).'</p></div>"';
-            $out .= ' data-html="true" tabindex="0" data-trigger="focus" data-original-title="" title="">';
-            $out .= '<i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i></a>';
-        } else {
-            $out = '<a class="btn btn-link p-0 pl-1" role="button" data-container="body" ';
-            $out .= 'data-toggle="popover" data-placement="right"';
-            $out .= ' data-content="<div class=&quot;no-overflow&quot;>';
-            $out .= '<p class=&quot;mb-0&quot;><a href=&quot;mailto:'.$user->email.'&quot;>'.$user->email.'</a></p></div>"';
-            $out .= ' data-html="true" tabindex="0" data-trigger="focus" data-original-title="" title="">';
-            $out .= '<i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i></a>';
-        }
-        return $out;
     }
 
     public static function sort_objects($key) {

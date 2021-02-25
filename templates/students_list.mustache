@@ -1,0 +1,7 @@
+<ul id="studentstracker-list" data-show="{{{ truncate }}}">
+    {{#users}}
+        {{#hasrole}}
+            {{> block_studentstracker/student_row }}
+        {{/hasrole}}
+    {{/users}}
+</ul>
