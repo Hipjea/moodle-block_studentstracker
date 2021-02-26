@@ -9,11 +9,10 @@
     <div id="tracker_showless"></div>
 </div>
 
-<div class="studentstracker_footer">{{{ text_footer }}}</div>
+<div class="studentstracker_footer d-flex">{{{ text_footer }}}</div>
 
 {{#js}}
 require(['jquery', 'block_studentstracker/ui'], function($, st) {
     st.init();
-    
 });
 {{/js}}
