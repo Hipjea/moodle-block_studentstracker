@@ -55,7 +55,7 @@ class block_studentstracker extends block_base {
     }
 
     public function get_content() {
-        global $CFG, $COURSE, $USER, $PAGE, $OUTPUT;
+        global $COURSE, $USER;
 
         if ($this->content !== null) {
             return $this->content;
@@ -69,8 +69,6 @@ class block_studentstracker extends block_base {
         if ($isgranted == false && !is_siteadmin($USER->id)) {
             return $this->content;
         } else {
-            $dateformat = $this->config->dateformat;
-
             $this->content = new stdClass();
             $this->content->items = array();
 
@@ -99,14 +97,14 @@ class block_studentstracker extends block_base {
             $st->trackedroles = !empty($this->config->role) ? $this->config->role : explode(",", get_config(
                 'studentstracker', 'roletrack'));
             $st->trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
-            $st->dateformat = $this->config->dateformat;
+            $st->dateformat = !empty($this->config->dateformat) ? $this->config->dateformat : 'd/m/Y';
             $st->days = !empty($this->config->days) ? '-'.$this->config->days.' day' : '-'.get_config(
                 'studentstracker', 'trackingdays').' day';
             $st->dayscritical = !empty($this->config->days_critical) ? '-'.$this->config->days_critical.
                 ' day' : '-'.get_config('studentstracker', 'trackingdays').' day';
             $st->colordays = !empty($this->config->color_days) ? $this->config->color_days : get_config(
                 'studentstracker', 'colordays');
-            $st->colordayscritical = !empty($this->config->color_days_critical) ? 
+            $st->colordayscritical = !empty($this->config->color_days_critical) ?
                 $this->config->color_days_critical : get_config('studentstracker', 'colordayscritical');
             $st->colornever = !empty($this->config->color_never) ? $this->config->color_never : get_config(
                 'studentstracker', 'colordaysnever');
@@ -116,6 +114,7 @@ class block_studentstracker extends block_base {
             $st->textnever = !empty($this->config->text_never_content) ?
                 $this->config->text_never_content : get_string('text_never_content', 'block_studentstracker');
             $st->textfooter = $this->text_footer;
+            $st->excludeolder = !empty($this->config->excludeolder) ? $this->config->excludeolder : '';
             $st->get_enrolled_users($context, $COURSE->id);
 
             // If the usercount is greater than 0, display the warning text.

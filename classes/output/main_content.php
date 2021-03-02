@@ -35,18 +35,18 @@ class main_content implements renderable, templatable {
     public $usercount;
     public $users;
     public $truncate;
-    public $text_header;
-    public $text_footer;
-    
+    public $textheader;
+    public $textfooter;
+
     /**
      * Constructor.
      */
-    public function __construct($usercount, $users, $truncate, $text_header, $text_footer) {
+    public function __construct($usercount, $users, $truncate, $textheader, $textfooter) {
         $this->usercount = $usercount;
         $this->users = $users;
         $this->truncate = $truncate;
-        $this->text_header = $text_header;
-        $this->text_footer = $text_footer;
+        $this->textheader = $textheader;
+        $this->textfooter = $textfooter;
     }
 
     /**
@@ -62,8 +62,8 @@ class main_content implements renderable, templatable {
             'usercount' => $this->usercount,
             'users' => $this->users,
             'truncate' => $this->truncate,
-            'text_header' => $this->text_header,
-            'text_footer' => $this->text_footer,
+            'textheader' => $this->textheader,
+            'textfooter' => $this->textfooter,
             'pluginbaseurl' => (new moodle_url('/blocks/studenstracker'))->out(false),
         );
 

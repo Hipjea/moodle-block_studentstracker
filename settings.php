@@ -75,6 +75,16 @@ if ($ADMIN->fulltree) {
         array('5'),
         $rolesarray));
 
+    $settings->add(new admin_setting_configtext(
+        'studentstracker/truncate',
+        get_string('truncate', 'block_studentstracker'),
+        get_string('truncate_desc', 'block_studentstracker'), '10'));
+
+    $settings->add(new admin_setting_configtext(
+        'studentstracker/excludeolder',
+        get_string('excludeolder', 'block_studentstracker'),
+        get_string('excludeolder_desc', 'block_studentstracker'), ''));
+
     $default = 'd/m/Y H:i';
     $choices['d/m/Y H:i'] = 'd/m/Y H:i';
     $choices['m/d/Y H:i'] = 'm/d/Y H:i';

@@ -107,6 +107,11 @@ class studentstracker {
     private $truncate;
 
     /**
+     * @var int
+     */
+    private $excludeolder;
+
+    /**
      * Constructor.
      */
     public function __construct() {
@@ -124,7 +129,7 @@ class studentstracker {
         }
         throw new coding_exception('Invalid property requested.');
     }
-    
+
     /**
      * Setter.
      *
@@ -154,36 +159,45 @@ class studentstracker {
         $users = get_enrolled_users($context, '', 0, 'u.*', null, 0, 0, true);
 
         foreach ($users as $enrol) {
+            $enrol->lastaccesstimestamp = $this->get_last_access($context->instanceid, $enrol->id);
+
+            if ($this->excludeolder != '' && $enrol->lastaccesstimestamp < strtotime("-$this->excludeolder day", time())) {
+                continue;
+            }
+
             $enrol->hasrole = self::has_role($this->trackedroles, $context->id, $enrol->id);
             if ((in_array("0", $this->trackedgroups) == false) && (count($this->trackedgroups) > 0)) {
                 if (!($this->is_in_groups($this->trackedgroups, $courseid, $enrol->id))) {
                     continue;
                 }
             }
-            $enrol->lastaccesscourse = self::get_last_access($context->instanceid, $enrol->id);
+
+            if ($enrol->lastaccesstimestamp > 0) {
+                $enrol->lastaccesscourse = date($this->dateformat, $enrol->lastaccesstimestamp);
+            } else {
+                $enrol->lastaccesscourse = $this->textnever;
+            }
+
             $enrol->messaging = self::messaging($enrol);
-            $enrol->date_lastaccess = date($this->dateformat, $enrol->lastaccess);
+            $enrol->datelastaccess = date($this->dateformat, $enrol->lastaccess);
             $enrol->picture = self::profile($enrol, $context, $OUTPUT);
             $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
 
-            if ($enrol->lastaccesscourse < 1) {
+            if ($enrol->lastaccesstimestamp < 1) {
                 $enrol->rowcolor = $this->colornever;
                 $enrol->rowclass = 'studentstracker-never';
-                $enrol->lastaccesscourse = $this->textnever;
-            }
-            // Critical access level.
-            else if (intval($enrol->lastaccesscourse) > 1 && intval($enrol->lastaccesscourse) < strtotime($this->days, time())
-                && (intval($enrol->lastaccesscourse) < strtotime($this->dayscritical, time())) ) {
+            } else if ($enrol->lastaccesstimestamp > 1 && $enrol->lastaccesstimestamp < strtotime($this->days, time())
+                && ($enrol->lastaccesstimestamp < strtotime($this->dayscritical, time())) ) {
+                // Critical access level.
                 $enrol->rowcolor = $this->colordayscritical;
                 $enrol->rowclass = 'studentstracker-critical';
-                $enrol->lastaccesscourse = date($this->dateformat, $enrol->lastaccesscourse);
-            }
-            // First access level.
-            else if ( (intval($enrol->lastaccesscourse) < strtotime($this->days, time()))
-                && (intval($enrol->lastaccesscourse) >= strtotime($this->dayscritical, time())) ) {
+            } else if ( ($enrol->lastaccesstimestamp < strtotime($this->days, time()))
+                && ($enrol->lastaccesstimestamp >= strtotime($this->dayscritical, time())) ) {
+                // First access level.
                 $enrol->rowcolor = $this->colordays;
                 $enrol->rowclass = 'studentstracker-first';
-                $enrol->lastaccesscourse = date($this->dateformat, $enrol->lastaccesscourse);
+            } else {
+                continue;
             }
 
             if ($enrol->hasrole) {
@@ -258,7 +272,7 @@ class studentstracker {
      * @param $userid
      * @return $lastaccess string
      */
-    private static function get_last_access($courseid, $userid) {
+    private function get_last_access($courseid, $userid) {
         global $DB;
         $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', array('courseid' => $courseid, 'userid' => $userid));
         if ($lastaccess < 1) {
@@ -292,7 +306,7 @@ class studentstracker {
      */
     public static function profile($user, $context, $output) {
         $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
-        return html_writer::link($url, $output->user_picture($user, array('size'=>15, 'alttext'=>false, 'link'=>false)) .
+        return html_writer::link($url, $output->user_picture($user, array('size' => 15, 'alttext' => false, 'link' => false)) .
                                 "$user->firstname $user->lastname", array());
     }
 
@@ -302,13 +316,21 @@ class studentstracker {
      * @param $key The key used for sorting the objects
      */
     public static function sort_objects($key) {
+        //print('<br>');print('<br>');print('<br>');
         if ($key == 'date_desc') {
             return function ($a, $b) use ($key) {
-                return strnatcmp($b->lastaccesscourse, $a->lastaccesscourse);
+                if (isset($a->lastaccesstimestamp) && isset($b->lastaccesstimestamp)) {
+                    return strnatcmp($b->lastaccesstimestamp, $a->lastaccesstimestamp);
+                }
             };
         } else if ($key == 'date_asc') {
             return function ($a, $b) use ($key) {
-                return strnatcmp($a->lastaccesscourse, $b->lastaccesscourse);
+                /*print('<br>');
+                print($a->email . ' . ' . $a->lastaccesscourse);
+                print('<br>');*/
+                if (isset($a->lastaccesstimestamp) && isset($b->lastaccesstimestamp)) {
+                    return strnatcmp($a->lastaccesstimestamp, $b->lastaccesstimestamp);
+                }
             };
         }
         return function ($a, $b) use ($key) {

@@ -1,5 +1,5 @@
 <div class="studentstracker_header">
-    {{# usercount }}<span class="badge badge-warning">{{{ usercount }}}</span>{{/ usercount }} {{{ text_header }}}
+    {{# usercount }}<span class="badge badge-warning pl-2">{{{ usercount }}}</span>{{/ usercount }}{{{ textheader }}}
 </div>
 
 {{> block_studentstracker/students_list }}
@@ -9,7 +9,7 @@
     <div id="tracker_showless"></div>
 </div>
 
-<div class="studentstracker_footer d-flex">{{{ text_footer }}}</div>
+<div class="studentstracker_footer d-flex">{{{ textfooter }}}</div>
 
 {{#js}}
 require(['jquery', 'block_studentstracker/ui'], function($, st) {

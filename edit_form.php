@@ -93,6 +93,10 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->setDefault('config_truncate', 6);
             $mform->setType('config_truncate', PARAM_INT);
 
+            $mform->addElement('text', 'config_excludeolder', get_string('excludeolder', 'block_studentstracker'));
+            $mform->setDefault('config_excludeolder', '');
+            $mform->setType('config_excludeolder', PARAM_INT);
+
             $choices['d/m/Y H:i'] = 'd/m/Y H:i';
             $choices['m/d/Y H:i'] = 'm/d/Y H:i';
             $choices['d/m/Y'] = 'd/m/Y';
