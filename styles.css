@@ -40,11 +40,20 @@
     border-radius: 6px;
     margin-right: 5px;
 }
+#studentstracker-list {
+    display: none;
+}
 #studentstracker-list li {
     display: block;
 }
+#tracker_showmore,
+#tracker_showless {
+    display: none;
+}
 #tracker_showmore button,
 #tracker_showless button {
+    margin-left: auto;
+    margin-right: auto;
     font-weight: bold;
     width: 20%;
     text-align: center;
@@ -58,6 +67,7 @@
     background: #00aeef;
     transition: background-color .25s;
     text-shadow: -1px 1px #009bd6;
+    line-height: 15px;
 }
 #tracker_showmore button:hover,
 #tracker_showless button:hover {
