@@ -13,6 +13,9 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Classes to enforce the various access rules that can apply to a quiz.
  *
@@ -20,7 +23,9 @@
  * @copyright  2021 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
+
 class block_studentstracker_edit_form extends block_edit_form {
     protected function specific_definition($mform) {
         global $CFG, $COURSE, $USER;

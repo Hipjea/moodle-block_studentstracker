@@ -147,7 +147,7 @@ class studentstracker {
 
     /**
      * Retrieves the list of the enrolled users of the courses and apply the logic.
-     * 
+     *
      * @param $context The context object
      * @param $courseid The course object id
      * @return $this
@@ -225,7 +225,7 @@ class studentstracker {
 
     /**
      * Check if the given user has the tracked roles.
-     * 
+     *
      * @param $roleids The role ids
      * @param $courseid
      * @param $userid
@@ -250,7 +250,7 @@ class studentstracker {
 
     /**
      * Check if the given user is part of the tracked groups.
-     * 
+     *
      * @param $courseid
      * @param $userid
      * @return bool
@@ -267,7 +267,7 @@ class studentstracker {
 
     /**
      * Get the user's last access in a course.
-     * 
+     *
      * @param $courseid
      * @param $userid
      * @return $lastaccess string
@@ -283,7 +283,7 @@ class studentstracker {
 
     /**
      * Link to the private message page for a given user.
-     * 
+     *
      * @param $user The user object
      */
     public static function messaging($user) {
@@ -299,7 +299,7 @@ class studentstracker {
 
     /**
      * Link to the user's profile.
-     * 
+     *
      * @param $user The user object
      * @param $context The context object
      * @param $output The core_renderer to use when generating the output.
@@ -312,7 +312,7 @@ class studentstracker {
 
     /**
      * Sorting function used for the sorting config option.
-     * 
+     *
      * @param $key The key used for sorting the objects
      */
     public static function sort_objects($key) {
@@ -336,7 +336,7 @@ class studentstracker {
 
     /**
      * Call the plugin renderer with the data.
-     * 
+     *
      * @return \block_studentstracker\output\main_content Studentstracker main_content renderer
      */
     public function generate_content() {
