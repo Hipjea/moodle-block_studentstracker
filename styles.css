@@ -32,7 +32,7 @@
     opacity: 1;
 }
 .block_studentstracker .studentstracker-never {
-    background: #E0E0E0;
+    background: #e0e0e0;
 }
 .block_studentstracker .badge {
     padding-right: 9px;
@@ -89,6 +89,6 @@
     transform: scale(1.75);
 }
 .block_studentstracker .content ul li .text-right {
-    color: rgba(0,0,0,.8);
+    color: rgba(0, 0, 0, .8);
     font-size: 0.9em;
 }
