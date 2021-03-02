@@ -316,7 +316,6 @@ class studentstracker {
      * @param $key The key used for sorting the objects
      */
     public static function sort_objects($key) {
-        //print('<br>');print('<br>');print('<br>');
         if ($key == 'date_desc') {
             return function ($a, $b) use ($key) {
                 if (isset($a->lastaccesstimestamp) && isset($b->lastaccesstimestamp)) {
@@ -325,9 +324,6 @@ class studentstracker {
             };
         } else if ($key == 'date_asc') {
             return function ($a, $b) use ($key) {
-                /*print('<br>');
-                print($a->email . ' . ' . $a->lastaccesscourse);
-                print('<br>');*/
                 if (isset($a->lastaccesstimestamp) && isset($b->lastaccesstimestamp)) {
                     return strnatcmp($a->lastaccesstimestamp, $b->lastaccesstimestamp);
                 }
