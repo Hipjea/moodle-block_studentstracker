@@ -1,6 +1,6 @@
 # Moodle Student's tracker block
 
-This plugin adds a new block type for Moodle. Its aim is to give the teachers and staff a simple tool to view how many students didn't visit a course for a long time and so, try to reduce student's leaving.
+This plugin adds a new block type for Moodle. Its aim is to give the teachers and staff a simple tool to view how many students didn't visit a course for a long time and so, try to prevent students from dropping out.
 
 ## Features
 

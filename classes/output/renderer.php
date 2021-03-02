@@ -15,17 +15,27 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version file
+ * Renderer.
  *
  * @package    block_studentstracker
  * @copyright  2021 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace block_studentstracker\output;
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021022601;
-$plugin->requires  = 2016052300;
-$plugin->release  = '1.6.2';
-$plugin->component = 'block_studentstracker';
-$plugin->maturity = MATURITY_STABLE;
+use plugin_renderer_base;
+use renderable;
+
+class renderer extends plugin_renderer_base {
+    /**
+     * Defer to template.
+     * @param renderable $page
+     * @return string
+     */
+    public function render_main_content(\templatable $output) {
+        $data = $output->export_for_template($this);
+        return parent::render_from_template('block_studentstracker/main_content', $data);
+    }
+}

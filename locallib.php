@@ -25,20 +25,220 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+/**
+ * Main studentstracker class
+ *
+ * @author     Pierre Duverneix
+ */
 class studentstracker {
+    /**
+     * @var int
+     */
+    private $usercount;
+
+    /**
+     * @var array
+     */
+    private $users;
+
+    /**
+     * @var string
+     */
+    private $dateformat;
+
+    /**
+     * @var int
+     */
+    private $days;
+
+    /**
+     * @var int
+     */
+    private $dayscritical;
+
+    /**
+     * @var string
+     */
+    private $colordays;
+
+    /**
+     * @var string
+     */
+    private $colordayscritical;
+
+    /**
+     * @var string
+     */
+    private $colornever;
+
+    /**
+     * @var string
+     */
+    private $textnever;
+
+    /**
+     * @var array
+     */
+    private $trackedroles;
+
+    /**
+     * @var array
+     */
+    private $trackedgroups;
+
+    /**
+     * @var string
+     */
+    private $textheader;
+
+    /**
+     * @var string
+     */
+    private $textfooter;
+
+    /**
+     * @var string
+     */
+    private $sorting;
+
+    /**
+     * @var int
+     */
+    private $truncate;
+
+    /**
+     * @var int
+     */
+    private $excludeolder;
+
+    /**
+     * Constructor.
+     */
+    public function __construct() {
+    }
+
+    /**
+     * Getter.
+     *
+     * @param $property
+     * @throws coding_exception
+     */
+    public function __get($property) {
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
+        throw new coding_exception('Invalid property requested.');
+    }
+
+    /**
+     * Setter.
+     *
+     * @param $property
+     * @throws coding_exception
+     */
+    public function __set($property, $value) {
+        if (property_exists($this, $property)) {
+            $this->$property = $value;
+            return $this;
+        } else {
+            throw new coding_exception('Invalid property requested.');
+        }
+    }
+
+    /**
+     * Retrieves the list of the enrolled users of the courses and apply the logic.
+     * 
+     * @param $context The context object
+     * @param $courseid The course object id
+     * @return $this
+     */
+    public function get_enrolled_users($context, $courseid) {
+        global $OUTPUT;
+
+        $usercount = 0;
+        $users = get_enrolled_users($context, '', 0, 'u.*', null, 0, 0, true);
+
+        foreach ($users as $enrol) {
+            $enrol->lastaccesstimestamp = $this->get_last_access($context->instanceid, $enrol->id);
+
+            if ($this->excludeolder != '' && $enrol->lastaccesstimestamp < strtotime("-$this->excludeolder day", time())) {
+                continue;
+            }
+
+            $enrol->hasrole = self::has_role($this->trackedroles, $context->id, $enrol->id);
+            if ((in_array("0", $this->trackedgroups) == false) && (count($this->trackedgroups) > 0)) {
+                if (!($this->is_in_groups($this->trackedgroups, $courseid, $enrol->id))) {
+                    continue;
+                }
+            }
+
+            if ($enrol->lastaccesstimestamp > 0) {
+                $enrol->lastaccesscourse = date($this->dateformat, $enrol->lastaccesstimestamp);
+            } else {
+                $enrol->lastaccesscourse = $this->textnever;
+            }
+
+            $enrol->messaging = self::messaging($enrol);
+            $enrol->datelastaccess = date($this->dateformat, $enrol->lastaccess);
+            $enrol->picture = self::profile($enrol, $context, $OUTPUT);
+            $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
+
+            if ($enrol->lastaccesstimestamp < 1) {
+                $enrol->rowcolor = $this->colornever;
+                $enrol->rowclass = 'studentstracker-never';
+            } else if ($enrol->lastaccesstimestamp > 1 && $enrol->lastaccesstimestamp < strtotime($this->days, time())
+                && ($enrol->lastaccesstimestamp < strtotime($this->dayscritical, time())) ) {
+                // Critical access level.
+                $enrol->rowcolor = $this->colordayscritical;
+                $enrol->rowclass = 'studentstracker-critical';
+            } else if ( ($enrol->lastaccesstimestamp < strtotime($this->days, time()))
+                && ($enrol->lastaccesstimestamp >= strtotime($this->dayscritical, time())) ) {
+                // First access level.
+                $enrol->rowcolor = $this->colordays;
+                $enrol->rowclass = 'studentstracker-first';
+            } else {
+                continue;
+            }
+
+            if ($enrol->hasrole) {
+                $usercount++;
+            }
+        }
+
+        if (isset($this->sorting)) {
+            usort($users, self::sort_objects($this->sorting));
+        }
+
+        $this->usercount = $usercount;
+        $this->users = $users;
+
+        return $this;
+    }
+
+    /**
+     * Get the site roles.
+     */
     public static function get_roles() {
         global $DB;
         return $DB->get_records_sql('SELECT id,shortname FROM {role} ORDER BY id');
     }
 
-    public static function has_role($rids, $courseid, $uid) {
+    /**
+     * Check if the given user has the tracked roles.
+     * 
+     * @param $roleids The role ids
+     * @param $courseid
+     * @param $userid
+     * @return bool
+     */
+    private static function has_role($roleids, $courseid, $userid) {
         global $DB;
         $params = array();
-        foreach ($rids as $role) {
+        foreach ($roleids as $role) {
             array_push($params, (int)$role);
         }
-        array_push($params, $courseid, (int)$uid);
-        $roles = join(',', array_fill(0, count($rids), '?'));
+        array_push($params, $courseid, (int)$userid);
+        $roles = join(',', array_fill(0, count($roleids), '?'));
         $r = $DB->count_records_sql("SELECT COUNT(id) FROM {role_assignments} WHERE roleid IN($roles) AND contextid=? AND userid=?",
         $params);
         if ($r > 0) {
@@ -48,9 +248,16 @@ class studentstracker {
         }
     }
 
-    public static function is_in_groups($trackedgroups, $courseid, $enrolid) {
-        $usergroups = groups_get_user_groups($courseid, $userid = $enrolid);
-        foreach ($trackedgroups as $group) {
+    /**
+     * Check if the given user is part of the tracked groups.
+     * 
+     * @param $courseid
+     * @param $userid
+     * @return bool
+     */
+    private function is_in_groups($courseid, $userid) {
+        $usergroups = groups_get_user_groups($courseid, $userid);
+        foreach ($this->trackedgroups as $group) {
             if (in_array(intval($group), $usergroups[0], true)) {
                 return true;
             }
@@ -58,7 +265,14 @@ class studentstracker {
         return false;
     }
 
-    public static function get_last_access($courseid, $userid) {
+    /**
+     * Get the user's last access in a course.
+     * 
+     * @param $courseid
+     * @param $userid
+     * @return $lastaccess string
+     */
+    private function get_last_access($courseid, $userid) {
         global $DB;
         $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', array('courseid' => $courseid, 'userid' => $userid));
         if ($lastaccess < 1) {
@@ -67,56 +281,74 @@ class studentstracker {
         return $lastaccess;
     }
 
+    /**
+     * Link to the private message page for a given user.
+     * 
+     * @param $user The user object
+     */
     public static function messaging($user) {
-        global $DB;
+        global $OUTPUT;
+
         $userid = optional_param('user2', $user->id, PARAM_INT);
         $url = new moodle_url('/message/index.php');
         if ($user->id) {
             $url->param('id', $userid);
         }
-        return html_writer::link($url, "<img src=\"../pix/t/message.png\">", array());
+        return html_writer::link($url, '<img src="'.$OUTPUT->image_url('t/message').'">', array());
     }
 
+    /**
+     * Link to the user's profile.
+     * 
+     * @param $user The user object
+     * @param $context The context object
+     * @param $output The core_renderer to use when generating the output.
+     */
     public static function profile($user, $context, $output) {
-        global $DB;
         $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
-        return html_writer::link($url, $output->user_picture($user, array('size'=>15, 'alttext'=>false, 'link'=>false)) .
+        return html_writer::link($url, $output->user_picture($user, array('size' => 15, 'alttext' => false, 'link' => false)) .
                                 "$user->firstname $user->lastname", array());
     }
 
-    public static function output_info($user, $dateformat) {
-        if (isset($user->lastaccess)) {
-            $out = '<a class="btn btn-link p-0 pl-1" role="button" data-container="body" ';
-            $out .= 'data-toggle="popover" data-placement="right"';
-            $out .= ' data-content="<div class=&quot;no-overflow&quot;>';
-            $out .= '<a href=&quot;mailto:'.$user->email.'&quot;>'.$user->email.'</a></p>';
-            $out .= '<p class=&quot;mb-0&quot;>'. get_string('lastaccess', 'core') . ' : ';
-            $out .= date($dateformat, $user->lastaccess).'</p></div>"';
-            $out .= ' data-html="true" tabindex="0" data-trigger="focus" data-original-title="" title="">';
-            $out .= '<i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i></a>';
-        } else {
-            $out = '<a class="btn btn-link p-0 pl-1" role="button" data-container="body" ';
-            $out .= 'data-toggle="popover" data-placement="right"';
-            $out .= ' data-content="<div class=&quot;no-overflow&quot;>';
-            $out .= '<p class=&quot;mb-0&quot;><a href=&quot;mailto:'.$user->email.'&quot;>'.$user->email.'</a></p></div>"';
-            $out .= ' data-html="true" tabindex="0" data-trigger="focus" data-original-title="" title="">';
-            $out .= '<i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i></a>';
-        }
-        return $out;
-    }
-
+    /**
+     * Sorting function used for the sorting config option.
+     * 
+     * @param $key The key used for sorting the objects
+     */
     public static function sort_objects($key) {
+        //print('<br>');print('<br>');print('<br>');
         if ($key == 'date_desc') {
             return function ($a, $b) use ($key) {
-                return strnatcmp($b->lastaccesscourse, $a->lastaccesscourse);
+                if (isset($a->lastaccesstimestamp) && isset($b->lastaccesstimestamp)) {
+                    return strnatcmp($b->lastaccesstimestamp, $a->lastaccesstimestamp);
+                }
             };
         } else if ($key == 'date_asc') {
             return function ($a, $b) use ($key) {
-                return strnatcmp($a->lastaccesscourse, $b->lastaccesscourse);
+                /*print('<br>');
+                print($a->email . ' . ' . $a->lastaccesscourse);
+                print('<br>');*/
+                if (isset($a->lastaccesstimestamp) && isset($b->lastaccesstimestamp)) {
+                    return strnatcmp($a->lastaccesstimestamp, $b->lastaccesstimestamp);
+                }
             };
         }
         return function ($a, $b) use ($key) {
             return strnatcmp($a->{$key}, $b->{$key});
         };
+    }
+
+    /**
+     * Call the plugin renderer with the data.
+     * 
+     * @return \block_studentstracker\output\main_content Studentstracker main_content renderer
+     */
+    public function generate_content() {
+        return new \block_studentstracker\output\main_content(
+            $this->usercount,
+            $this->users,
+            $this->truncate,
+            $this->textheader,
+            $this->textfooter);
     }
 }

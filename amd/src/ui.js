@@ -37,7 +37,7 @@ define([], function() {
             if (toshow > 0 && toshow < block_li.length) {
                 let showmore = document.getElementById("tracker_showmore");
                 let btn = document.createElement("button");
-                let svgarrowd = '<svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">';
+                let svgarrowd = '<svg width="18" height="18" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">';
                 svgarrowd = svgarrowd + '<path fill="#FFFFFF" d="M1683 808l-742 741q-19 19-45 19t-45-19l-742-741q-19-19-19';
                 svgarrowd = svgarrowd + '-45.5t19-45.5l166-165q19-19 45-19t45 19l531 531 531-531q19-19 45-19t45 19l166 165q19';
                 svgarrowd = svgarrowd + ' 19 19 45.5t-19 45.5z"/></svg>';
@@ -46,7 +46,7 @@ define([], function() {
                 let showless = document.getElementById("tracker_showless");
                 let btnless = document.createElement("button");
 
-                let svgarrowu = '<svg width="20" height="20" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">';
+                let svgarrowu = '<svg width="18" height="18" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">';
                 svgarrowu = svgarrowu + '<path fill="#FFFFFF" d="M1683 1331l-166 165q-19 19-45 19t-45-19l-531-531-531 ';
                 svgarrowu = svgarrowu + '531q-19 19-45 19t-45-19l-166-165q-19-19-19-45.5t19-45.5l742-741q19-19 45-19t45 ';
                 svgarrowu = svgarrowu + '19l742 741q19 19 19 45.5t-19 45.5z"/></svg>';
