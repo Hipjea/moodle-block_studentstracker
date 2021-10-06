@@ -28,7 +28,7 @@ require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
 
 class block_studentstracker_edit_form extends block_edit_form {
     protected function specific_definition($mform) {
-        global $CFG, $COURSE, $USER;
+        global $DB, $COURSE, $USER;
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
         $mform->addElement('text', 'config_title', get_string('blocktitle', 'block_studentstracker'));
         $mform->setDefault('config_title', get_string('pluginname', 'block_studentstracker'));
@@ -72,7 +72,7 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->setDefault('config_text_footer', get_string('text_footer_content', 'block_studentstracker'));
             $mform->setType('config_text_footer', PARAM_TEXT);
 
-            $roles = studentstracker::get_roles();
+            $roles = $DB->get_records('role');
             $rolesarray = array();
             foreach ($roles as $role) {
                 $rolesarray[$role->id] = $role->shortname;
