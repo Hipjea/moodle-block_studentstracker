@@ -216,14 +216,6 @@ class studentstracker {
     }
 
     /**
-     * Get the site roles.
-     */
-    public static function get_roles() {
-        global $DB;
-        return $DB->get_records_sql('SELECT id,shortname FROM {role} ORDER BY id');
-    }
-
-    /**
      * Check if the given user has the tracked roles.
      *
      * @param $roleids The role ids

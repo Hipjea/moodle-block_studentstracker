@@ -26,9 +26,16 @@ defined('MOODLE_INTERNAL') || die;
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
 
 if ($ADMIN->fulltree) {
-    $roles = studentstracker::get_roles();
+    global $DB;
+
+    $roles = $DB->get_records('role');
     $rolesarray = array();
+    $defaultroleid = 5;
+    
     foreach ($roles as $role) {
+        if ($role->archetype === 'student') {
+            $defaultroleid = $role->id;
+        }
         $rolesarray[$role->id] = $role->shortname;
     }
 
@@ -65,14 +72,7 @@ if ($ADMIN->fulltree) {
         'studentstracker/roletrack',
         get_string('roletrack', 'block_studentstracker'),
         get_string('roletrack_desc', 'block_studentstracker'),
-        array('5'),
-        $rolesarray));
-
-    $settings->add(new admin_setting_configmultiselect(
-        'studentstracker/roletrack',
-        get_string('roletrack', 'block_studentstracker'),
-        get_string('roletrack_desc', 'block_studentstracker'),
-        array('5'),
+        array($defaultroleid),
         $rolesarray));
 
     $settings->add(new admin_setting_configtext(
