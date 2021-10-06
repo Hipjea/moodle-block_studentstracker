@@ -68,13 +68,6 @@ if ($ADMIN->fulltree) {
         array('5'),
         $rolesarray));
 
-    $settings->add(new admin_setting_configmultiselect(
-        'studentstracker/roletrack',
-        get_string('roletrack', 'block_studentstracker'),
-        get_string('roletrack_desc', 'block_studentstracker'),
-        array('5'),
-        $rolesarray));
-
     $settings->add(new admin_setting_configtext(
         'studentstracker/truncate',
         get_string('truncate', 'block_studentstracker'),
