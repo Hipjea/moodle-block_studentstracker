@@ -153,10 +153,11 @@ class studentstracker {
      * @return $this
      */
     public function get_enrolled_users($context, $courseid) {
-        global $OUTPUT;
+        global $DB, $OUTPUT;
 
         $usercount = 0;
         $users = get_enrolled_users($context, '', 0, 'u.*', null, 0, 0, true);
+        $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
 
         foreach ($users as $enrol) {
             if (groups_user_groups_visible($course, $enrol->id)) {
