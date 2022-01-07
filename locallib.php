@@ -159,49 +159,51 @@ class studentstracker {
         $users = get_enrolled_users($context, '', 0, 'u.*', null, 0, 0, true);
 
         foreach ($users as $enrol) {
-            $enrol->lastaccesstimestamp = $this->get_last_access($context->instanceid, $enrol->id);
+            if (groups_user_groups_visible($course, $enrol->id)) {
+                $enrol->lastaccesstimestamp = $this->get_last_access($context->instanceid, $enrol->id);
 
-            if ($this->excludeolder != '' && $enrol->lastaccesstimestamp < strtotime("-$this->excludeolder day", time())) {
-                continue;
-            }
-
-            $enrol->hasrole = self::has_role($this->trackedroles, $context->id, $enrol->id);
-            if ((in_array("0", $this->trackedgroups) == false) && (count($this->trackedgroups) > 0)) {
-                if (!($this->is_in_groups($this->trackedgroups, $courseid, $enrol->id))) {
+                if ($this->excludeolder != '' && $enrol->lastaccesstimestamp < strtotime("-$this->excludeolder day", time())) {
                     continue;
                 }
-            }
 
-            if ($enrol->lastaccesstimestamp > 0) {
-                $enrol->lastaccesscourse = date($this->dateformat, $enrol->lastaccesstimestamp);
-            } else {
-                $enrol->lastaccesscourse = $this->textnever;
-            }
+                $enrol->hasrole = self::has_role($this->trackedroles, $context->id, $enrol->id);
+                if ((in_array("0", $this->trackedgroups) == false) && (count($this->trackedgroups) > 0)) {
+                    if (!($this->is_in_groups($courseid, $enrol->id))) {
+                        continue;
+                    }
+                }
 
-            $enrol->messaging = self::messaging($enrol);
-            $enrol->datelastaccess = date($this->dateformat, $enrol->lastaccess);
-            $enrol->picture = self::profile($enrol, $context, $OUTPUT);
-            $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
+                if ($enrol->lastaccesstimestamp > 0) {
+                    $enrol->lastaccesscourse = date($this->dateformat, $enrol->lastaccesstimestamp);
+                } else {
+                    $enrol->lastaccesscourse = $this->textnever;
+                }
 
-            if ($enrol->lastaccesstimestamp < 1) {
-                $enrol->rowcolor = $this->colornever;
-                $enrol->rowclass = 'studentstracker-never';
-            } else if ($enrol->lastaccesstimestamp > 1 && $enrol->lastaccesstimestamp < strtotime($this->days, time())
-                && ($enrol->lastaccesstimestamp < strtotime($this->dayscritical, time())) ) {
-                // Critical access level.
-                $enrol->rowcolor = $this->colordayscritical;
-                $enrol->rowclass = 'studentstracker-critical';
-            } else if ( ($enrol->lastaccesstimestamp < strtotime($this->days, time()))
-                && ($enrol->lastaccesstimestamp >= strtotime($this->dayscritical, time())) ) {
-                // First access level.
-                $enrol->rowcolor = $this->colordays;
-                $enrol->rowclass = 'studentstracker-first';
-            } else {
-                continue;
-            }
+                $enrol->messaging = self::messaging($enrol);
+                $enrol->datelastaccess = date($this->dateformat, $enrol->lastaccess);
+                $enrol->picture = self::profile($enrol, $context, $OUTPUT);
+                $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
 
-            if ($enrol->hasrole) {
-                $usercount++;
+                if ($enrol->lastaccesstimestamp < 1) {
+                    $enrol->rowcolor = $this->colornever;
+                    $enrol->rowclass = 'studentstracker-never';
+                } else if ($enrol->lastaccesstimestamp > 1 && $enrol->lastaccesstimestamp < strtotime($this->days, time())
+                    && ($enrol->lastaccesstimestamp < strtotime($this->dayscritical, time())) ) {
+                    // Critical access level.
+                    $enrol->rowcolor = $this->colordayscritical;
+                    $enrol->rowclass = 'studentstracker-critical';
+                } else if ( ($enrol->lastaccesstimestamp < strtotime($this->days, time()))
+                    && ($enrol->lastaccesstimestamp >= strtotime($this->dayscritical, time())) ) {
+                    // First access level.
+                    $enrol->rowcolor = $this->colordays;
+                    $enrol->rowclass = 'studentstracker-first';
+                } else {
+                    continue;
+                }
+
+                if ($enrol->hasrole) {
+                    $usercount++;
+                }
             }
         }
 
