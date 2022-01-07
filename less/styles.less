@@ -1,0 +1,135 @@
+.showBtn () {
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+    width: 50px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 6px;
+    display: block;
+    padding: 0;
+    height: 23px;
+    color: #fff;
+    border: none;
+    background: #00aeef;
+    transition: background-color .25s;
+    text-shadow: -1px 1px #009bd6;
+    line-height: 15px;
+
+    &:hover {
+        background: #1c8eba;
+        text-shadow: -1px 1px #197da4;
+    }
+
+    &:active {
+        box-shadow: none;
+        position: relative;
+        top: 5px;
+    }
+
+    svg {
+        width: 24px;
+    }
+}
+
+.block_studentstracker {
+    .studentstracker_header {
+        margin: 10px 0px 20px 0px;
+    }
+
+    .studentstracker_footer {
+        margin-top: 10px;
+    }
+
+    .content {
+        text-decoration: none;
+
+        ul {
+            margin-left: 0;
+            padding-left: 0;
+
+            li {
+                list-style-type: none;
+                padding: 2px 5px 2px 5px;
+                margin-bottom: 4px;
+                border-radius: 4px;
+                margin-left: 0;
+                opacity: 0.8;
+                text-align: right;
+
+                span {
+                    color: #333;
+                }
+
+                a {
+                    text-decoration: none;
+
+                    &:hover {
+                        .userpicture {
+                            -ms-transform: scale(1.75); /* IE 9 */
+                            -webkit-transform: scale(1.75); /* Safari 3-8 */
+                            transform: scale(1.75);
+                        }
+                    }
+
+                    .userpicture {
+                        transition: all .2s ease-in-out;
+                    }
+                }
+
+                .pull-left {
+                    text-align: left;
+                }
+
+                .text-right {
+                    color: rgba(0, 0, 0, .8);
+                    font-size: 0.9em;
+                    padding-left: 5px;
+                    clear: both;
+                }
+            }
+        }
+    }
+
+    .studentstracker-never:hover,
+    .studentstracker-four-days:hover,
+    .studentstracker-two-days:hover {
+        opacity: 1;
+    }
+
+    .studentstracker-never {
+        background: #e0e0e0;
+    }
+
+    .badge {
+        padding-right: 9px;
+        padding-left: 9px;
+        border-radius: 6px;
+        margin-right: 5px;
+    }
+
+    #studentstracker-list {
+        display: none;
+
+        li {
+            display: block;
+        }
+    }
+
+    #tracker_showmore {
+        display: none;
+
+        button {
+            .showBtn();
+        }
+    }
+
+    #tracker_showless {
+        display: none;
+
+        button {
+            .showBtn();
+        }
+    }
+}
+

@@ -31,7 +31,7 @@ if ($ADMIN->fulltree) {
     $roles = $DB->get_records('role');
     $rolesarray = array();
     $defaultroleid = 5;
-    
+
     foreach ($roles as $role) {
         if ($role->archetype === 'student') {
             $defaultroleid = $role->id;
