@@ -37,7 +37,7 @@
 <div class="studentstracker_footer d-flex">{{{ textfooter }}}</div>
 
 {{#js}}
-require(['jquery', 'block_studentstracker/ui'], function($, st) {
+require(['jquery', 'block_studentstracker/index'], function($, st) {
     $(document).ready(function() {
         st.init();
         $('#studentstracker-list, #tracker_showmore').fadeIn();
