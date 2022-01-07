@@ -18,14 +18,14 @@
  * Version file
  *
  * @package    block_studentstracker
- * @copyright  2021 Pierre Duverneix
+ * @copyright  2022 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version    = 2021100600;
+$plugin->version    = 2022010700;
 $plugin->requires   = 2016052300;
-$plugin->release    = '1.7.1';
+$plugin->release    = '1.7.2';
 $plugin->component  = 'block_studentstracker';
 $plugin->maturity   = MATURITY_STABLE;
