@@ -20,3 +20,7 @@ It also includes a link to open the direct Moodle message dialog, allowing teach
 ## Install
 
 Clone or unzip the repository inside your Moodle block folder (example /var/www/moodle/blocks).
+
+## Miscellaneous
+
+When using a course with separated groups settings, the teacher role must not have the `moodle/site:accessallgroups` capability in order to only be able to see the concerned students.
