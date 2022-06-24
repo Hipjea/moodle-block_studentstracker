@@ -18,12 +18,10 @@
  * Renderer.
  *
  * @package    block_studentstracker
- * @copyright  2021 Pierre Duverneix
+ * @copyright  2022 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_studentstracker\output;
-
-defined('MOODLE_INTERNAL') || die();
 
 use plugin_renderer_base;
 use renderable;
