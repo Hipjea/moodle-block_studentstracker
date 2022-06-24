@@ -24,3 +24,18 @@ Clone or unzip the repository inside your Moodle block folder (example /var/www/
 ## Miscellaneous
 
 When using a course with separated groups settings, the teacher role must not have the `moodle/site:accessallgroups` capability in order to only be able to see the concerned students.
+
+## Development
+
+### Compile Javascript
+
+#### Grunt watch
+
+```
+npm install
+grunt watch
+```
+
+You may need to install Grunt globally :
+
+`npm install -g grunt-cli`
