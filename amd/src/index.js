@@ -26,11 +26,6 @@ const arrowDown = `<svg
   height="11"
   viewBox="0 0 1792 1095.1111"
   version="1.1"
-  id="svg914"
-  sodipodi:docname="arrow-down.svg"
-  inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
-  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:svg="http://www.w3.org/2000/svg">
   <path
@@ -44,11 +39,6 @@ const arrowUp = `<svg
   height="11"
   viewBox="0 0 1792 1095.1111"
   version="1.1"
-  id="svg914"
-  sodipodi:docname="arrow-up.svg"
-  inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
-  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
   xmlns="http://www.w3.org/2000/svg"
   xmlns:svg="http://www.w3.org/2000/svg">
   <path
