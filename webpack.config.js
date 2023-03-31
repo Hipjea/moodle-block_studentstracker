@@ -14,10 +14,10 @@ const config = {
     module: {
         rules: [
             {
-				test: /\.ts(x)?$/,
-				use: "ts-loader",
-				exclude: /node_modules/,
-			},
+                test: /\.ts(x)?$/,
+                use: "ts-loader",
+                exclude: /node_modules/,
+            },
             {
                 test: /\.svg$/,
                 loader: 'svg-inline-loader',

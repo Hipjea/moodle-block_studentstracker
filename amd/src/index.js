@@ -1,1 +1,92 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.index=t():e.index=t()}(self,(()=>(()=>{var e={137:e=>{e.exports='<svg viewBox="0 0 1792 1095.1111" version="1.1" id="svg914" sodipodi:docname="arrow-down.svg" inkscape:version="1.1.1 (c3084ef, 2021-09-22)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><path fill="#FFFFFF" d="m 1685.1961,209.41181 -166,-165.000053 q -19,-19 -45,-19 -26,0 -45,19 l -531.00002,531.000053 -531,-531.000053 q -19,-19 -45,-19 -26,0 -45,19 l -166,165.000053 q -18.999997,19 -18.999997,45.5 0,26.5 18.999997,45.5 l 742,740.99999 q 19,19 45,19 26,0 45,-19 L 1685.1961,300.41181 q 19,-19 19,-45.5 0,-26.5 -19,-45.5 z" id="path912" style="fill:#ffffff;fill-opacity:1"></path></svg>'},271:e=>{e.exports='<svg viewBox="0 0 1792 1095.1111" version="1.1" id="svg914" sodipodi:docname="arrow-up.svg" inkscape:version="1.1.1 (c3084ef, 2021-09-22)" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><path fill="#FFFFFF" d="m 1685.1961,876.41175 -166,165.00005 q -19,19 -45,19 -26,0 -45,-19 l -531.00002,-531.00005 -531,531.00005 q -19,19 -45,19 -26,0 -45,-19 l -166,-165.00005 q -18.999997,-19 -18.999997,-45.5 0,-26.5 18.999997,-45.5 l 742,-740.999993 q 19,-19 45,-19 26,0 45,19 L 1685.1961,785.41175 q 19,19 19,45.5 0,26.5 -19,45.5 z" id="path912" style="fill:#ffffff;fill-opacity:1"></path></svg>'}},t={};function n(o){var s=t[o];if(void 0!==s)return s.exports;var i=t[o]={exports:{}};return e[o](i,i.exports,n),i.exports}n.d=(e,t)=>{for(var o in t)n.o(t,o)&&!n.o(e,o)&&Object.defineProperty(e,o,{enumerable:!0,get:t[o]})},n.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),n.r=e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})};var o={};return(()=>{"use strict";n.r(o),n.d(o,{init:()=>s});var e=n(137),t=n(271),s=function(){for(var n=parseInt(document.getElementById("studentstracker-list").dataset.show),o=document.getElementById("studentstracker-list").getElementsByTagName("li"),s=0,r=o.length;s<r;s++)s>n-1&&0!==n&&(o[s].style.display="none");if(n>0&&n<o.length){var d=document.getElementById("tracker_showmore"),a=document.createElement("button");a.innerHTML=e,d.appendChild(a);var p=document.getElementById("tracker_showless"),c=document.createElement("button");c.innerHTML=t,p.appendChild(c),p.style.display="none",d.addEventListener("click",(function(){i(),d.style.display="none",p.style.display="block"})),p.addEventListener("click",(function(){l(n),d.style.display="block",p.style.display="none"}))}},i=function(){for(var e=document.getElementById("studentstracker-list").getElementsByTagName("li"),t=0,n=e.length;t<n;t++)e[t].style.display="block"},l=function(e){for(var t=document.getElementById("studentstracker-list").getElementsByTagName("li"),n=0,o=t.length;n<o;n++)n>e-1&&0!==e&&(t[n].style.display="none")}})(),o})()));
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Plugin capabilities
+ *
+ * @package    block_studentstracker
+ * @author     Pierre Duverneix
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+const arrowDown = require('../../assets/arrow-down.svg');
+const arrowUp = require('../../assets/arrow-up.svg');
+
+/**
+ * Init script.
+ *
+ * @param {object} root The root element for studentstracker.
+ * @return {void}
+ */
+export const init = root => {
+  let toshow = parseInt(root.dataset.show);
+  let block_li = root.getElementsByTagName("li");
+
+  for (let i = 0, j = block_li.length; i < j; i++) {
+    if (i > toshow - 1 && toshow !== 0) {
+      block_li[i].style.display = "none";
+    }
+  }
+
+  if (toshow > 0 && toshow < block_li.length) {
+    let showmore = document.getElementById("tracker_showmore");
+    let btn = document.createElement("button");
+    btn.innerHTML = arrowDown;
+    showmore.appendChild(btn);
+
+    let showless = document.getElementById("tracker_showless");
+    let btnless = document.createElement("button");
+    btnless.innerHTML = arrowUp;
+    showless.appendChild(btnless);
+    showless.style.display = "none";
+
+    showmore.addEventListener("click", function () {
+      showMoreResults(block_li);
+      showmore.style.display = "none";
+      showless.style.display = "block";
+    });
+
+    showless.addEventListener("click", function () {
+      showLessResults(block_li, toshow);
+      showmore.style.display = "block";
+      showless.style.display = "none";
+    });
+  }
+}
+
+/**
+ * Show all the results.
+ *
+ * @return {void}
+ */
+const showMoreResults = (block_li) => {
+  for (let i = 0, j = block_li.length; i < j; i++) {
+    block_li[i].style.display = "block";
+  }
+};
+
+/**
+ * Show less results.
+ *
+ * @param {number} toshow Number of results to show.
+ * @return {void}
+ */
+const showLessResults = (block_li, toshow) => {
+  for (let i = 0, j = block_li.length; i < j; i++) {
+    if (i > toshow - 1 && toshow !== 0) {
+      block_li[i].style.display = "none";
+    }
+  }
+};
