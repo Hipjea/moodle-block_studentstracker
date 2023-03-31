@@ -2,6 +2,12 @@
 
 const path = require('path');
 
+const babelRename = (destPath, srcPath) => {
+    destPath = srcPath.replace('src', 'build');
+    destPath = destPath.replace('.js', '.min.js');
+    return destPath;
+};
+
 module.exports = function (grunt) {
 
     // We need to include the core Moodle grunt file too, otherwise we can't run tasks like "amd".
@@ -46,7 +52,8 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    src: path.resolve(__dirname, "amd/build/index.js")
+                    src: path.resolve(__dirname, "amd/src/index.js"),
+                    rename: babelRename
                 }]
             }
         },
