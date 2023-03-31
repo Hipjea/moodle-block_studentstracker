@@ -6,7 +6,7 @@
   "main": "amd/src/index.js",
   "repository": "https://github.com/Hipjea/studentstracker",
   "author": "Pierre Duverneix",
-  "license": "MIT",
+  "license": "GNU GPL v3 or later",
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
