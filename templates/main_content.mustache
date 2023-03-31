@@ -37,11 +37,8 @@
 <div class="studentstracker_footer d-flex">{{{ textfooter }}}</div>
 
 {{#js}}
-require(['jquery', 'block_studentstracker/index'], function($, st) {
-    $(document).ready(function() {
-        st.init();
-        $('#studentstracker-list, #tracker_showmore').fadeIn();
-        $('#studentstracker-list, #tracker_showmore').css({display: 'block'});
-    });
+require(['block_studentstracker/index'], function(StudentsTracker) {
+    const root = document.querySelector("#studentstracker-list");
+    StudentsTracker.init(root);
 });
 {{/js}}

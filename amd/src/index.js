@@ -21,8 +21,42 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-const arrowDown = require('../../assets/arrow-down.svg');
-const arrowUp = require('../../assets/arrow-up.svg');
+const arrowDown = `<svg
+  width="18"
+  height="11"
+  viewBox="0 0 1792 1095.1111"
+  version="1.1"
+  id="svg914"
+  sodipodi:docname="arrow-down.svg"
+  inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg">
+  <path
+    fill="#FFFFFF"
+    d="m 1685.1961,209.41181 -166,-165.000053 q -19,-19 -45,-19 -26,0 -45,19 l -531.00002,531.000053 -531,-531.000053 q -19,-19 -45,-19 -26,0 -45,19 l -166,165.000053 q -18.999997,19 -18.999997,45.5 0,26.5 18.999997,45.5 l 742,740.99999 q 19,19 45,19 26,0 45,-19 L 1685.1961,300.41181 q 19,-19 19,-45.5 0,-26.5 -19,-45.5 z"
+    id="path912"
+    style="fill:#ffffff;fill-opacity:1" />
+  </svg>`;
+const arrowUp = `<svg
+  width="18"
+  height="11"
+  viewBox="0 0 1792 1095.1111"
+  version="1.1"
+  id="svg914"
+  sodipodi:docname="arrow-up.svg"
+  inkscape:version="1.1.1 (c3084ef, 2021-09-22)"
+  xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+  xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:svg="http://www.w3.org/2000/svg">
+  <path
+    fill="#FFFFFF"
+    d="m 1685.1961,876.41175 -166,165.00005 q -19,19 -45,19 -26,0 -45,-19 l -531.00002,-531.00005 -531,531.00005 q -19,19 -45,19 -26,0 -45,-19 l -166,-165.00005 q -18.999997,-19 -18.999997,-45.5 0,-26.5 18.999997,-45.5 l 742,-740.999993 q 19,-19 45,-19 26,0 45,19 L 1685.1961,785.41175 q 19,19 19,45.5 0,26.5 -19,45.5 z"
+    id="path912"
+    style="fill:#ffffff;fill-opacity:1" />
+  </svg>`;
 
 /**
  * Init script.
@@ -31,8 +65,8 @@ const arrowUp = require('../../assets/arrow-up.svg');
  * @return {void}
  */
 export const init = root => {
-  let toshow = parseInt(root.dataset.show);
-  let block_li = root.getElementsByTagName("li");
+  const toshow = parseInt(root.dataset.show);
+  const block_li = root.querySelectorAll("li");
 
   for (let i = 0, j = block_li.length; i < j; i++) {
     if (i > toshow - 1 && toshow !== 0) {
@@ -41,14 +75,14 @@ export const init = root => {
   }
 
   if (toshow > 0 && toshow < block_li.length) {
-    let showmore = document.getElementById("tracker_showmore");
-    let btn = document.createElement("button");
-    btn.innerHTML = arrowDown;
-    showmore.appendChild(btn);
+    const showmore = document.querySelector("#tracker_showmore"),
+      btn = document.createElement("button"),
+      showless = document.querySelector("#tracker_showless"),
+      btnless = document.createElement("button");
 
-    let showless = document.getElementById("tracker_showless");
-    let btnless = document.createElement("button");
+    btn.innerHTML = arrowDown;
     btnless.innerHTML = arrowUp;
+    showmore.appendChild(btn);
     showless.appendChild(btnless);
     showless.style.display = "none";
 
