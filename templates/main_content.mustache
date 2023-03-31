@@ -37,7 +37,7 @@
 <div class="studentstracker_footer d-flex">{{{ textfooter }}}</div>
 
 {{#js}}
-require(['block_studentstracker/index'], function(StudentsTracker) {
+require(['block_studentstracker/main'], function(StudentsTracker) {
     const root = document.querySelector("#studentstracker-list");
     StudentsTracker.init(root);
 });

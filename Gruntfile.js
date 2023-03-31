@@ -2,7 +2,7 @@
 
 const path = require('path');
 
-const babelRename = (destPath, srcPath) => {
+const babelRename = function (destPath, srcPath) {
     destPath = srcPath.replace('src', 'build');
     destPath = destPath.replace('.js', '.min.js');
     return destPath;
@@ -52,7 +52,7 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    src: path.resolve(__dirname, "amd/src/index.js"),
+                    src: path.resolve(__dirname, "amd/src/*.js"),
                     rename: babelRename
                 }]
             }
