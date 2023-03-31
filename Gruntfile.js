@@ -1,10 +1,8 @@
 "use strict";
 
-const webpackConfig = require('./webpack.config.js');
-const webpackProductionConfig = require('./webpack.production.js');
 const path = require('path');
 
-var babelRename = function(destPath, srcPath) {
+const babelRename = (destPath, srcPath) => {
     destPath = srcPath.replace('src', 'build');
     destPath = destPath.replace('.js', '.min.js');
     return destPath;
@@ -19,46 +17,7 @@ module.exports = function (grunt) {
     // Load all grunt tasks.
     grunt.loadNpmTasks("grunt-contrib-less");
     grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.initConfig({
-        watch: {
-            // If any .less file changes in directory "less" then run the "less" task.
-            files: ["src/**/*.ts", "less/*.less"],
-            tasks: ["webpack:dev", "less"]
-        },
-        eslint: {
-            options: {
-                quiet: true,
-                maxWarnings: -1,
-                overrideConfig: {
-                    rules: {
-                        'no-tabs': 0,
-                        'curly': 0,
-                        'no-undef': 0,
-                        'no-unused-vars': 0,
-                        'max-len': 0,
-                        'babel/no-unused-expressions': 0,
-                        'wrap-iife': 0,
-                        'babel/semi': 0,
-                        'no-console': 0,
-                        'no-eq-null': 0,
-                        'no-new-wrappers': 0,
-                        'no-return-assign': 0,
-                        'no-cond-assign': 0,
-                        'no-bitwise': 0,
-                        'no-labels': 0,
-                        'no-func-assign': 0,
-                        'no-unmodified-loop-condition': 0,
-                        'valid-typeof': 0,
-                        'no-self-compare': 0,
-                        'no-fallthrough': 0
-                    }
-                }
-            },
-            amd: { 
-                src: [path.resolve(__dirname, "amd/src/*.js")] 
-            }
-        },
         babel: {
             options: {
                 sourceMaps: false,
@@ -112,12 +71,12 @@ module.exports = function (grunt) {
                 }
             },
         },
-        webpack: {
-            prod: webpackProductionConfig,
-            dev: webpackConfig,
+        watch: {
+            // If any .less file changes in directory "less" then run the "less" task.
+            files: ["amd/src/*.js", "less/*.less"],
+            tasks: ["amd", "less"]
         }
     });
     // The default task (running "grunt" in console).
-    grunt.registerTask("default", ["webpack", "less"]);
-    grunt.loadNpmTasks('grunt-webpack');
+    grunt.registerTask("default", ["amd", "less"]);
 };
