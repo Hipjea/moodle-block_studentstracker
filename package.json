@@ -9,7 +9,7 @@
   "license": "GNU GPL v3 or later",
   "devDependencies": {
     "@babel/core": "^7.21.4",
-    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-env": "^7.22.4",
     "babel-loader": "^9.1.2",
     "grunt": "^1.6.1",
     "grunt-contrib-less": "^3.0.0",
