@@ -63,6 +63,8 @@ class block_studentstracker extends block_base {
             return $this->content;
         }
 
+        $isgranted = false;
+
         $context = context_course::instance($COURSE->id);
         if (has_capability('block/studentstracker:view', $context)) {
             $isgranted = true;
