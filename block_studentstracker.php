@@ -27,6 +27,16 @@ defined('MOODLE_INTERNAL') || die();
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
 
 class block_studentstracker extends block_base {
+
+/* The block name. */
+public $blockname;
+
+/* The block title. */
+public $title;
+
+/* The course id. */
+public $courseid;
+
     public function init() {
         global $COURSE;
         $this->blockname = get_class($this);
