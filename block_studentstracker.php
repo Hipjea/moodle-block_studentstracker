@@ -99,19 +99,27 @@ class block_studentstracker extends block_base {
 
             $st = new \studentstracker();
             $st->trackedroles = !empty($this->config->role) ? $this->config->role : explode(",", get_config(
-                'studentstracker', 'roletrack'));
+                'studentstracker',
+                'roletrack'
+            ));
             $st->trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
             $st->dateformat = !empty($this->config->dateformat) ? $this->config->dateformat : 'd/m/Y';
-            $st->days = !empty($this->config->days) ? '-'.$this->config->days.' day' : '-'.get_config(
-                'studentstracker', 'trackingdays').' day';
-            $st->dayscritical = !empty($this->config->days_critical) ? '-'.$this->config->days_critical.
-                ' day' : '-'.get_config('studentstracker', 'trackingdays').' day';
+            $st->days = !empty($this->config->days) ? '-' . $this->config->days . ' day' : '-' . get_config(
+                'studentstracker',
+                'trackingdays'
+            ) . ' day';
+            $st->dayscritical = !empty($this->config->days_critical) ? '-' . $this->config->days_critical .
+                ' day' : '-' . get_config('studentstracker', 'trackingdays') . ' day';
             $st->colordays = !empty($this->config->color_days) ? $this->config->color_days : get_config(
-                'studentstracker', 'colordays');
+                'studentstracker',
+                'colordays'
+            );
             $st->colordayscritical = !empty($this->config->color_days_critical) ?
                 $this->config->color_days_critical : get_config('studentstracker', 'colordayscritical');
             $st->colornever = !empty($this->config->color_never) ? $this->config->color_never : get_config(
-                'studentstracker', 'colordaysnever');
+                'studentstracker',
+                'colordaysnever'
+            );
             $st->truncate = !empty($this->config->truncate) ? $this->config->truncate : 6;
             $st->sorting = !empty($this->config->sorting) ? $this->config->sorting : 'date_desc';
             $st->textheader = $this->text_header_fine;

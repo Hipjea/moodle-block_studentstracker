@@ -1,0 +1,24 @@
+{
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "none",
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "htmlWhitespaceSensitivity": "ignore",
+  "jsxSingleQuote": false,
+  "overrides": [
+    {
+      "files": ["*.scss", "*.sass", "*.less"],
+      "options": {
+        "singleQuote": true,
+        "cssDeclarationSorterOrder": "smacss",
+        "colorFormat": "hex",
+        "lowerCaseHex": true,
+        "hexColorShort": true,
+        "keepSingleLineBlocks": true
+      }
+    }
+  ]
+}

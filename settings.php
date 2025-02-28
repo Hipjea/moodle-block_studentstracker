@@ -42,48 +42,62 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configtext(
         'studentstracker/trackingdays',
         get_string('days', 'block_studentstracker'),
-        get_string('days_desc', 'block_studentstracker'), '3'));
+        get_string('days_desc', 'block_studentstracker'),
+        '3'
+    ));
 
     $settings->add(new admin_setting_configtext(
         'studentstracker/trackingdayscritical',
         get_string('days_critical', 'block_studentstracker'),
         get_string('days_critical_desc', 'block_studentstracker'),
-        '6'));
+        '6'
+    ));
 
     $settings->add(new admin_setting_configcolourpicker(
         'studentstracker/colordays',
         get_string('color_days', 'block_studentstracker'),
         get_string('color_days_desc', 'block_studentstracker'),
-        '#FFD9BA', null));
+        '#FFD9BA',
+        null
+    ));
 
     $settings->add(new admin_setting_configcolourpicker(
         'studentstracker/colordayscritical',
         get_string('color_days_critical', 'block_studentstracker'),
         get_string('color_days_critical_desc', 'block_studentstracker'),
-        '#FECFCF', null));
+        '#FECFCF',
+        null
+    ));
 
     $settings->add(new admin_setting_configcolourpicker(
         'studentstracker/colordaysnever',
         get_string('color_never', 'block_studentstracker'),
         get_string('color_never_desc', 'block_studentstracker'),
-        '#e0e0e0', null));
+        '#e0e0e0',
+        null
+    ));
 
     $settings->add(new admin_setting_configmultiselect(
         'studentstracker/roletrack',
         get_string('roletrack', 'block_studentstracker'),
         get_string('roletrack_desc', 'block_studentstracker'),
         array($defaultroleid),
-        $rolesarray));
+        $rolesarray
+    ));
 
     $settings->add(new admin_setting_configtext(
         'studentstracker/truncate',
         get_string('truncate', 'block_studentstracker'),
-        get_string('truncate_desc', 'block_studentstracker'), '10'));
+        get_string('truncate_desc', 'block_studentstracker'),
+        '10'
+    ));
 
     $settings->add(new admin_setting_configtext(
         'studentstracker/excludeolder',
         get_string('excludeolder', 'block_studentstracker'),
-        get_string('excludeolder_desc', 'block_studentstracker'), ''));
+        get_string('excludeolder_desc', 'block_studentstracker'),
+        ''
+    ));
 
     $default = 'd/m/Y H:i';
     $choices['d/m/Y H:i'] = 'd/m/Y H:i';
@@ -95,7 +109,8 @@ if ($ADMIN->fulltree) {
         get_string('dateformat', 'block_studentstracker'),
         get_string('dateformat_desc', 'block_studentstracker'),
         $default,
-        $choices));
+        $choices
+    ));
 
     unset($default);
     unset($choices);
@@ -112,5 +127,6 @@ if ($ADMIN->fulltree) {
         get_string('sorting', 'block_studentstracker'),
         get_string('sorting_desc', 'block_studentstracker'),
         $default,
-        $choices));
+        $choices
+    ));
 }

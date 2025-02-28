@@ -187,13 +187,16 @@ class studentstracker {
                 if ($enrol->lastaccesstimestamp < 1) {
                     $enrol->rowcolor = $this->colornever;
                     $enrol->rowclass = 'studentstracker-never';
-                } else if ($enrol->lastaccesstimestamp > 1 && $enrol->lastaccesstimestamp < strtotime($this->days, time())
-                    && ($enrol->lastaccesstimestamp < strtotime($this->dayscritical, time())) ) {
+                } else if (
+                    $enrol->lastaccesstimestamp > 1 && $enrol->lastaccesstimestamp < strtotime($this->days, time())
+                    && ($enrol->lastaccesstimestamp < strtotime($this->dayscritical, time()))
+                ) {
                     // Critical access level.
                     $enrol->rowcolor = $this->colordayscritical;
                     $enrol->rowclass = 'studentstracker-critical';
-                } else if ( ($enrol->lastaccesstimestamp < strtotime($this->days, time()))
-                    && ($enrol->lastaccesstimestamp >= strtotime($this->dayscritical, time())) ) {
+                } else if (($enrol->lastaccesstimestamp < strtotime($this->days, time()))
+                    && ($enrol->lastaccesstimestamp >= strtotime($this->dayscritical, time()))
+                ) {
                     // First access level.
                     $enrol->rowcolor = $this->colordays;
                     $enrol->rowclass = 'studentstracker-first';
@@ -233,8 +236,10 @@ class studentstracker {
         }
         array_push($params, $courseid, (int)$userid);
         $roles = join(',', array_fill(0, count($roleids), '?'));
-        $r = $DB->count_records_sql("SELECT COUNT(id) FROM {role_assignments} WHERE roleid IN($roles) AND contextid=? AND userid=?",
-        $params);
+        $r = $DB->count_records_sql(
+            "SELECT COUNT(id) FROM {role_assignments} WHERE roleid IN($roles) AND contextid=? AND userid=?",
+            $params
+        );
         if ($r > 0) {
             return true;
         } else {
@@ -288,7 +293,7 @@ class studentstracker {
         if ($user->id) {
             $url->param('id', $userid);
         }
-        return html_writer::link($url, '<img src="'.$OUTPUT->image_url('t/message').'">', array());
+        return html_writer::link($url, '<img src="' . $OUTPUT->image_url('t/message') . '">', array());
     }
 
     /**
@@ -301,7 +306,7 @@ class studentstracker {
     public static function profile($user, $context, $output) {
         $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
         return html_writer::link($url, $output->user_picture($user, array('size' => 15, 'alttext' => false, 'link' => false)) .
-                                "$user->firstname $user->lastname", array());
+            "$user->firstname $user->lastname", array());
     }
 
     /**
@@ -339,6 +344,7 @@ class studentstracker {
             $this->users,
             $this->truncate,
             $this->textheader,
-            $this->textfooter);
+            $this->textfooter
+        );
     }
 }

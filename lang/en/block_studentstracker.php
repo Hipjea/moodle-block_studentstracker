@@ -20,6 +20,7 @@
  * @copyright  2021 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 $string['studentstracker:addinstance'] = 'Add a new block Students tracker';
 $string['pluginname'] = 'Students tracker';
 $string['blocktitle'] = 'Block title';

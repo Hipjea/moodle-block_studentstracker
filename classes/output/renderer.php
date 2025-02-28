@@ -21,6 +21,7 @@
  * @copyright  2022 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace block_studentstracker\output;
 
 use plugin_renderer_base;
