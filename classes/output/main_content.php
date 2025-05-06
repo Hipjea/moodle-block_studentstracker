@@ -21,6 +21,7 @@
  * @copyright  2022 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace block_studentstracker\output;
 
 use renderable;
@@ -30,7 +31,6 @@ use stdClass;
 use moodle_url;
 
 class main_content implements renderable, templatable {
-
     public $usercount;
     public $users;
     public $truncate;
@@ -68,5 +68,4 @@ class main_content implements renderable, templatable {
 
         return $data;
     }
-
 }

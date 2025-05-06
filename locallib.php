@@ -19,130 +19,154 @@
  *
  * @package    block_studentstracker
  * @author     Pierre Duverneix
- * @copyright  2022 Pierre Duverneix
+ * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 
 /**
- * Main studentstracker class
+ * Main studentstracker class.
  *
- * @author     Pierre Duverneix
+ * @author Pierre Duverneix
  */
 class studentstracker {
-    /**
-     * @var int
-     */
-    private $usercount;
-
-    /**
-     * @var array
-     */
-    private $users;
-
-    /**
-     * @var string
-     */
-    private $dateformat;
-
-    /**
-     * @var int
-     */
+    /** @var int */
     private $days;
 
-    /**
-     * @var int
-     */
-    private $dayscritical;
+    /** @var string */
+    private $dateformat;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $colordays;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $colordayscritical;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $colornever;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $textnever;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $trackedroles;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $trackedgroups;
 
-    /**
-     * @var string
-     */
-    private $textheader;
-
-    /**
-     * @var string
-     */
-    private $textfooter;
-
-    /**
-     * @var string
-     */
+    /** @var string */
     private $sorting;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $truncate;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $excludeolder;
+
+    /** @var string */
+    private $textheader;
+
+    /** @var string */
+    private $textfooter;
+
+    /** @var int */
+    private $dayscritical;
+
+    /** @var int */
+    private $usercount;
+
+    /** @var array */
+    private $users;
 
     /**
      * Constructor.
      */
-    public function __construct() {
+    public function __construct(\stdClass $config, string $textheader, string $textfooter) {
+        $this->days = $config->days ?? get_config('studentstracker', 'trackingdays');
+        $this->dateformat = $config->dateformat ?? 'd/m/Y';
+        $this->colordays = $config->color_days ?? get_config('studentstracker', 'colordays');
+        $this->colordayscritical = $config->color_days_critical ?? get_config('studentstracker', 'colordayscritical');
+        $this->colornever = $config->color_never ?? get_config('studentstracker', 'colordaysnever');
+        $this->textnever = $config->text_never_content ?? get_string('text_never_content', 'block_studentstracker');
+        $this->trackedroles = $config->role ?? explode(",", get_config('studentstracker', 'roletrack'));
+        $this->trackedgroups = $config->groups ?? [];
+        $this->sorting = $config->sorting ?? 'date_desc';
+        $this->truncate = $config->truncate ?? 6;
+        $this->excludeolder = $config->excludeolder ?? 0;
+        $this->textheader = $textheader;
+        $this->textfooter = $textfooter;
+        // Properties with default values.
+        $this->dayscritical = 0;
+        $this->usercount = 0;
+        $this->users = [];
     }
 
     /**
-     * Getter.
+     * Get the value of usercount.
      *
-     * @param $property
-     * @throws coding_exception
+     * @return int
      */
-    public function __get($property) {
-        if (property_exists($this, $property)) {
-            return $this->$property;
-        }
-        throw new coding_exception('Invalid property requested.');
+    public function getUsercount(): int {
+        return $this->usercount;
     }
 
     /**
-     * Setter.
+     * Set the value of usercount.
      *
-     * @param $property
+     * @param int $usercount
+     * @return $this
      * @throws coding_exception
      */
-    public function __set($property, $value) {
-        if (property_exists($this, $property)) {
-            $this->$property = $value;
-            return $this;
-        } else {
-            throw new coding_exception('Invalid property requested.');
+    public function setUsercount(int $usercount): self {
+        if (!is_int($usercount)) {
+            throw new coding_exception('usercount must be an integer.');
         }
+
+        $this->usercount = $usercount;
+        return $this;
     }
+
+    /**
+     * Get the value of text_header.
+     *
+     * @return string
+     */
+    public function getTextHeader(): string {
+        return $this->textheader;
+    }
+
+    /**
+     * Set the value of text_header.
+     *
+     * @param string $text_header
+     * @return $this
+     * @throws coding_exception
+     */
+    public function setTextHeader(string $text_header): self {
+        if (!is_string($text_header)) {
+            throw new coding_exception('text_header must be a string.');
+        }
+
+        $this->textheader = $text_header;
+        return $this;
+    }
+
+    /**
+     * Set the value of users.
+     *
+     * @param array $users
+     * @return $this
+     * @throws coding_exception
+     */
+    public function setUsers(array $users): self {
+        if (!is_array($users)) {
+            throw new coding_exception('users must be an array.');
+        }
+
+        $this->users = $users;
+        return $this;
+    }
+
 
     /**
      * Retrieves the list of the enrolled users of the courses and apply the logic.
@@ -151,7 +175,7 @@ class studentstracker {
      * @param $courseid The course object id
      * @return $this
      */
-    public function get_enrolled_users($context, $courseid) {
+    public function init_users($context, $courseid) {
         global $DB, $OUTPUT;
 
         $usercount = 0;
@@ -162,7 +186,7 @@ class studentstracker {
             if (groups_user_groups_visible($course, $enrol->id)) {
                 $enrol->lastaccesstimestamp = $this->get_last_access($context->instanceid, $enrol->id);
 
-                if ($this->excludeolder != '' && $enrol->lastaccesstimestamp < strtotime("-$this->excludeolder day", time())) {
+                if ($this->excludeolder != 0 && $enrol->lastaccesstimestamp < strtotime("-$this->excludeolder day", time())) {
                     continue;
                 }
 
@@ -187,13 +211,16 @@ class studentstracker {
                 if ($enrol->lastaccesstimestamp < 1) {
                     $enrol->rowcolor = $this->colornever;
                     $enrol->rowclass = 'studentstracker-never';
-                } else if ($enrol->lastaccesstimestamp > 1 && $enrol->lastaccesstimestamp < strtotime($this->days, time())
-                    && ($enrol->lastaccesstimestamp < strtotime($this->dayscritical, time())) ) {
+                } else if (
+                    $enrol->lastaccesstimestamp > 1 && $enrol->lastaccesstimestamp < strtotime($this->days, time())
+                    && ($enrol->lastaccesstimestamp < strtotime($this->dayscritical, time()))
+                ) {
                     // Critical access level.
                     $enrol->rowcolor = $this->colordayscritical;
                     $enrol->rowclass = 'studentstracker-critical';
-                } else if ( ($enrol->lastaccesstimestamp < strtotime($this->days, time()))
-                    && ($enrol->lastaccesstimestamp >= strtotime($this->dayscritical, time())) ) {
+                } else if (($enrol->lastaccesstimestamp < strtotime($this->days, time()))
+                    && ($enrol->lastaccesstimestamp >= strtotime($this->dayscritical, time()))
+                ) {
                     // First access level.
                     $enrol->rowcolor = $this->colordays;
                     $enrol->rowclass = 'studentstracker-first';
@@ -233,8 +260,10 @@ class studentstracker {
         }
         array_push($params, $courseid, (int)$userid);
         $roles = join(',', array_fill(0, count($roleids), '?'));
-        $r = $DB->count_records_sql("SELECT COUNT(id) FROM {role_assignments} WHERE roleid IN($roles) AND contextid=? AND userid=?",
-        $params);
+        $r = $DB->count_records_sql(
+            "SELECT COUNT(id) FROM {role_assignments} WHERE roleid IN($roles) AND contextid=? AND userid=?",
+            $params
+        );
         if ($r > 0) {
             return true;
         } else {
@@ -268,10 +297,12 @@ class studentstracker {
      */
     private function get_last_access($courseid, $userid) {
         global $DB;
+
         $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', array('courseid' => $courseid, 'userid' => $userid));
         if ($lastaccess < 1) {
             return 0;
         }
+
         return $lastaccess;
     }
 
@@ -288,7 +319,8 @@ class studentstracker {
         if ($user->id) {
             $url->param('id', $userid);
         }
-        return html_writer::link($url, '<img src="'.$OUTPUT->image_url('t/message').'">', array());
+
+        return html_writer::link($url, '<img class="icon mr-0" src="' . $OUTPUT->image_url('t/message') . '">', array());
     }
 
     /**
@@ -301,7 +333,7 @@ class studentstracker {
     public static function profile($user, $context, $output) {
         $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
         return html_writer::link($url, $output->user_picture($user, array('size' => 15, 'alttext' => false, 'link' => false)) .
-                                "$user->firstname $user->lastname", array());
+            "$user->firstname $user->lastname", array());
     }
 
     /**
@@ -323,6 +355,7 @@ class studentstracker {
                 }
             };
         }
+
         return function ($a, $b) use ($key) {
             return strnatcmp($a->{$key}, $b->{$key});
         };
@@ -339,6 +372,7 @@ class studentstracker {
             $this->users,
             $this->truncate,
             $this->textheader,
-            $this->textfooter);
+            $this->textfooter
+        );
     }
 }
