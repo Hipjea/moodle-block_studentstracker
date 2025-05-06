@@ -86,12 +86,12 @@ export const init = (root) => {
     showmore.addEventListener("click", function () {
       showMoreResults(block_li);
       showmore.style.display = "none";
-      showless.style.display = "block";
+      showless.style.display = "flex";
     });
 
     showless.addEventListener("click", function () {
       showLessResults(block_li, toshow);
-      showmore.style.display = "block";
+      showmore.style.display = "flex";
       showless.style.display = "none";
     });
   }
@@ -105,7 +105,7 @@ export const init = (root) => {
  */
 const showMoreResults = (block_li) => {
   for (let i = 0, j = block_li.length; i < j; i++) {
-    block_li[i].style.display = "block";
+    block_li[i].style.display = "flex";
   }
 };
 
