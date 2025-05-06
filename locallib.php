@@ -123,6 +123,7 @@ class studentstracker {
         }
 
         $this->usercount = $usercount;
+
         return $this;
     }
 
@@ -148,6 +149,7 @@ class studentstracker {
         }
 
         $this->textheader = $text_header;
+
         return $this;
     }
 
@@ -164,6 +166,7 @@ class studentstracker {
         }
 
         $this->users = $users;
+
         return $this;
     }
 
@@ -254,16 +257,21 @@ class studentstracker {
      */
     private static function has_role($roleids, $courseid, $userid) {
         global $DB;
+
         $params = array();
+
         foreach ($roleids as $role) {
             array_push($params, (int)$role);
         }
+
         array_push($params, $courseid, (int)$userid);
+
         $roles = join(',', array_fill(0, count($roleids), '?'));
         $r = $DB->count_records_sql(
             "SELECT COUNT(id) FROM {role_assignments} WHERE roleid IN($roles) AND contextid=? AND userid=?",
             $params
         );
+
         if ($r > 0) {
             return true;
         } else {
@@ -280,11 +288,13 @@ class studentstracker {
      */
     private function is_in_groups($courseid, $userid) {
         $usergroups = groups_get_user_groups($courseid, $userid);
+
         foreach ($this->trackedgroups as $group) {
             if (in_array(intval($group), $usergroups[0], true)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -332,6 +342,7 @@ class studentstracker {
      */
     public static function profile($user, $context, $output) {
         $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
+
         return html_writer::link($url, $output->user_picture($user, array('size' => 15, 'alttext' => false, 'link' => false)) .
             "$user->firstname $user->lastname", array());
     }
@@ -343,13 +354,13 @@ class studentstracker {
      */
     public static function sort_objects($key) {
         if ($key == 'date_desc') {
-            return function ($a, $b) use ($key) {
+            return function ($a, $b) {
                 if (isset($a->lastaccesstimestamp) && isset($b->lastaccesstimestamp)) {
                     return strnatcmp($b->lastaccesstimestamp, $a->lastaccesstimestamp);
                 }
             };
         } else if ($key == 'date_asc') {
-            return function ($a, $b) use ($key) {
+            return function ($a, $b) {
                 if (isset($a->lastaccesstimestamp) && isset($b->lastaccesstimestamp)) {
                     return strnatcmp($a->lastaccesstimestamp, $b->lastaccesstimestamp);
                 }
