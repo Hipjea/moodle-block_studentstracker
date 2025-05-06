@@ -43,6 +43,9 @@ class block_studentstracker extends block_base {
     private $text_header_fine;
 
     /** @var string */
+    private $text_never_content;
+
+    /** @var string */
     private $text_footer;
 
     /**
