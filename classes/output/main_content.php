@@ -31,7 +31,6 @@ use stdClass;
 use moodle_url;
 
 class main_content implements renderable, templatable {
-
     public $usercount;
     public $users;
     public $truncate;

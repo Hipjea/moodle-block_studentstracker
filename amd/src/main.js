@@ -16,7 +16,6 @@
 /**
  * Plugin capabilities
  *
- * @package    block_studentstracker
  * @author     Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,7 +29,11 @@ const arrowDown = `<svg
   xmlns:svg="http://www.w3.org/2000/svg">
   <path
     fill="#FFFFFF"
-    d="m 1685.1961,209.41181 -166,-165.000053 q -19,-19 -45,-19 -26,0 -45,19 l -531.00002,531.000053 -531,-531.000053 q -19,-19 -45,-19 -26,0 -45,19 l -166,165.000053 q -18.999997,19 -18.999997,45.5 0,26.5 18.999997,45.5 l 742,740.99999 q 19,19 45,19 26,0 45,-19 L 1685.1961,300.41181 q 19,-19 19,-45.5 0,-26.5 -19,-45.5 z"
+    d="m 1685.1961,209.41181 -166,-165.000053 q -19,-19 -45,-19 -26,0 -45,19 l 
+    -531.00002,531.000053 -531,-531.000053 q -19,-19 -45,-19 -26,0 -45,19 l 
+    -166,165.000053 q -18.999997,19 -18.999997,45.5 0,26.5 18.999997,45.5 l 
+    742,740.99999 q 19,19 45,19 26,0 45,-19 L 1685.1961,300.41181 q 19,-19 19,
+    -45.5 0,-26.5 -19,-45.5 z"
     id="path912"
     style="fill:#ffffff;fill-opacity:1" />
   </svg>`;
@@ -43,7 +46,11 @@ const arrowUp = `<svg
   xmlns:svg="http://www.w3.org/2000/svg">
   <path
     fill="#FFFFFF"
-    d="m 1685.1961,876.41175 -166,165.00005 q -19,19 -45,19 -26,0 -45,-19 l -531.00002,-531.00005 -531,531.00005 q -19,19 -45,19 -26,0 -45,-19 l -166,-165.00005 q -18.999997,-19 -18.999997,-45.5 0,-26.5 18.999997,-45.5 l 742,-740.999993 q 19,-19 45,-19 26,0 45,19 L 1685.1961,785.41175 q 19,19 19,45.5 0,26.5 -19,45.5 z"
+    d="m 1685.1961,876.41175 -166,165.00005 q -19,19 -45,19 -26,0 -45,-19 l 
+    -531.00002,-531.00005 -531,531.00005 q -19,19 -45,19 -26,0 -45,-19 l 
+    -166,-165.00005 q -18.999997,-19 -18.999997,-45.5 0,-26.5 18.999997,
+    -45.5 l 742,-740.999993 q 19,-19 45,-19 26,0 45,19 L 1685.1961,785.41175 
+    q 19,19 19,45.5 0,26.5 -19,45.5 z"
     id="path912"
     style="fill:#ffffff;fill-opacity:1" />
   </svg>`;
@@ -54,7 +61,7 @@ const arrowUp = `<svg
  * @param {object} root The root element for studentstracker.
  * @return {void}
  */
-export const init = root => {
+export const init = (root) => {
   const toshow = parseInt(root.dataset.show);
   const block_li = root.querySelectorAll("li");
 
@@ -88,11 +95,12 @@ export const init = root => {
       showless.style.display = "none";
     });
   }
-}
+};
 
 /**
  * Show all the results.
  *
+ * @param {HTMLLIElement} block_li The <li> element to manipulate.
  * @return {void}
  */
 const showMoreResults = (block_li) => {
@@ -104,6 +112,7 @@ const showMoreResults = (block_li) => {
 /**
  * Show less results.
  *
+ * @param {HTMLLIElement} block_li The <li> element to manipulate.
  * @param {number} toshow Number of results to show.
  * @return {void}
  */

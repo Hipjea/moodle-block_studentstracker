@@ -20,32 +20,79 @@ defined('MOODLE_INTERNAL') || die();
  * Studentstracker block
  *
  * @package    block_studentstracker
- * @copyright  2021 Pierre Duverneix
+ * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
 
 class block_studentstracker extends block_base {
+    /** @var string The block name. */
+    public $blockname;
+
+    /** @var string The block title. */
+    public $title;
+
+    /** @var int The course ID. */
+    public $courseid;
+
+    /** @var string */
+    private $text_header;
+
+    /** @var string */
+    private $text_header_fine;
+
+    /** @var string */
+    private $text_never_content;
+
+    /** @var string */
+    private $text_footer;
+
+    /**
+     * The block's init function.
+     * 
+     * @return void
+     */
     public function init() {
         global $COURSE;
+
         $this->blockname = get_class($this);
         $this->title = get_string('pluginname', 'block_studentstracker');
         $this->courseid = $COURSE->id;
     }
 
+    /**
+     * All multiple instances of the block.
+     * 
+     * @return bool
+     */
     public function instance_allow_multiple() {
         return false;
     }
 
+    /**
+     * Global configurability of the block.
+     *
+     * @return bool
+     */
     public function has_config() {
         return true;
     }
 
+    /**
+     * Local configurability of the block.
+     *
+     * @return bool
+     */
     public function instance_allow_config() {
         return true;
     }
 
+    /**
+     * Instance specialisations if instance_allow_config is true.
+     *
+     * @return void
+     */
     public function specialization() {
         if (isset($this->config)) {
             if (empty($this->config->title)) {
@@ -56,6 +103,24 @@ class block_studentstracker extends block_base {
         }
     }
 
+    /**
+     * Defines where the block can be added.
+     *
+     * @return array
+     */
+    public function applicable_formats() {
+        return array(
+            'all' => false,
+            'course' => true,
+            'course-index' => false
+        );
+    }
+
+    /**
+     * The block's main content.
+     *
+     * @return string|stdClass
+     */
     public function get_content() {
         global $COURSE, $USER;
 
@@ -72,77 +137,47 @@ class block_studentstracker extends block_base {
 
         if ($isgranted == false && !is_siteadmin($USER->id)) {
             return $this->content;
-        } else {
-            $this->content = new stdClass();
-            $this->content->items = array();
-
-            if (!empty($this->config->text_header)) {
-                $this->text_header = $this->config->text_header;
-            } else {
-                $this->text_header = get_string('text_header', 'block_studentstracker');
-            }
-            if (!empty($this->config->text_header_fine)) {
-                $this->text_header_fine = $this->config->text_header_fine;
-            } else {
-                $this->text_header_fine = get_string('text_header_fine', 'block_studentstracker');
-            }
-            if (!empty($this->config->text_never_content)) {
-                $this->text_never_content = $this->config->text_never_content;
-            } else {
-                $this->text_never_content = get_string('text_never_content', 'block_studentstracker');
-            }
-            if (!empty($this->config->text_footer_content)) {
-                $this->text_footer = $this->config->text_footer_content;
-            } else {
-                $this->text_footer = '';
-            }
-
-            $st = new \studentstracker();
-            $st->trackedroles = !empty($this->config->role) ? $this->config->role : explode(",", get_config(
-                'studentstracker',
-                'roletrack'
-            ));
-            $st->trackedgroups = !empty($this->config->groups) ? $this->config->groups : array();
-            $st->dateformat = !empty($this->config->dateformat) ? $this->config->dateformat : 'd/m/Y';
-            $st->days = !empty($this->config->days) ? '-' . $this->config->days . ' day' : '-' . get_config(
-                'studentstracker',
-                'trackingdays'
-            ) . ' day';
-            $st->dayscritical = !empty($this->config->days_critical) ? '-' . $this->config->days_critical .
-                ' day' : '-' . get_config('studentstracker', 'trackingdays') . ' day';
-            $st->colordays = !empty($this->config->color_days) ? $this->config->color_days : get_config(
-                'studentstracker',
-                'colordays'
-            );
-            $st->colordayscritical = !empty($this->config->color_days_critical) ?
-                $this->config->color_days_critical : get_config('studentstracker', 'colordayscritical');
-            $st->colornever = !empty($this->config->color_never) ? $this->config->color_never : get_config(
-                'studentstracker',
-                'colordaysnever'
-            );
-            $st->truncate = !empty($this->config->truncate) ? $this->config->truncate : 6;
-            $st->sorting = !empty($this->config->sorting) ? $this->config->sorting : 'date_desc';
-            $st->textheader = $this->text_header_fine;
-            $st->textnever = !empty($this->config->text_never_content) ?
-                $this->config->text_never_content : get_string('text_never_content', 'block_studentstracker');
-            $st->textfooter = $this->text_footer;
-            $st->excludeolder = !empty($this->config->excludeolder) ? $this->config->excludeolder : '';
-            $st->get_enrolled_users($context, $COURSE->id);
-
-            // If the usercount is greater than 0, display the warning text.
-            if ($st->usercount > 0) {
-                $st->textheader = $this->text_header;
-            }
-
-            $content = $st->generate_content();
-            $renderer = $this->page->get_renderer('block_studentstracker');
-
-            $this->content->text = $renderer->render($content);
-            return $this->content;
         }
-    }
 
-    public function applicable_formats() {
-        return array('all' => false, 'course' => true, 'course-index' => false);
+        $this->content = new stdClass();
+        $this->content->items = array();
+
+        // Define and set the needed properties.
+        $properties = [
+            'text_header' => 'text_header',
+            'text_header_fine' => 'text_header_fine',
+            'text_never_content' => 'text_never_content',
+            'text_footer' => ''
+        ];
+
+        foreach ($properties as $property => $langstr) {
+            if (!empty($this->config->{$property})) {
+                $this->{$property} = $this->config->{$property};
+            } else {
+                $this->{$property} = $langstr ? get_string($langstr, 'block_studentstracker') : '';
+            }
+        }
+
+        // Instantiate the studentstracker class from locallib.php.
+        $st = new \studentstracker(
+            $this->config ?? new stdClass(),
+            $this->text_header_fine,
+            $this->text_footer,
+        );
+
+        $st->init_users($context, $COURSE->id);
+
+        print_r($st->getUsercount());
+
+        // If the usercount is greater than 0, display the warning text.
+        if ($st->getUsercount() > 0) {
+            $st->setTextHeader($this->text_header);
+        }
+
+        $content = $st->generate_content();
+        $renderer = $this->page->get_renderer('block_studentstracker');
+        $this->content->text = $renderer->render($content);
+
+        return $this->content;
     }
 }
