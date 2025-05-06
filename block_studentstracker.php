@@ -30,6 +30,15 @@ class block_studentstracker extends block_base {
     /** @var string The block name. */
     public $blockname;
 
+    /** @var stdClass */
+    public $config;
+
+    /** @var stdClass|null */
+    public $content;
+
+    /** @var moodle_page */
+    public $page;
+
     /** @var string The block title. */
     public $title;
 
