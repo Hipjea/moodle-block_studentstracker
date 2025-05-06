@@ -26,7 +26,19 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
 
+/**
+ * Form definition for the block settings.
+ */
 class block_studentstracker_edit_form extends block_edit_form {
+
+    /**
+     * Define the settings form.
+     *
+     * @param \MoodleQuickForm $mform The form to add filter settings to.
+     * @return void
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     protected function specific_definition($mform) {
         global $DB, $COURSE, $USER;
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
@@ -50,7 +62,7 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->setDefault('config_color_never', get_config('studentstracker', 'colordaysnever'));
         $mform->setType('config_color_never', PARAM_RAW);
 
-        if (has_capability('block/studentstracker:editadvance', context_course::instance($COURSE->id)) or is_siteadmin($USER->id)) {
+        if (has_capability('block/studentstracker:editadvance', context_course::instance($COURSE->id)) || is_siteadmin($USER->id)) {
             $mform->addElement('text', 'config_days', get_string('days', 'block_studentstracker'));
             $mform->setDefault('config_days', get_config('studentstracker', 'trackingdays'));
             $mform->setType('config_days', PARAM_INT);
@@ -76,7 +88,7 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->setType('config_text_footer', PARAM_TEXT);
 
             $roles = $DB->get_records('role');
-            $rolesarray = array();
+            $rolesarray = [];
             foreach ($roles as $role) {
                 $rolesarray[$role->id] = $role->shortname;
             }
@@ -86,7 +98,7 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->setDefault('config_role', get_config('studentstracker', 'roletrack'));
 
             $groups = groups_get_all_groups($this->block->courseid, $userid = 0, $groupingid = 0, $fields = 'g.*');
-            $groupsarray = array();
+            $groupsarray = [];
             $groupsarray[0] = get_string('nogroups', 'block_studentstracker');
             foreach ($groups as $group) {
                 $groupsarray[$group->id] = $group->name;
@@ -100,7 +112,7 @@ class block_studentstracker_edit_form extends block_edit_form {
                 null
             );
             $select->setMultiple(true);
-            $mform->setDefault('config_groups', array());
+            $mform->setDefault('config_groups', []);
 
             $mform->addElement('text', 'config_truncate', get_string('truncate', 'block_studentstracker'));
             $mform->setDefault('config_truncate', 6);

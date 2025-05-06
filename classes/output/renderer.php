@@ -27,10 +27,13 @@ namespace block_studentstracker\output;
 use plugin_renderer_base;
 use renderable;
 
+/**
+ * Renderer for the main content of the block.
+ */
 class renderer extends plugin_renderer_base {
     /**
      * Defer to template.
-     * @param renderable $page
+     * @param \templatable $output
      * @return string
      */
     public function render_main_content(\templatable $output) {

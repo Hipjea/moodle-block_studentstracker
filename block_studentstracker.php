@@ -26,6 +26,9 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
 
+/**
+ * The main block class.
+ */
 class block_studentstracker extends block_base {
     /** @var string The block name. */
     public $blockname;
@@ -46,20 +49,20 @@ class block_studentstracker extends block_base {
     public $courseid;
 
     /** @var string */
-    private $text_header;
+    private $textheader = '';
 
     /** @var string */
-    private $text_header_fine;
+    private $textheaderfine;
 
     /** @var string */
-    private $text_never_content;
+    private $textnevercontent;
 
     /** @var string */
-    private $text_footer;
+    private $textfooter;
 
     /**
      * The block's init function.
-     * 
+     *
      * @return void
      */
     public function init() {
@@ -72,7 +75,7 @@ class block_studentstracker extends block_base {
 
     /**
      * All multiple instances of the block.
-     * 
+     *
      * @return bool
      */
     public function instance_allow_multiple() {
@@ -118,11 +121,11 @@ class block_studentstracker extends block_base {
      * @return array
      */
     public function applicable_formats() {
-        return array(
+        return [
             'all' => false,
             'course' => true,
-            'course-index' => false
-        );
+            'course-index' => false,
+        ];
     }
 
     /**
@@ -149,14 +152,14 @@ class block_studentstracker extends block_base {
         }
 
         $this->content = new stdClass();
-        $this->content->items = array();
+        $this->content->items = [];
 
         // Define and set the needed properties.
         $properties = [
             'text_header' => 'text_header',
             'text_header_fine' => 'text_header_fine',
             'text_never_content' => 'text_never_content',
-            'text_footer' => ''
+            'text_footer' => '',
         ];
 
         foreach ($properties as $property => $langstr) {
@@ -170,15 +173,15 @@ class block_studentstracker extends block_base {
         // Instantiate the studentstracker class from locallib.php.
         $st = new \studentstracker(
             $this->config ?? new stdClass(),
-            $this->text_header_fine,
-            $this->text_footer,
+            $this->textheaderfine,
+            $this->textfooter,
         );
 
         $st->init_users($context, $COURSE->id);
 
         // If the usercount is greater than 0, display the warning text.
-        if ($st->getUsercount() > 0) {
-            $st->setTextHeader($this->text_header);
+        if ($st->getusercount() > 0) {
+            $st->settextheader($this->textheader);
         }
 
         $content = $st->generate_content();

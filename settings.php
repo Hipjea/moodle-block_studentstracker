@@ -30,7 +30,7 @@ if ($ADMIN->fulltree) {
     global $DB;
 
     $roles = $DB->get_records('role');
-    $rolesarray = array();
+    $rolesarray = [];
     $defaultroleid = 5; // The default student role ID.
 
     foreach ($roles as $role) {
@@ -82,7 +82,7 @@ if ($ADMIN->fulltree) {
         'studentstracker/roletrack',
         get_string('roletrack', 'block_studentstracker'),
         get_string('roletrack_desc', 'block_studentstracker'),
-        array($defaultroleid),
+        [$defaultroleid],
         $rolesarray
     ));
 

@@ -30,15 +30,39 @@ use renderer_base;
 use stdClass;
 use moodle_url;
 
+/**
+ * Main content renderable.
+ */
 class main_content implements renderable, templatable {
+    /**
+     * @var int The number of users.
+     */
     public $usercount;
+    /**
+     * @var array The users to display.
+     */
     public $users;
+    /**
+     * @var bool Whether to truncate the text.
+     */
     public $truncate;
+    /**
+     * @var string The text to display in the header.
+     */
     public $textheader;
+    /**
+     * @var string The text to display in the footer.
+     */
     public $textfooter;
 
     /**
      * Constructor.
+     *
+     * @param int $usercount
+     * @param array $users
+     * @param bool $truncate
+     * @param string $textheader
+     * @param string $textfooter
      */
     public function __construct($usercount, $users, $truncate, $textheader, $textfooter) {
         $this->usercount = $usercount;
@@ -57,14 +81,14 @@ class main_content implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         $data = new stdClass();
 
-        $data = array(
+        $data = [
             'usercount' => $this->usercount,
             'users' => $this->users,
             'truncate' => $this->truncate,
             'textheader' => $this->textheader,
             'textfooter' => $this->textfooter,
             'pluginbaseurl' => (new moodle_url('/blocks/studenstracker'))->out(false),
-        );
+        ];
 
         return $data;
     }
