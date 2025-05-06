@@ -20,7 +20,7 @@ defined('MOODLE_INTERNAL') || die();
  * Classes to enforce the various access rules that can apply to a quiz.
  *
  * @package    block_studentstracker
- * @copyright  2021 Pierre Duverneix
+ * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -126,7 +126,6 @@ class block_studentstracker_edit_form extends block_edit_form {
 
             unset($choices);
 
-            $default = 'date_desc';
             $choices['id'] = 'id';
             $choices['lastname'] = get_string('lastname', 'core');
             $choices['firstname'] = get_string('firstname', 'core');

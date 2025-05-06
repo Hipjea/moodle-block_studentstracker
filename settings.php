@@ -18,11 +18,12 @@
  * Settings file
  *
  * @package    block_studentstracker
- * @copyright  2021 Pierre Duverneix
+ * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
+
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
 
 if ($ADMIN->fulltree) {
@@ -30,7 +31,7 @@ if ($ADMIN->fulltree) {
 
     $roles = $DB->get_records('role');
     $rolesarray = array();
-    $defaultroleid = 5;
+    $defaultroleid = 5; // The default student role ID.
 
     foreach ($roles as $role) {
         if ($role->archetype === 'student') {

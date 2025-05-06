@@ -18,7 +18,7 @@
  * Competencies to review renderable.
  *
  * @package    block_studentstracker
- * @copyright  2022 Pierre Duverneix
+ * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
