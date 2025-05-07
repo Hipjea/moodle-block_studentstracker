@@ -1,6 +1,6 @@
-[![Moodle Plugin CI](https://github.com/Hipjea/moodle-block_studentstracker/actions/workflows/moodle-plugin-ci.yml/badge.svg?branch=main)](https://github.com/Hipjea/moodle-block_studentstracker/actions/workflows/moodle-plugin-ci.yml)
-
 # Moodle Student's tracker block
+
+[![Moodle Plugin CI](https://github.com/Hipjea/moodle-block_studentstracker/actions/workflows/moodle-plugin-ci.yml/badge.svg?branch=main)](https://github.com/Hipjea/moodle-block_studentstracker/actions/workflows/moodle-plugin-ci.yml)
 
 This plugin adds a new block type for Moodle. Its aim is to give the teachers and staff a simple tool to view how many students didn't visit a course for a long time and so, try to prevent students from dropping out.
 
