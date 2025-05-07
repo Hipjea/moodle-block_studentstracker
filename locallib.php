@@ -63,6 +63,9 @@ class studentstracker {
     /** @var int */
     private $excludeolder;
 
+    /** @var int */
+    private $initialsonly;
+
     /** @var string */
     private $textheader;
 
@@ -95,6 +98,7 @@ class studentstracker {
         $this->days = $config->days ?? get_config('studentstracker', 'trackingdays');
         $this->dayscritical = get_config('studentstracker', 'trackingdayscritical');
         $this->excludeolder = $config->excludeolder ?? 0;
+        $this->initialsonly = $config->initialsonly ?? 0;
         $this->sorting = $config->sorting ?? 'date_desc';
         $this->textnever = $config->textnevercontent ?? get_string('text_never_content', 'block_studentstracker');
         $this->trackedroles = $config->role ?? explode(",", get_config('studentstracker', 'roletrack'));
@@ -214,7 +218,7 @@ class studentstracker {
 
                 $enrol->messaging = self::messaging($enrol);
                 $enrol->datelastaccess = date($this->dateformat, $enrol->lastaccess);
-                $enrol->picture = self::profile($enrol, $context, $OUTPUT);
+                $enrol->picture = self::profile($enrol, $context, $this->initialsonly, $OUTPUT);
                 $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
 
                 if ($enrol->lastaccesstimestamp < 1) {
@@ -346,11 +350,29 @@ class studentstracker {
      * @param \stdClass $context The context object
      * @param \core_renderer $output The core_renderer to use when generating the output.
      */
-    public static function profile($user, $context, $output) {
+    public static function profile($user, $context, $initialsonly, $output) {
         $url = new moodle_url('/user/view.php', ['id' => $user->id, 'course' => $context->instanceid]);
 
-        return html_writer::link($url, $output->user_picture($user, ['size' => 15, 'alttext' => false, 'link' => false]) .
-            "$user->firstname $user->lastname", []);
+        // Get the user's initials only, depending on the settings.
+        if ($initialsonly) {
+            $firstnames = explode(' ', $user->firstname);
+            $initials = '';
+            foreach ($firstnames as $name) {
+                if (!empty($name)) {
+                    $initials .= strtoupper($name[0]) . '. ';
+                }
+            }
+
+            $initials = trim($initials);
+        }
+
+        $username = isset($initials) ? "$initials $user->lastname" : "$user->firstname $user->lastname";
+
+        return html_writer::link(
+            $url,
+            $output->user_picture($user, ['size' => 15, 'alttext' => false, 'link' => false]) . $username,
+            []
+        );
     }
 
     /**

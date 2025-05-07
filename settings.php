@@ -130,4 +130,12 @@ if ($ADMIN->fulltree) {
         $default,
         $choices
     ));
+
+    $settings->add(new admin_setting_configselect(
+        'studentstracker/initialsonly',
+        get_string('initialsonly', 'block_studentstracker'),
+        get_string('initialsonly_help', 'block_studentstracker'),
+        0,
+        [0 => get_string('no'), 1 => get_string('yes')]
+    ));
 }
