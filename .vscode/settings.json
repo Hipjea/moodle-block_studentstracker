@@ -6,6 +6,10 @@
   "editor.wordWrap": "on",
   "prettier.requireConfig": true,
   "editor.rulers": [120],
+  "mustache.delimiters": {
+    "left": "{{",
+    "right": "}}"
+  },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "prettier.htmlWhitespaceSensitivity": "css"

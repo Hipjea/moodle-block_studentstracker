@@ -35,7 +35,7 @@ When using a course with separated groups settings, the teacher role must not ha
 #### Grunt watch
 
 ```
-yarn install
+npm install
 grunt watch
 ```
 
