@@ -154,12 +154,12 @@ class block_studentstracker extends block_base {
         $this->content = new stdClass();
         $this->content->items = [];
 
-        // Define and set the needed properties.
+        // Map property names to language string keys.
         $properties = [
-            'text_header' => 'text_header',
-            'text_header_fine' => 'text_header_fine',
-            'text_never_content' => 'text_never_content',
-            'text_footer' => '',
+            'textheader' => 'text_header',
+            'textheaderfine' => 'text_header_fine',
+            'textnevercontent' => 'text_never_content',
+            'textfooter' => '',
         ];
 
         foreach ($properties as $property => $langstr) {

@@ -93,7 +93,7 @@ class studentstracker {
         $this->colordays = $config->color_days ?? get_config('studentstracker', 'colordays');
         $this->colordayscritical = $config->color_days_critical ?? get_config('studentstracker', 'colordayscritical');
         $this->colornever = $config->color_never ?? get_config('studentstracker', 'colordaysnever');
-        $this->textnever = $config->text_never_content ?? get_string('text_never_content', 'block_studentstracker');
+        $this->textnever = $config->textnevercontent ?? get_string('text_never_content', 'block_studentstracker');
         $this->trackedroles = $config->role ?? explode(",", get_config('studentstracker', 'roletrack'));
         $this->trackedgroups = $config->groups ?? [];
         $this->sorting = $config->sorting ?? 'date_desc';
@@ -134,7 +134,7 @@ class studentstracker {
     }
 
     /**
-     * Get the value of text_header.
+     * Get the value of textheader.
      *
      * @return string
      */
@@ -143,7 +143,7 @@ class studentstracker {
     }
 
     /**
-     * Set the value of text_header.
+     * Set the value of textheader.
      *
      * @param ?string $textheader
      * @return $this
@@ -151,7 +151,7 @@ class studentstracker {
      */
     public function settextheader(?string $textheader = ''): self {
         if (!is_string($textheader)) {
-            throw new coding_exception('text_header must be a string.');
+            throw new coding_exception('textheader must be a string.');
         }
 
         $this->textheader = $textheader;
