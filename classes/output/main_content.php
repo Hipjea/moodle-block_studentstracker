@@ -29,6 +29,7 @@ use templatable;
 use renderer_base;
 use stdClass;
 use moodle_url;
+use core\output\help_icon;
 
 /**
  * Main content renderable.
@@ -79,8 +80,6 @@ class main_content implements renderable, templatable {
      * @return stdClass
      */
     public function export_for_template(renderer_base $output) {
-        $data = new stdClass();
-
         $data = [
             'usercount' => $this->usercount,
             'users' => $this->users,

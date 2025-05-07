@@ -1,20 +1,17 @@
 {{#rowclass}}
 <li class="{{{ rowclass }}}" style="background:{{{ rowcolor }}}">
     <span class="pull-left">
-        {{{ messaging }}}<!--
-        --><a class="btn btn-link p-0" 
-            role="button" 
-            data-container="body" 
-            data-toggle="popover" 
-            data-placement="right"
-            data-html="true" 
-            tabindex="0" 
-            data-trigger="focus" 
-            data-original-title="" 
-            title="" 
-            data-content='{{> block_studentstracker/user_infos }}'>
-            <i class="icon fa fa-question-circle text-info fa-fw" title="" aria-label=""></i>
-        </a>
+        {{{ messaging }}}
+        {{< block_studentstracker/help_icon}}
+            {{$text}} 
+                <div>
+                    <a href="mailto:{{{ email }}}">{{{email}}}</a>
+                </div>
+                {{#lastaccess}}
+                    <p class="mb-0">{{# str }} lastaccess, core {{/ str }}: {{{ datelastaccess }}}</p>
+                {{/lastaccess}}
+            {{/text}}
+        {{/ block_studentstracker/help_icon}}
         {{{ picture }}}
     </span>
     <span class="pull-right">{{{ lastaccesscourse }}}</span>
