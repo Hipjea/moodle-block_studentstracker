@@ -98,7 +98,7 @@ class studentstracker {
         $this->days = $config->days ?? get_config('studentstracker', 'trackingdays');
         $this->dayscritical = get_config('studentstracker', 'trackingdayscritical');
         $this->excludeolder = $config->excludeolder ?? 0;
-        $this->initialsonly = $config->initialsonly ?? 0;
+        $this->initialsonly = intval($config->initialsonly) ?? 0;
         $this->sorting = $config->sorting ?? 'date_desc';
         $this->textnever = $config->textnevercontent ?? get_string('text_never_content', 'block_studentstracker');
         $this->trackedroles = $config->role ?? explode(",", get_config('studentstracker', 'roletrack'));
@@ -348,12 +348,13 @@ class studentstracker {
      *
      * @param \stdClass $user The user object
      * @param \stdClass $context The context object
+     * @param int $initialsonly Setting to display only the users initials.
      * @param \core_renderer $output The core_renderer to use when generating the output.
      */
     public static function profile($user, $context, $initialsonly, $output) {
         $url = new moodle_url('/user/view.php', ['id' => $user->id, 'course' => $context->instanceid]);
 
-        // Get the user's initials only, depending on the settings.
+        // Get the users initials only, depending on the settings.
         if ($initialsonly) {
             $firstnames = explode(' ', $user->firstname);
             $initials = '';
