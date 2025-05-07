@@ -88,21 +88,20 @@ class studentstracker {
      * @throws dml_exception
      */
     public function __construct(\stdClass $config, ?string $textheader = '', ?string $textfooter = '') {
-        $this->days = $config->days ?? get_config('studentstracker', 'trackingdays');
-        $this->dateformat = $config->dateformat ?? 'd/m/Y';
         $this->colordays = $config->color_days ?? get_config('studentstracker', 'colordays');
         $this->colordayscritical = $config->color_days_critical ?? get_config('studentstracker', 'colordayscritical');
         $this->colornever = $config->color_never ?? get_config('studentstracker', 'colordaysnever');
+        $this->dateformat = $config->dateformat ?? 'd/m/Y';
+        $this->days = $config->days ?? get_config('studentstracker', 'trackingdays');
+        $this->dayscritical = get_config('studentstracker', 'trackingdayscritical');
+        $this->excludeolder = $config->excludeolder ?? 0;
+        $this->sorting = $config->sorting ?? 'date_desc';
         $this->textnever = $config->textnevercontent ?? get_string('text_never_content', 'block_studentstracker');
         $this->trackedroles = $config->role ?? explode(",", get_config('studentstracker', 'roletrack'));
         $this->trackedgroups = $config->groups ?? [];
-        $this->sorting = $config->sorting ?? 'date_desc';
-        $this->truncate = $config->truncate ?? 6;
-        $this->excludeolder = $config->excludeolder ?? 0;
+        $this->truncate = $config->truncate ?? get_config('studentstracker', 'truncate');
         $this->textheader = $textheader;
         $this->textfooter = $textfooter;
-        // Properties with default values.
-        $this->dayscritical = 0;
         $this->usercount = 0;
         $this->users = [];
     }

@@ -136,6 +136,8 @@ class block_studentstracker extends block_base {
     public function get_content() {
         global $COURSE, $USER;
 
+        print_r($this->config);
+
         if ($this->content !== null) {
             return $this->content;
         }

@@ -115,7 +115,7 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->setDefault('config_groups', []);
 
             $mform->addElement('text', 'config_truncate', get_string('truncate', 'block_studentstracker'));
-            $mform->setDefault('config_truncate', 6);
+            $mform->setDefault('config_truncate', 10);
             $mform->setType('config_truncate', PARAM_INT);
 
             $mform->addElement('text', 'config_excludeolder', get_string('excludeolder', 'block_studentstracker'));
