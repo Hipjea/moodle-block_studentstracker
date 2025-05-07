@@ -80,8 +80,14 @@ class studentstracker {
 
     /**
      * Constructor.
+     *
+     * @param stdClass $config
+     * @param ?string $textheader
+     * @param ?string $textfooter
+     * @throws coding_exception
+     * @throws dml_exception
      */
-    public function __construct(\stdClass $config, string $textheader, string $textfooter) {
+    public function __construct(\stdClass $config, ?string $textheader = '', ?string $textfooter = '') {
         $this->days = $config->days ?? get_config('studentstracker', 'trackingdays');
         $this->dateformat = $config->dateformat ?? 'd/m/Y';
         $this->colordays = $config->color_days ?? get_config('studentstracker', 'colordays');
@@ -106,7 +112,7 @@ class studentstracker {
      *
      * @return int
      */
-    public function getUsercount(): int {
+    public function getusercount(): int {
         return $this->usercount;
     }
 
@@ -117,7 +123,7 @@ class studentstracker {
      * @return $this
      * @throws coding_exception
      */
-    public function setUsercount(int $usercount): self {
+    public function setusercount(int $usercount): self {
         if (!is_int($usercount)) {
             throw new coding_exception('usercount must be an integer.');
         }
@@ -132,23 +138,23 @@ class studentstracker {
      *
      * @return string
      */
-    public function getTextHeader(): string {
+    public function gettextheader(): string {
         return $this->textheader;
     }
 
     /**
      * Set the value of text_header.
      *
-     * @param string $text_header
+     * @param ?string $textheader
      * @return $this
      * @throws coding_exception
      */
-    public function setTextHeader(string $text_header): self {
-        if (!is_string($text_header)) {
+    public function settextheader(?string $textheader = ''): self {
+        if (!is_string($textheader)) {
             throw new coding_exception('text_header must be a string.');
         }
 
-        $this->textheader = $text_header;
+        $this->textheader = $textheader;
 
         return $this;
     }
@@ -160,7 +166,7 @@ class studentstracker {
      * @return $this
      * @throws coding_exception
      */
-    public function setUsers(array $users): self {
+    public function setusers(array $users): self {
         if (!is_array($users)) {
             throw new coding_exception('users must be an array.');
         }
@@ -174,8 +180,8 @@ class studentstracker {
     /**
      * Retrieves the list of the enrolled users of the courses and apply the logic.
      *
-     * @param $context The context object
-     * @param $courseid The course object id
+     * @param \stdClass $context The context object
+     * @param int $courseid The course object id
      * @return $this
      */
     public function init_users($context, $courseid) {
@@ -183,7 +189,7 @@ class studentstracker {
 
         $usercount = 0;
         $users = get_enrolled_users($context, '', 0, 'u.*', null, 0, 0, true);
-        $course = $DB->get_record('course', array('id' => $courseid), '*', MUST_EXIST);
+        $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 
         foreach ($users as $enrol) {
             if (groups_user_groups_visible($course, $enrol->id)) {
@@ -250,15 +256,15 @@ class studentstracker {
     /**
      * Check if the given user has the tracked roles.
      *
-     * @param $roleids The role ids
-     * @param $courseid
-     * @param $userid
+     * @param array $roleids The role ids
+     * @param int $courseid The course id
+     * @param int $userid The user id
      * @return bool
      */
     private static function has_role($roleids, $courseid, $userid) {
         global $DB;
 
-        $params = array();
+        $params = [];
 
         foreach ($roleids as $role) {
             array_push($params, (int)$role);
@@ -282,8 +288,8 @@ class studentstracker {
     /**
      * Check if the given user is part of the tracked groups.
      *
-     * @param $courseid
-     * @param $userid
+     * @param int $courseid The course id
+     * @param int $userid The user id
      * @return bool
      */
     private function is_in_groups($courseid, $userid) {
@@ -301,14 +307,14 @@ class studentstracker {
     /**
      * Get the user's last access in a course.
      *
-     * @param $courseid
-     * @param $userid
+     * @param int $courseid The course id
+     * @param int $userid The user id
      * @return $lastaccess string
      */
     private function get_last_access($courseid, $userid) {
         global $DB;
 
-        $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', array('courseid' => $courseid, 'userid' => $userid));
+        $lastaccess = $DB->get_field('user_lastaccess', 'timeaccess', ['courseid' => $courseid, 'userid' => $userid]);
         if ($lastaccess < 1) {
             return 0;
         }
@@ -319,7 +325,7 @@ class studentstracker {
     /**
      * Link to the private message page for a given user.
      *
-     * @param $user The user object
+     * @param \stdClass $user The user object
      */
     public static function messaging($user) {
         global $OUTPUT;
@@ -330,27 +336,27 @@ class studentstracker {
             $url->param('id', $userid);
         }
 
-        return html_writer::link($url, '<img class="icon mr-0" src="' . $OUTPUT->image_url('t/message') . '">', array());
+        return html_writer::link($url, '<img class="icon mr-0" src="' . $OUTPUT->image_url('t/message') . '">', []);
     }
 
     /**
      * Link to the user's profile.
      *
-     * @param $user The user object
-     * @param $context The context object
-     * @param $output The core_renderer to use when generating the output.
+     * @param \stdClass $user The user object
+     * @param \stdClass $context The context object
+     * @param \core_renderer $output The core_renderer to use when generating the output.
      */
     public static function profile($user, $context, $output) {
-        $url = new moodle_url('/user/view.php', array('id' => $user->id, 'course' => $context->instanceid));
+        $url = new moodle_url('/user/view.php', ['id' => $user->id, 'course' => $context->instanceid]);
 
-        return html_writer::link($url, $output->user_picture($user, array('size' => 15, 'alttext' => false, 'link' => false)) .
-            "$user->firstname $user->lastname", array());
+        return html_writer::link($url, $output->user_picture($user, ['size' => 15, 'alttext' => false, 'link' => false]) .
+            "$user->firstname $user->lastname", []);
     }
 
     /**
      * Sorting function used for the sorting config option.
      *
-     * @param $key The key used for sorting the objects
+     * @param string $key The key used for sorting the objects
      */
     public static function sort_objects($key) {
         if ($key == 'date_desc') {
