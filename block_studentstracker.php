@@ -159,7 +159,7 @@ class block_studentstracker extends block_base {
             'textheader' => 'text_header',
             'textheaderfine' => 'text_header_fine',
             'textnevercontent' => 'text_never_content',
-            'textfooter' => '',
+            'textfooter' => 'text_footer_content',
         ];
 
         foreach ($properties as $property => $langstr) {
