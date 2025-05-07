@@ -55,7 +55,7 @@ class block_studentstracker_edit_form extends block_edit_form {
             'config_color_days_critical',
             get_string('color_days_critical', 'block_studentstracker')
         );
-        $mform->setDefault('config_color_days_critical',  get_config('studentstracker', 'colordayscritical'));
+        $mform->setDefault('config_color_days_critical', get_config('studentstracker', 'colordayscritical'));
         $mform->setType('config_color_days_critical', PARAM_RAW);
 
         $mform->addElement('text', 'config_color_never', get_string('color_never', 'block_studentstracker'));
@@ -108,18 +108,17 @@ class block_studentstracker_edit_form extends block_edit_form {
                 'select',
                 'config_groups',
                 get_string('groups', 'block_studentstracker'),
-                $groupsarray,
-                null
+                $groupsarray
             );
             $select->setMultiple(true);
             $mform->setDefault('config_groups', []);
 
             $mform->addElement('text', 'config_truncate', get_string('truncate', 'block_studentstracker'));
-            $mform->setDefault('config_truncate', 10);
+            $mform->setDefault('config_truncate', get_config('studentstracker', 'truncate'));
             $mform->setType('config_truncate', PARAM_INT);
 
             $mform->addElement('text', 'config_excludeolder', get_string('excludeolder', 'block_studentstracker'));
-            $mform->setDefault('config_excludeolder', '');
+            $mform->setDefault('config_excludeolder', get_config('studentstracker', 'excludeolder'));
             $mform->setType('config_excludeolder', PARAM_INT);
 
             $choices['d/m/Y H:i'] = 'd/m/Y H:i';
@@ -130,8 +129,7 @@ class block_studentstracker_edit_form extends block_edit_form {
                 'select',
                 'config_dateformat',
                 get_string('dateformat', 'block_studentstracker'),
-                $choices,
-                null
+                $choices
             );
             $select->setMultiple(false);
             $mform->setDefault('config_dateformat', get_config('studentstracker', 'dateformat'));
@@ -148,8 +146,7 @@ class block_studentstracker_edit_form extends block_edit_form {
                 'select',
                 'config_sorting',
                 get_string('sorting', 'block_studentstracker'),
-                $choices,
-                null
+                $choices
             );
             $select->setMultiple(false);
             $mform->setDefault('config_sorting', get_config('studentstracker', 'sorting'));
