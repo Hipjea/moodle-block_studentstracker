@@ -98,7 +98,9 @@ class studentstracker {
         $this->days = $config->days ?? get_config('studentstracker', 'trackingdays');
         $this->dayscritical = get_config('studentstracker', 'trackingdayscritical');
         $this->excludeolder = $config->excludeolder ?? 0;
-        $this->initialsonly = isset($config->initialsonly) ? intval($config->initialsonly) : get_config('studentstracker', 'initialsonly');
+        $this->initialsonly = isset($config->initialsonly)
+            ? intval($config->initialsonly)
+            : get_config('studentstracker', 'initialsonly');
         $this->sorting = $config->sorting ?? 'date_desc';
         $this->textnever = $config->textnevercontent ?? get_string('text_never_content', 'block_studentstracker');
         $this->trackedroles = $config->role ?? explode(",", get_config('studentstracker', 'roletrack'));
