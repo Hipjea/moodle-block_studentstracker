@@ -29,7 +29,6 @@ use templatable;
 use renderer_base;
 use stdClass;
 use moodle_url;
-use core\output\help_icon;
 
 /**
  * Main content renderable.
