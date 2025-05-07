@@ -152,11 +152,7 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->setDefault('config_sorting', get_config('studentstracker', 'sorting'));
 
             // Initialsonly.
-            $options = [
-                0 => get_string('no'),
-                1 => get_string('yes')
-            ];
-
+            $options = [0 => get_string('no'), 1 => get_string('yes')];
             $mform->addElement('select', 'config_initialsonly', get_string('initialsonly', 'block_studentstracker'), $options);
             $mform->setDefault('config_initialsonly', get_config('studentstracker', 'initialsonly'));
             $mform->setType('config_initialsonly', PARAM_BOOL);
