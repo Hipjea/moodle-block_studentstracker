@@ -187,7 +187,8 @@ class studentstracker {
         global $DB, $OUTPUT;
 
         $usercount = 0;
-        $users = get_enrolled_users($context, '', 0, 'u.*', null, 0, 0, true);
+        $groupids = empty($this->trackedgroups) || isset($this->trackedgroups[0]) ? 0 : $this->trackedgroups;
+        $users = get_enrolled_users($context, '', $groupids, 'u.*', null, 0, 0, true);
         $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
 
         foreach ($users as $enrol) {
