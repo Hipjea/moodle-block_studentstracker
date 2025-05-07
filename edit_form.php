@@ -41,6 +41,7 @@ class block_studentstracker_edit_form extends block_edit_form {
      */
     protected function specific_definition($mform) {
         global $DB, $COURSE, $USER;
+
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
         $mform->addElement('text', 'config_title', get_string('blocktitle', 'block_studentstracker'));
         $mform->setDefault('config_title', get_string('pluginname', 'block_studentstracker'));
@@ -97,7 +98,7 @@ class block_studentstracker_edit_form extends block_edit_form {
             $select->setMultiple(true);
             $mform->setDefault('config_role', get_config('studentstracker', 'roletrack'));
 
-            $groups = groups_get_all_groups($this->block->courseid, $userid = 0, $groupingid = 0, $fields = 'g.*');
+            $groups = groups_get_all_groups($this->block->courseid);
             $groupsarray = [];
             $groupsarray[0] = get_string('nogroups', 'block_studentstracker');
             foreach ($groups as $group) {

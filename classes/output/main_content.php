@@ -78,15 +78,14 @@ class main_content implements renderable, templatable {
      * @param renderer_base $output
      * @return stdClass
      */
-    public function export_for_template(renderer_base $output) {
-        $data = [
-            'usercount' => $this->usercount,
-            'users' => $this->users,
-            'truncate' => $this->truncate,
-            'textheader' => $this->textheader,
-            'textfooter' => $this->textfooter,
-            'pluginbaseurl' => (new moodle_url('/blocks/studenstracker'))->out(false),
-        ];
+    public function export_for_template(renderer_base $output): stdClass {
+        $data = new stdClass();
+        $data->usercount = $this->usercount;
+        $data->users = $this->users;
+        $data->truncate = $this->truncate;
+        $data->textheader = $this->textheader;
+        $data->textfooter = $this->textfooter;
+        $data->pluginbaseurl = (new moodle_url('/blocks/studenstracker'))->out(false);
 
         return $data;
     }
