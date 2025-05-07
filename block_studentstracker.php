@@ -17,7 +17,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Studentstracker block
+ * Studentstracker block.
  *
  * @package    block_studentstracker
  * @copyright  2025 Pierre Duverneix

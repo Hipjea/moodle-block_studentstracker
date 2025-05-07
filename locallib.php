@@ -98,7 +98,7 @@ class studentstracker {
         $this->days = $config->days ?? get_config('studentstracker', 'trackingdays');
         $this->dayscritical = get_config('studentstracker', 'trackingdayscritical');
         $this->excludeolder = $config->excludeolder ?? 0;
-        $this->initialsonly = intval($config->initialsonly) ?? 0;
+        $this->initialsonly = isset($config->initialsonly) ? intval($config->initialsonly) : get_config('studentstracker', 'initialsonly');
         $this->sorting = $config->sorting ?? 'date_desc';
         $this->textnever = $config->textnevercontent ?? get_string('text_never_content', 'block_studentstracker');
         $this->trackedroles = $config->role ?? explode(",", get_config('studentstracker', 'roletrack'));
@@ -218,7 +218,8 @@ class studentstracker {
 
                 $enrol->messaging = self::messaging($enrol);
                 $enrol->datelastaccess = date($this->dateformat, $enrol->lastaccess);
-                $enrol->picture = self::profile($enrol, $context, $this->initialsonly, $OUTPUT);
+                $enrol->picture = self::profile($enrol, $context, 15, $this->initialsonly, $OUTPUT);
+                $enrol->popoverpicture = self::profile($enrol, $context, 25, $this->initialsonly, $OUTPUT);
                 $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
 
                 if ($enrol->lastaccesstimestamp < 1) {
@@ -348,10 +349,11 @@ class studentstracker {
      *
      * @param \stdClass $user The user object
      * @param \stdClass $context The context object
-     * @param int $initialsonly Setting to display only the users initials.
-     * @param \core_renderer $output The core_renderer to use when generating the output.
+     * @param int $size The user picture size
+     * @param int $initialsonly Setting to display only the users initials
+     * @param \core_renderer $output The core_renderer to use when generating the output
      */
-    public static function profile($user, $context, $initialsonly, $output) {
+    public static function profile($user, $context, $size, $initialsonly, $output) {
         $url = new moodle_url('/user/view.php', ['id' => $user->id, 'course' => $context->instanceid]);
 
         // Get the users initials only, depending on the settings.
@@ -371,8 +373,8 @@ class studentstracker {
 
         return html_writer::link(
             $url,
-            $output->user_picture($user, ['size' => 15, 'alttext' => false, 'link' => false]) . $username,
-            []
+            $output->user_picture($user, ['size' => $size, 'alttext' => false, 'link' => false]) . $username,
+            ['class' => 'block_studentstracker-userpicture']
         );
     }
 

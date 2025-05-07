@@ -1,10 +1,15 @@
 {{#rowclass}}
 <li class="{{{ rowclass }}}" style="background:{{{ rowcolor }}}">
     <span class="pull-left">
-        {{{ messaging }}}
+        {{{ picture }}}
+    </span>
+    <span class="pull-right">
+        {{{ lastaccesscourse }}}
         {{< block_studentstracker/help_icon}}
-            {{$text}} 
+            {{$text}}
+                <div class="mb-2">{{{ popoverpicture }}}</div>
                 <div>
+                    {{{ messaging }}}
                     <a href="mailto:{{{ email }}}">{{{email}}}</a>
                 </div>
                 {{#lastaccess}}
@@ -12,8 +17,6 @@
                 {{/lastaccess}}
             {{/text}}
         {{/ block_studentstracker/help_icon}}
-        {{{ picture }}}
     </span>
-    <span class="pull-right">{{{ lastaccesscourse }}}</span>
 </li>
 {{/rowclass}}
