@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0-5.0+
+## 1.8.0-5.0+
 
 - Changes to the popover template:
   - `help_icon.mustache` now uses the new Bootstrap 5 attributes adopted in Moodle core ;
