@@ -20,6 +20,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+import "theme_boost/popover";
+import jQuery from "jquery";
+
 const arrowDown = `<svg
   width="18"
   height="11"
@@ -95,6 +98,8 @@ export const init = (root) => {
       showless.style.display = "none";
     });
   }
+
+  handlePopovers();
 };
 
 /**
@@ -122,4 +127,23 @@ const showLessResults = (block_li, toshow) => {
       block_li[i].style.display = "none";
     }
   }
+};
+
+const handlePopovers = () => {
+  // Hide all popovers when clicking any trigger.
+  jQuery(document).on("click", '[data-toggle="popover"]', function (event) {
+    jQuery('[data-toggle="popover"]').not(this).popover("hide");
+    // We need to allow toggling the same popover.
+    jQuery(this).popover("toggle");
+    event.preventDefault();
+  });
+
+  // Hide popovers on outside clicking.
+  jQuery("body").on("click", function (event) {
+    if (
+      !jQuery(event.target).closest('.popover, [data-toggle="popover"]').length
+    ) {
+      jQuery('[data-toggle="popover"]').popover("hide");
+    }
+  });
 };
