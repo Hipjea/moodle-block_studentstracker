@@ -181,6 +181,15 @@ class studentstracker {
         return $this;
     }
 
+    /**
+     * Calculate the UNIX timestamp for a given number of days in the past.
+     *
+     * @param int $days Number of days to subtract from the current time.
+     * @return int|false UNIX timestamp of the calculated date.
+     */
+    public static function get_threshold($days) {
+        return strtotime("-$days day", time());
+    }
 
     /**
      * Retrieves the list of the enrolled users of the courses and apply the logic.
@@ -224,18 +233,24 @@ class studentstracker {
                 $enrol->popoverpicture = self::profile($enrol, $context, 25, $this->initialsonly, $OUTPUT);
                 $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
 
+                $initialthreshold = self::get_threshold($this->days);
+                $criticalthreshold = self::get_threshold($this->dayscritical);
+
                 if ($enrol->lastaccesstimestamp < 1) {
+                    // No access level.
                     $enrol->rowcolor = $this->colornever;
                     $enrol->rowclass = 'studentstracker-never';
                 } else if (
-                    $enrol->lastaccesstimestamp > 1 && $enrol->lastaccesstimestamp < strtotime($this->days, time())
-                    && ($enrol->lastaccesstimestamp < strtotime($this->dayscritical, time()))
+                    $enrol->lastaccesstimestamp > 1
+                    && ($enrol->lastaccesstimestamp < $initialthreshold)
+                    && ($enrol->lastaccesstimestamp < $criticalthreshold)
                 ) {
                     // Critical access level.
                     $enrol->rowcolor = $this->colordayscritical;
                     $enrol->rowclass = 'studentstracker-critical';
-                } else if (($enrol->lastaccesstimestamp < strtotime($this->days, time()))
-                    && ($enrol->lastaccesstimestamp >= strtotime($this->dayscritical, time()))
+                } else if (
+                    ($enrol->lastaccesstimestamp < $initialthreshold)
+                    && ($enrol->lastaccesstimestamp >= $criticalthreshold)
                 ) {
                     // First access level.
                     $enrol->rowcolor = $this->colordays;
