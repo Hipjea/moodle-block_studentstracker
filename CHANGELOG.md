@@ -8,7 +8,7 @@
 
 ## 1.8.0
 
-- Add new setting `initialsonly`
+- Add new setting `initialsonly`:
   - Introduces an option to display only users' initials instead of their full first names.
   - Adds two new language strings: `$string['initialsonly']` and `$string['initialsonly_help']`.
 - User Interface improvements:
