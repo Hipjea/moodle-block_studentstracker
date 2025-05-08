@@ -184,8 +184,8 @@ class studentstracker {
     /**
      * Calculate the UNIX timestamp for a given number of days in the past.
      *
-     * @param int $days Number of days to subtract from the current time.
-     * @return int|false UNIX timestamp of the calculated date.
+     * @param int $days Number of days to subtract from the current time
+     * @return int|false UNIX timestamp of the calculated date
      */
     public static function get_threshold($days) {
         return strtotime("-$days day", time());
