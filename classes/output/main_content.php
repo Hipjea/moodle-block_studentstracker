@@ -18,9 +18,10 @@
  * Competencies to review renderable.
  *
  * @package    block_studentstracker
- * @copyright  2022 Pierre Duverneix
+ * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace block_studentstracker\output;
 
 use renderable;
@@ -29,16 +30,39 @@ use renderer_base;
 use stdClass;
 use moodle_url;
 
+/**
+ * Main content renderable.
+ */
 class main_content implements renderable, templatable {
-
+    /**
+     * @var int The number of users.
+     */
     public $usercount;
+    /**
+     * @var array The users to display.
+     */
     public $users;
+    /**
+     * @var bool Whether to truncate the text.
+     */
     public $truncate;
+    /**
+     * @var string The text to display in the header.
+     */
     public $textheader;
+    /**
+     * @var string The text to display in the footer.
+     */
     public $textfooter;
 
     /**
      * Constructor.
+     *
+     * @param int $usercount
+     * @param array $users
+     * @param bool $truncate
+     * @param string $textheader
+     * @param string $textfooter
      */
     public function __construct($usercount, $users, $truncate, $textheader, $textfooter) {
         $this->usercount = $usercount;
@@ -54,19 +78,15 @@ class main_content implements renderable, templatable {
      * @param renderer_base $output
      * @return stdClass
      */
-    public function export_for_template(renderer_base $output) {
+    public function export_for_template(renderer_base $output): stdClass {
         $data = new stdClass();
-
-        $data = array(
-            'usercount' => $this->usercount,
-            'users' => $this->users,
-            'truncate' => $this->truncate,
-            'textheader' => $this->textheader,
-            'textfooter' => $this->textfooter,
-            'pluginbaseurl' => (new moodle_url('/blocks/studenstracker'))->out(false),
-        );
+        $data->usercount = $this->usercount;
+        $data->users = $this->users;
+        $data->truncate = $this->truncate;
+        $data->textheader = $this->textheader;
+        $data->textfooter = $this->textfooter;
+        $data->pluginbaseurl = (new moodle_url('/blocks/studenstracker'))->out(false);
 
         return $data;
     }
-
 }

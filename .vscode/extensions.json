@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "bmewburn.vscode-intelephense-client",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "imgildev.vscode-mustache-snippets"
+  ]
+}

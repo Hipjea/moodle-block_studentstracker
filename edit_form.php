@@ -20,15 +20,28 @@ defined('MOODLE_INTERNAL') || die();
  * Classes to enforce the various access rules that can apply to a quiz.
  *
  * @package    block_studentstracker
- * @copyright  2021 Pierre Duverneix
+ * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
 
+/**
+ * Form definition for the block settings.
+ */
 class block_studentstracker_edit_form extends block_edit_form {
+
+    /**
+     * Define the settings form.
+     *
+     * @param \MoodleQuickForm $mform The form to add filter settings to.
+     * @return void
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     protected function specific_definition($mform) {
         global $DB, $COURSE, $USER;
+
         $mform->addElement('header', 'configheader', get_string('blocksettings', 'block'));
         $mform->addElement('text', 'config_title', get_string('blocktitle', 'block_studentstracker'));
         $mform->setDefault('config_title', get_string('pluginname', 'block_studentstracker'));
@@ -38,16 +51,19 @@ class block_studentstracker_edit_form extends block_edit_form {
         $mform->setDefault('config_color_days', get_config('studentstracker', 'colordays'));
         $mform->setType('config_color_days', PARAM_RAW);
 
-        $mform->addElement('text', 'config_color_days_critical',
-         get_string('color_days_critical', 'block_studentstracker'));
-        $mform->setDefault('config_color_days_critical',  get_config('studentstracker', 'colordayscritical'));
+        $mform->addElement(
+            'text',
+            'config_color_days_critical',
+            get_string('color_days_critical', 'block_studentstracker')
+        );
+        $mform->setDefault('config_color_days_critical', get_config('studentstracker', 'colordayscritical'));
         $mform->setType('config_color_days_critical', PARAM_RAW);
 
         $mform->addElement('text', 'config_color_never', get_string('color_never', 'block_studentstracker'));
         $mform->setDefault('config_color_never', get_config('studentstracker', 'colordaysnever'));
         $mform->setType('config_color_never', PARAM_RAW);
 
-        if (has_capability('block/studentstracker:editadvance', context_course::instance($COURSE->id)) or is_siteadmin($USER->id)) {
+        if (has_capability('block/studentstracker:editadvance', context_course::instance($COURSE->id)) || is_siteadmin($USER->id)) {
             $mform->addElement('text', 'config_days', get_string('days', 'block_studentstracker'));
             $mform->setDefault('config_days', get_config('studentstracker', 'trackingdays'));
             $mform->setType('config_days', PARAM_INT);
@@ -73,7 +89,7 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->setType('config_text_footer', PARAM_TEXT);
 
             $roles = $DB->get_records('role');
-            $rolesarray = array();
+            $rolesarray = [];
             foreach ($roles as $role) {
                 $rolesarray[$role->id] = $role->shortname;
             }
@@ -82,48 +98,66 @@ class block_studentstracker_edit_form extends block_edit_form {
             $select->setMultiple(true);
             $mform->setDefault('config_role', get_config('studentstracker', 'roletrack'));
 
-            $groups = groups_get_all_groups($this->block->courseid, $userid = 0, $groupingid = 0, $fields = 'g.*');
-            $groupsarray = array();
+            $groups = groups_get_all_groups($this->block->courseid);
+            $groupsarray = [];
             $groupsarray[0] = get_string('nogroups', 'block_studentstracker');
             foreach ($groups as $group) {
                 $groupsarray[$group->id] = $group->name;
             }
 
-            $select = $mform->addElement('select', 'config_groups', get_string('groups', 'block_studentstracker'),
-                $groupsarray, null);
+            $select = $mform->addElement(
+                'select',
+                'config_groups',
+                get_string('groups', 'block_studentstracker'),
+                $groupsarray
+            );
             $select->setMultiple(true);
-            $mform->setDefault('config_groups', array());
+            $mform->setDefault('config_groups', []);
 
             $mform->addElement('text', 'config_truncate', get_string('truncate', 'block_studentstracker'));
-            $mform->setDefault('config_truncate', 6);
+            $mform->setDefault('config_truncate', get_config('studentstracker', 'truncate'));
             $mform->setType('config_truncate', PARAM_INT);
 
             $mform->addElement('text', 'config_excludeolder', get_string('excludeolder', 'block_studentstracker'));
-            $mform->setDefault('config_excludeolder', '');
+            $mform->setDefault('config_excludeolder', get_config('studentstracker', 'excludeolder'));
             $mform->setType('config_excludeolder', PARAM_INT);
 
             $choices['d/m/Y H:i'] = 'd/m/Y H:i';
             $choices['m/d/Y H:i'] = 'm/d/Y H:i';
             $choices['d/m/Y'] = 'd/m/Y';
             $choices['m/d/Y'] = 'm/d/Y';
-            $select = $mform->addElement('select', 'config_dateformat',
-                get_string('dateformat', 'block_studentstracker'), $choices, null);
+            $select = $mform->addElement(
+                'select',
+                'config_dateformat',
+                get_string('dateformat', 'block_studentstracker'),
+                $choices
+            );
             $select->setMultiple(false);
             $mform->setDefault('config_dateformat', get_config('studentstracker', 'dateformat'));
 
             unset($choices);
 
-            $default = 'date_desc';
             $choices['id'] = 'id';
             $choices['lastname'] = get_string('lastname', 'core');
             $choices['firstname'] = get_string('firstname', 'core');
             $choices['email'] = get_string('email', 'core');
             $choices['date_asc'] = get_string('date_asc', 'block_studentstracker');
             $choices['date_desc'] = get_string('date_desc', 'block_studentstracker');
-            $select = $mform->addElement('select', 'config_sorting',
-                get_string('sorting', 'block_studentstracker'), $choices, null);
+            $select = $mform->addElement(
+                'select',
+                'config_sorting',
+                get_string('sorting', 'block_studentstracker'),
+                $choices
+            );
             $select->setMultiple(false);
             $mform->setDefault('config_sorting', get_config('studentstracker', 'sorting'));
+
+            // Initialsonly.
+            $options = [0 => get_string('no'), 1 => get_string('yes')];
+            $mform->addElement('select', 'config_initialsonly', get_string('initialsonly', 'block_studentstracker'), $options);
+            $mform->setDefault('config_initialsonly', get_config('studentstracker', 'initialsonly'));
+            $mform->setType('config_initialsonly', PARAM_BOOL);
+            $mform->addHelpButton('config_initialsonly', 'initialsonly', 'block_studentstracker');
         }
     }
 }

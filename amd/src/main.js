@@ -16,10 +16,12 @@
 /**
  * Plugin capabilities
  *
- * @package    block_studentstracker
  * @author     Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+import "theme_boost/popover";
+import jQuery from "jquery";
 
 const arrowDown = `<svg
   width="18"
@@ -30,7 +32,11 @@ const arrowDown = `<svg
   xmlns:svg="http://www.w3.org/2000/svg">
   <path
     fill="#FFFFFF"
-    d="m 1685.1961,209.41181 -166,-165.000053 q -19,-19 -45,-19 -26,0 -45,19 l -531.00002,531.000053 -531,-531.000053 q -19,-19 -45,-19 -26,0 -45,19 l -166,165.000053 q -18.999997,19 -18.999997,45.5 0,26.5 18.999997,45.5 l 742,740.99999 q 19,19 45,19 26,0 45,-19 L 1685.1961,300.41181 q 19,-19 19,-45.5 0,-26.5 -19,-45.5 z"
+    d="m 1685.1961,209.41181 -166,-165.000053 q -19,-19 -45,-19 -26,0 -45,19 l 
+    -531.00002,531.000053 -531,-531.000053 q -19,-19 -45,-19 -26,0 -45,19 l 
+    -166,165.000053 q -18.999997,19 -18.999997,45.5 0,26.5 18.999997,45.5 l 
+    742,740.99999 q 19,19 45,19 26,0 45,-19 L 1685.1961,300.41181 q 19,-19 19,
+    -45.5 0,-26.5 -19,-45.5 z"
     id="path912"
     style="fill:#ffffff;fill-opacity:1" />
   </svg>`;
@@ -43,7 +49,11 @@ const arrowUp = `<svg
   xmlns:svg="http://www.w3.org/2000/svg">
   <path
     fill="#FFFFFF"
-    d="m 1685.1961,876.41175 -166,165.00005 q -19,19 -45,19 -26,0 -45,-19 l -531.00002,-531.00005 -531,531.00005 q -19,19 -45,19 -26,0 -45,-19 l -166,-165.00005 q -18.999997,-19 -18.999997,-45.5 0,-26.5 18.999997,-45.5 l 742,-740.999993 q 19,-19 45,-19 26,0 45,19 L 1685.1961,785.41175 q 19,19 19,45.5 0,26.5 -19,45.5 z"
+    d="m 1685.1961,876.41175 -166,165.00005 q -19,19 -45,19 -26,0 -45,-19 l 
+    -531.00002,-531.00005 -531,531.00005 q -19,19 -45,19 -26,0 -45,-19 l 
+    -166,-165.00005 q -18.999997,-19 -18.999997,-45.5 0,-26.5 18.999997,
+    -45.5 l 742,-740.999993 q 19,-19 45,-19 26,0 45,19 L 1685.1961,785.41175 
+    q 19,19 19,45.5 0,26.5 -19,45.5 z"
     id="path912"
     style="fill:#ffffff;fill-opacity:1" />
   </svg>`;
@@ -54,7 +64,7 @@ const arrowUp = `<svg
  * @param {object} root The root element for studentstracker.
  * @return {void}
  */
-export const init = root => {
+export const init = (root) => {
   const toshow = parseInt(root.dataset.show);
   const block_li = root.querySelectorAll("li");
 
@@ -79,31 +89,35 @@ export const init = root => {
     showmore.addEventListener("click", function () {
       showMoreResults(block_li);
       showmore.style.display = "none";
-      showless.style.display = "block";
+      showless.style.display = "flex";
     });
 
     showless.addEventListener("click", function () {
       showLessResults(block_li, toshow);
-      showmore.style.display = "block";
+      showmore.style.display = "flex";
       showless.style.display = "none";
     });
   }
-}
+
+  handlePopovers();
+};
 
 /**
  * Show all the results.
  *
+ * @param {HTMLLIElement} block_li The <li> element to manipulate.
  * @return {void}
  */
 const showMoreResults = (block_li) => {
   for (let i = 0, j = block_li.length; i < j; i++) {
-    block_li[i].style.display = "block";
+    block_li[i].style.display = "flex";
   }
 };
 
 /**
  * Show less results.
  *
+ * @param {HTMLLIElement} block_li The <li> element to manipulate.
  * @param {number} toshow Number of results to show.
  * @return {void}
  */
@@ -113,4 +127,23 @@ const showLessResults = (block_li, toshow) => {
       block_li[i].style.display = "none";
     }
   }
+};
+
+const handlePopovers = () => {
+  // Hide all popovers when clicking any trigger.
+  jQuery(document).on("click", '[data-toggle="popover"]', function (event) {
+    jQuery('[data-toggle="popover"]').not(this).popover("hide");
+    // We need to allow toggling the same popover.
+    jQuery(this).popover("toggle");
+    event.preventDefault();
+  });
+
+  // Hide popovers on outside clicking.
+  jQuery("body").on("click", function (event) {
+    if (
+      !jQuery(event.target).closest('.popover, [data-toggle="popover"]').length
+    ) {
+      jQuery('[data-toggle="popover"]').popover("hide");
+    }
+  });
 };

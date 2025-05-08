@@ -18,22 +18,27 @@
  * Renderer.
  *
  * @package    block_studentstracker
- * @copyright  2022 Pierre Duverneix
+ * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace block_studentstracker\output;
 
 use plugin_renderer_base;
 use renderable;
 
+/**
+ * Renderer for the main content of the block.
+ */
 class renderer extends plugin_renderer_base {
     /**
      * Defer to template.
-     * @param renderable $page
+     * @param \templatable $output
      * @return string
      */
     public function render_main_content(\templatable $output) {
         $data = $output->export_for_template($this);
+
         return parent::render_from_template('block_studentstracker/main_content', $data);
     }
 }
