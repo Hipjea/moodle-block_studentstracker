@@ -14,6 +14,6 @@
     "grunt-contrib-less": "^3.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-load-gruntfile": "^0.0.2",
-    "prettier": "^3.5.2"
+    "prettier": "^3.6.2"
   }
 }
