@@ -26,7 +26,7 @@ const arrowDown = `<svg
   viewBox="0 0 1792 1095.1111"
   version="1.1"
   xmlns="http://www.w3.org/2000/svg"
-  xmlns:svg="http://www.w3.org/2000/svg">
+  xmlns:svg="http://www.w3.org/2000/svg
   <path
     fill="#FFFFFF"
     d="m 1685.1961,209.41181 -166,-165.000053 q -19,-19 -45,-19 -26,0 -45,19 l 
