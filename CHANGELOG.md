@@ -14,3 +14,8 @@
 - User Interface improvements:
   - Relocated the popover (help) icon to the right side of each row ;
   - Moved the user messaging button into the popover.
+
+## 1.8.1
+
+- Fixed broken HTML due to unescaped quotes in students names (#66, #67)
+- Add new table `block_studentstracker_notes` for upcoming improvements
