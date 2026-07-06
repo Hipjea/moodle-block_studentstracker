@@ -21,7 +21,6 @@
  * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 function xmldb_block_studentstracker_uninstall() {
     global $DB;
 
