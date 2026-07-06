@@ -25,7 +25,7 @@
 function xmldb_block_studentstracker_uninstall() {
     global $DB;
 
-    $DB->delete_records('block_studentstracker_notes', array());
+    $DB->delete_records('block_studentstracker_notes', []);
 
     return true;
 }

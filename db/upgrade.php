@@ -44,8 +44,8 @@ function xmldb_block_studentstracker_upgrade($oldversion) {
         $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
 
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_index('userid', XMLDB_INDEX_NOTUNIQUE, array('userid'));
-        $table->add_index('authorid', XMLDB_INDEX_NOTUNIQUE, array('authorid'));
+        $table->add_index('userid', XMLDB_INDEX_NOTUNIQUE, ['userid']);
+        $table->add_index('authorid', XMLDB_INDEX_NOTUNIQUE, ['authorid']);
 
         if (!$dbman->table_exists($table)) {
             $dbman->create_table($table);
