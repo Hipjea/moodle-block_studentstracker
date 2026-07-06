@@ -28,7 +28,6 @@ use renderable;
 use templatable;
 use renderer_base;
 use stdClass;
-use moodle_url;
 
 /**
  * Main content renderable.
@@ -85,7 +84,7 @@ class main_content implements renderable, templatable {
         $data->truncate = $this->truncate;
         $data->textheader = $this->textheader;
         $data->textfooter = $this->textfooter;
-        $data->pluginbaseurl = (new moodle_url('/blocks/studenstracker'))->out(false);
+        $data->pluginbaseurl = (new \moodle_url('/blocks/studenstracker'))->out(false);
 
         return $data;
     }

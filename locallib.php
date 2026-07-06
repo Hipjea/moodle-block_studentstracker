@@ -230,7 +230,7 @@ class studentstracker {
                 $enrol->messaging = self::messaging($enrol);
                 $enrol->datelastaccess = date($this->dateformat, $enrol->lastaccess);
                 $enrol->picture = self::profile($enrol, $context, 15, $this->initialsonly, $OUTPUT);
-                $enrol->popoverpicture = self::profile($enrol, $context, 25, $this->initialsonly, $OUTPUT);
+                $enrol->popoverpicture = htmlspecialchars(self::profile($enrol, $context, 25, $this->initialsonly, $OUTPUT));
                 $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
 
                 $initialthreshold = self::get_threshold($this->days);
@@ -353,7 +353,7 @@ class studentstracker {
         global $OUTPUT;
 
         $userid = optional_param('user2', $user->id, PARAM_INT);
-        $url = new moodle_url('/message/index.php');
+        $url = new \moodle_url('/message/index.php');
         if ($user->id) {
             $url->param('id', $userid);
         }
@@ -371,7 +371,7 @@ class studentstracker {
      * @param \core_renderer $output The core_renderer to use when generating the output
      */
     public static function profile($user, $context, $size, $initialsonly, $output) {
-        $url = new moodle_url('/user/view.php', ['id' => $user->id, 'course' => $context->instanceid]);
+        $url = new \moodle_url('/user/view.php', ['id' => $user->id, 'course' => $context->instanceid]);
 
         // Get the users initials only, depending on the settings.
         if ($initialsonly) {

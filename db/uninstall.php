@@ -15,17 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version file
+ * Uninstall code for block_studentstracker plugin.
  *
  * @package    block_studentstracker
  * @copyright  2025 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+function xmldb_block_studentstracker_uninstall() {
+    global $DB;
 
-defined('MOODLE_INTERNAL') || die();
+    $DB->delete_records('block_studentstracker_notes', []);
 
-$plugin->version    = 2026070600;
-$plugin->requires   = 2025041400;
-$plugin->release    = '1.8.1';
-$plugin->component  = 'block_studentstracker';
-$plugin->maturity   = MATURITY_STABLE;
+    return true;
+}

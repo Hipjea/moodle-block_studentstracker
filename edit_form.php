@@ -30,7 +30,6 @@ require_once("$CFG->dirroot/blocks/studentstracker/locallib.php");
  * Form definition for the block settings.
  */
 class block_studentstracker_edit_form extends block_edit_form {
-
     /**
      * Define the settings form.
      *
