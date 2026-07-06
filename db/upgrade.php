@@ -23,6 +23,8 @@
  */
 
 /**
+ * Upgrade code for installation of block_studentstracker.
+ * 
  * @param int $oldversion The version we are upgrading form.
  * @return bool Returns true on success.
  * @throws coding_exception
