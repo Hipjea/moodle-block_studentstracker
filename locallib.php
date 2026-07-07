@@ -358,7 +358,7 @@ class studentstracker {
             $url->param('id', $userid);
         }
 
-        return html_writer::link($url, '<img class="icon mr-0" src="' . $OUTPUT->image_url('t/message') . '">', []);
+        return html_writer::link($url, '<img class="icon ms-0" src="' . $OUTPUT->image_url('t/message') . '">', []);
     }
 
     /**
