@@ -18,7 +18,7 @@
  * Competencies to review renderable.
  *
  * @package    block_studentstracker
- * @copyright  2025 Pierre Duverneix
+ * @copyright  2026 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -37,18 +37,22 @@ class main_content implements renderable, templatable {
      * @var int The number of users.
      */
     public $usercount;
+
     /**
      * @var array The users to display.
      */
     public $users;
+
     /**
      * @var bool Whether to truncate the text.
      */
     public $truncate;
+
     /**
      * @var string The text to display in the header.
      */
     public $textheader;
+
     /**
      * @var string The text to display in the footer.
      */
@@ -71,6 +75,32 @@ class main_content implements renderable, templatable {
         $this->textfooter = $textfooter;
     }
 
+    /** 
+     * Builds the list of users to render.
+     *
+     * Only users with the required role are included.
+     * The function ensures that the truncate limit is
+     * respected even when some users are filtered out.
+     *
+     * @return array List of users to render.
+     */
+    private function build_users(): array {
+        $users = [];
+        $visibleusersindex = 0;
+
+        foreach ($this->users as $user) {
+            if (!$user->hasrole) {
+                continue;
+            }
+
+            $user->hidden = $this->truncate && $visibleusersindex >= $this->truncate;
+            $users[] = $user;
+            $visibleusersindex++;
+        }
+
+        return $users;
+    }
+
     /**
      * Export the data.
      *
@@ -78,10 +108,14 @@ class main_content implements renderable, templatable {
      * @return stdClass
      */
     public function export_for_template(renderer_base $output): stdClass {
+        $users = $this->build_users();
+        $hastoggle = $this->truncate > 0 && count($users) > $this->truncate;
+
         $data = new stdClass();
         $data->usercount = $this->usercount;
-        $data->users = $this->users;
+        $data->users = $users;
         $data->truncate = $this->truncate;
+        $data->hastoggle = $hastoggle;
         $data->textheader = $this->textheader;
         $data->textfooter = $this->textfooter;
         $data->pluginbaseurl = (new \moodle_url('/blocks/studenstracker'))->out(false);

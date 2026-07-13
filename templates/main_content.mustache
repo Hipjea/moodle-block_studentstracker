@@ -1,19 +1,31 @@
-<div class="studentstracker_header">
-    {{# usercount }}<span class="badge badge-warning pl-2">{{{ usercount }}}</span>{{/ usercount }}{{{ textheader }}}
+<div id="studentstracker" data-show="{{{ truncate }}}">
+    <div class="studentstracker_header">
+        {{# usercount }}<span class="badge badge-warning pl-2">{{{ usercount }}}</span>{{/ usercount }}{{{ textheader }}}
+    </div>
+
+    {{> block_studentstracker/students_list }}
+
+    {{#hastoggle}}
+    <div class="text-center">
+        <div class="tracker-toggle" data-action="show-more">
+            <button type="button" class="btn btn-link">
+                {{#pix}}t/expandedchevron, core{{/pix}} {{# str }} showmore, core {{/ str }}
+            </button>
+        </div>
+        <div class="tracker-toggle" data-action="show-less" hidden>
+            <button type="button" class="btn btn-link">
+                {{#pix}}t/collapsedchevron_up, core{{/pix}} {{# str }} showless, core {{/ str }}
+            </button>
+        </div>
+    </div>
+    {{/hastoggle}}
+
+    <div class="studentstracker_footer d-flex">{{{ textfooter }}}</div>
 </div>
-
-{{> block_studentstracker/students_list }}
-
-<div class="text-center">
-    <div id="tracker_showmore" class="justify-content-center"></div>
-    <div id="tracker_showless" class="justify-content-center"></div>
-</div>
-
-<div class="studentstracker_footer d-flex">{{{ textfooter }}}</div>
 
 {{#js}}
 require(['block_studentstracker/main'], function(StudentsTracker) {
-    const root = document.querySelector("#studentstracker-list");
+    const root = document.querySelector("#studentstracker");
     StudentsTracker.init(root);
 });
 {{/js}}
