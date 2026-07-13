@@ -55,7 +55,7 @@ class block_studentstracker extends block_base {
     private $textheaderfine;
 
     /** @var string */
-    private $textnevercontent;
+    private $textnevercontent = '';
 
     /** @var string */
     private $textfooter;
@@ -177,12 +177,6 @@ class block_studentstracker extends block_base {
         );
 
         $st->init_users($context, $COURSE->id);
-
-        // If the usercount is greater than 0, display the warning text.
-        if ($st->getusercount() > 0) {
-            $st->settextheader($this->textheader);
-        }
-
         $content = $st->generate_content();
         $renderer = $this->page->get_renderer('block_studentstracker');
         $this->content->text = $renderer->render($content);

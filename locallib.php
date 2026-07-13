@@ -75,9 +75,6 @@ class studentstracker {
     /** @var int */
     private $dayscritical;
 
-    /** @var int */
-    private $usercount;
-
     /** @var array */
     private $users;
 
@@ -108,34 +105,7 @@ class studentstracker {
         $this->truncate = $config->truncate ?? get_config('studentstracker', 'truncate');
         $this->textheader = $textheader;
         $this->textfooter = $textfooter;
-        $this->usercount = 0;
         $this->users = [];
-    }
-
-    /**
-     * Get the value of usercount.
-     *
-     * @return int
-     */
-    public function getusercount(): int {
-        return $this->usercount;
-    }
-
-    /**
-     * Set the value of usercount.
-     *
-     * @param int $usercount
-     * @return $this
-     * @throws coding_exception
-     */
-    public function setusercount(int $usercount): self {
-        if (!is_int($usercount)) {
-            throw new coding_exception('usercount must be an integer.');
-        }
-
-        $this->usercount = $usercount;
-
-        return $this;
     }
 
     /**
@@ -201,10 +171,11 @@ class studentstracker {
     public function init_users($context, $courseid) {
         global $DB, $OUTPUT;
 
-        $usercount = 0;
         $groupids = empty($this->trackedgroups) || isset($this->trackedgroups[0]) ? 0 : $this->trackedgroups;
         $users = get_enrolled_users($context, '', $groupids, 'u.*', null, 0, 0, true);
         $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
+
+        $filteredusers = [];
 
         foreach ($users as $enrol) {
             if (groups_user_groups_visible($course, $enrol->id)) {
@@ -215,6 +186,11 @@ class studentstracker {
                 }
 
                 $enrol->hasrole = self::has_role($this->trackedroles, $context->id, $enrol->id);
+                // The user must match the tracked roles.
+                if (!$enrol->hasrole) {
+                    continue;
+                }
+
                 if ((in_array("0", $this->trackedgroups) == false) && (count($this->trackedgroups) > 0)) {
                     if (!($this->is_in_groups($courseid, $enrol->id))) {
                         continue;
@@ -259,18 +235,15 @@ class studentstracker {
                     continue;
                 }
 
-                if ($enrol->hasrole) {
-                    $usercount++;
-                }
+                $filteredusers[] = $enrol;
             }
         }
 
         if (isset($this->sorting)) {
-            usort($users, self::sort_objects($this->sorting));
+            usort($filteredusers, self::sort_objects($this->sorting));
         }
 
-        $this->usercount = $usercount;
-        $this->users = $users;
+        $this->users = $filteredusers;
 
         return $this;
     }
@@ -279,20 +252,19 @@ class studentstracker {
      * Check if the given user has the tracked roles.
      *
      * @param array $roleids The role ids
-     * @param int $courseid The course id
+     * @param int $contextid The context id
      * @param int $userid The user id
      * @return bool
      */
-    private static function has_role($roleids, $courseid, $userid) {
+    private static function has_role($roleids, $contextid, $userid) {
         global $DB;
 
         $params = [];
-
         foreach ($roleids as $role) {
             array_push($params, (int)$role);
         }
 
-        array_push($params, $courseid, (int)$userid);
+        array_push($params, $contextid, (int)$userid);
 
         $roles = join(',', array_fill(0, count($roleids), '?'));
         $r = $DB->count_records_sql(
@@ -427,7 +399,6 @@ class studentstracker {
      */
     public function generate_content() {
         return new \block_studentstracker\output\main_content(
-            $this->usercount,
             $this->users,
             $this->truncate,
             $this->textheader,

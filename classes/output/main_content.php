@@ -34,11 +34,6 @@ use stdClass;
  */
 class main_content implements renderable, templatable {
     /**
-     * @var int The number of users.
-     */
-    public $usercount;
-
-    /**
      * @var array The users to display.
      */
     public $users;
@@ -61,14 +56,12 @@ class main_content implements renderable, templatable {
     /**
      * Constructor.
      *
-     * @param int $usercount
      * @param array $users
      * @param bool $truncate
      * @param string $textheader
      * @param string $textfooter
      */
-    public function __construct($usercount, $users, $truncate, $textheader, $textfooter) {
-        $this->usercount = $usercount;
+    public function __construct($users, $truncate, $textheader, $textfooter) {
         $this->users = $users;
         $this->truncate = $truncate;
         $this->textheader = $textheader;
@@ -112,7 +105,7 @@ class main_content implements renderable, templatable {
         $hastoggle = $this->truncate > 0 && count($users) > $this->truncate;
 
         $data = new stdClass();
-        $data->usercount = $this->usercount;
+        $data->usercount = count($users);
         $data->users = $users;
         $data->truncate = $this->truncate;
         $data->hastoggle = $hastoggle;
