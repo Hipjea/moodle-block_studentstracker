@@ -70,6 +70,9 @@ class studentstracker {
     private $textheader;
 
     /** @var string */
+    private $textheaderfine;
+
+    /** @var string */
     private $textfooter;
 
     /** @var int */
@@ -78,16 +81,25 @@ class studentstracker {
     /** @var array */
     private $users;
 
+    /** @var integer */
+    private $usercount;
+
     /**
      * Constructor.
      *
      * @param stdClass $config
      * @param ?string $textheader
+     * @param ?string $textheaderfine
      * @param ?string $textfooter
      * @throws coding_exception
      * @throws dml_exception
      */
-    public function __construct(\stdClass $config, ?string $textheader = '', ?string $textfooter = '') {
+    public function __construct(
+        \stdClass $config,
+        ?string $textheader = '',
+        ?string $textheaderfine = '',
+        ?string $textfooter = ''
+    ) {
         $this->colordays = $config->color_days ?? get_config('studentstracker', 'colordays');
         $this->colordayscritical = $config->color_days_critical ?? get_config('studentstracker', 'colordayscritical');
         $this->colornever = $config->color_never ?? get_config('studentstracker', 'colordaysnever');
@@ -104,8 +116,10 @@ class studentstracker {
         $this->trackedgroups = $config->groups ?? [];
         $this->truncate = $config->truncate ?? get_config('studentstracker', 'truncate');
         $this->textheader = $textheader;
+        $this->textheaderfine = $textheaderfine;
         $this->textfooter = $textfooter;
         $this->users = [];
+        $this->usercount = 0;
     }
 
     /**
@@ -142,11 +156,8 @@ class studentstracker {
      * @throws coding_exception
      */
     public function setusers(array $users): self {
-        if (!is_array($users)) {
-            throw new coding_exception('users must be an array.');
-        }
-
-        $this->users = $users;
+        $this->users = $this->build_users($users);
+        $this->usercount = count($this->users);
 
         return $this;
     }
@@ -392,6 +403,41 @@ class studentstracker {
         };
     }
 
+    /** 
+     * Builds the list of users to render.
+     *
+     * Only users with the required role are included.
+     * The function ensures that the truncate limit is
+     * respected even when some users are filtered out.
+     *
+     * @return array List of users to render.
+     */
+    private function build_users(array $users): array {
+        $filtered = [];
+        $visibleusersindex = 0;
+
+        foreach ($users as $user) {
+            if (!$user->hasrole) {
+                continue;
+            }
+
+            $user->hidden = $this->truncate && $visibleusersindex >= $this->truncate;
+            $filtered[] = $user;
+            $visibleusersindex++;
+        }
+
+        return $filtered;
+    }
+
+    /**
+     * Resolve which header text to display.
+     *
+     * @return string
+     */
+    private function resolve_header_text(): string {
+        return $this->usercount > 0 ? $this->textheaderfine : $this->textheader;
+    }
+
     /**
      * Call the plugin renderer with the data.
      *
@@ -400,8 +446,9 @@ class studentstracker {
     public function generate_content() {
         return new \block_studentstracker\output\main_content(
             $this->users,
+            $this->usercount,
             $this->truncate,
-            $this->textheader,
+            $this->resolve_header_text(),
             $this->textfooter
         );
     }

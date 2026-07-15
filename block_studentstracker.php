@@ -172,6 +172,7 @@ class block_studentstracker extends block_base {
         // Instantiate the studentstracker class from locallib.php.
         $st = new \studentstracker(
             $this->config ?? new stdClass(),
+            $this->textheader,
             $this->textheaderfine,
             $this->textfooter,
         );

@@ -39,6 +39,11 @@ class main_content implements renderable, templatable {
     public $users;
 
     /**
+     * @var array The number of users.
+     */
+    public $usercount;
+
+    /**
      * @var bool Whether to truncate the text.
      */
     public $truncate;
@@ -61,37 +66,12 @@ class main_content implements renderable, templatable {
      * @param string $textheader
      * @param string $textfooter
      */
-    public function __construct($users, $truncate, $textheader, $textfooter) {
+    public function __construct($users, $usercount, $truncate, $textheader, $textfooter) {
         $this->users = $users;
+        $this->usercount = $usercount;
         $this->truncate = $truncate;
         $this->textheader = $textheader;
         $this->textfooter = $textfooter;
-    }
-
-    /** 
-     * Builds the list of users to render.
-     *
-     * Only users with the required role are included.
-     * The function ensures that the truncate limit is
-     * respected even when some users are filtered out.
-     *
-     * @return array List of users to render.
-     */
-    private function build_users(): array {
-        $users = [];
-        $visibleusersindex = 0;
-
-        foreach ($this->users as $user) {
-            if (!$user->hasrole) {
-                continue;
-            }
-
-            $user->hidden = $this->truncate && $visibleusersindex >= $this->truncate;
-            $users[] = $user;
-            $visibleusersindex++;
-        }
-
-        return $users;
     }
 
     /**
@@ -101,14 +81,11 @@ class main_content implements renderable, templatable {
      * @return stdClass
      */
     public function export_for_template(renderer_base $output): stdClass {
-        $users = $this->build_users();
-        $hastoggle = $this->truncate > 0 && count($users) > $this->truncate;
-
         $data = new stdClass();
-        $data->usercount = count($users);
-        $data->users = $users;
+        $data->users = $this->users;
+        $data->usercount = count($this->users);
         $data->truncate = $this->truncate;
-        $data->hastoggle = $hastoggle;
+        $data->hastoggle = $this->truncate > 0 && count($this->users) > $this->truncate;
         $data->textheader = $this->textheader;
         $data->textfooter = $this->textfooter;
         $data->pluginbaseurl = (new \moodle_url('/blocks/studenstracker'))->out(false);

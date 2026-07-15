@@ -6,22 +6,22 @@ Feature: Basic tests for Students tracker block
 
   Background:
     Given the following "users" exist:
-      | username    | firstname | lastname | email            |
-      | teacher1    | Terry1    | Teacher1 | teacher1@example.com |
-      | assistant1  | Terry2    | Teacher2 | teacher2@example.com |
-      | student1    | Sam1      | Student1 | student1@example.com |
-      | student2    | Sam2      | Student2 | student2@example.com |
-      | student3    | Sam3      | Student3 | student3@example.com |
+      | username   | firstname | lastname | email                |
+      | teacher1   | Terry1    | Teacher1 | teacher1@example.com |
+      | assistant1 | Terry2    | Teacher2 | teacher2@example.com |
+      | student1   | Sam1      | Student1 | student1@example.com |
+      | student2   | Sam2      | Student2 | student2@example.com |
+      | student3   | Sam3      | Student3 | student3@example.com |
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
     And the following "course enrolments" exist:
-      | user        | course | role           |
-      | teacher1    | C1     | editingteacher |
-      | assistant1  | C1     | teacher        |
-      | student1    | C1     | student        |
-      | student2    | C1     | student        |
-      | student3    | C1     | student        |
+      | user       | course | role           |
+      | teacher1   | C1     | editingteacher |
+      | assistant1 | C1     | teacher        |
+      | student1   | C1     | student        |
+      | student2   | C1     | student        |
+      | student3   | C1     | student        |
 
   @javascript
   Scenario: Plugin block_studentstracker appears in the list of installed additional plugins
