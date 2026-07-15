@@ -20,7 +20,7 @@ defined('MOODLE_INTERNAL') || die();
  * Studentstracker block.
  *
  * @package    block_studentstracker
- * @copyright  2025 Pierre Duverneix
+ * @copyright  2026 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -161,9 +161,10 @@ class block_studentstracker extends block_base {
             'textfooter' => 'text_footer_content',
         ];
 
+        // Populate block text properties from config or use default language strings.
         foreach ($properties as $property => $langstr) {
-            if (!empty($this->config->{$property})) {
-                $this->{$property} = $this->config->{$property};
+            if (!empty($this->config->{$langstr})) {
+                $this->{$property} = $this->config->{$langstr};
             } else {
                 $this->{$property} = $langstr ? get_string($langstr, 'block_studentstracker') : '';
             }

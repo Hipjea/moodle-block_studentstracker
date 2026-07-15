@@ -19,7 +19,7 @@
  *
  * @package    block_studentstracker
  * @author     Pierre Duverneix
- * @copyright  2025 Pierre Duverneix
+ * @copyright  2026 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -120,32 +120,6 @@ class studentstracker {
         $this->textfooter = $textfooter;
         $this->users = [];
         $this->usercount = 0;
-    }
-
-    /**
-     * Get the value of textheader.
-     *
-     * @return string
-     */
-    public function gettextheader(): string {
-        return $this->textheader;
-    }
-
-    /**
-     * Set the value of textheader.
-     *
-     * @param ?string $textheader
-     * @return $this
-     * @throws coding_exception
-     */
-    public function settextheader(?string $textheader = ''): self {
-        if (!is_string($textheader)) {
-            throw new coding_exception('textheader must be a string.');
-        }
-
-        $this->textheader = $textheader;
-
-        return $this;
     }
 
     /**
@@ -254,7 +228,7 @@ class studentstracker {
             usort($filteredusers, self::sort_objects($this->sorting));
         }
 
-        $this->users = $filteredusers;
+        $this->setusers($filteredusers);
 
         return $this;
     }
@@ -436,7 +410,7 @@ class studentstracker {
      * @return string
      */
     private function resolve_header_text(): string {
-        return $this->usercount > 0 ? $this->textheaderfine : $this->textheader;
+        return $this->usercount > 0 ? $this->textheader : $this->textheaderfine;
     }
 
     /**

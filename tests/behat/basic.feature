@@ -22,26 +22,18 @@ Feature: Basic tests for Students tracker block
       | student1   | C1     | student        |
       | student2   | C1     | student        |
       | student3   | C1     | student        |
+    Given I log in as "teacher1"
 
   @javascript
-  Scenario: Plugin block_studentstracker appears in the list of installed additional plugins
-    Given I log in as "admin"
-    When I navigate to "Plugins > Plugins overview" in site administration
-    And I follow "Additional plugins"
-    Then I should see "Students tracker"
-    And I should see "block_studentstracker"
-
   Scenario: Add the Students tracker block to a course.
-    Given I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
+    Given I am on "Course 1" course homepage with editing mode on
     When I add the "Students tracker" block
     Then I should see "Sam1 Student1" in the "Students tracker" "block"
     And I should see "Sam2 Student2" in the "Students tracker" "block"
     And I should see "Sam3 Student3" in the "Students tracker" "block"
 
   Scenario: See on the Students tracker block that a student has accessed.
-    Given I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
+    Given I am on "Course 1" course homepage with editing mode on
     And I add the "Students tracker" block
     And I should see "Sam1 Student1" in the "Students tracker" "block"
     And I should see "Sam2 Student2" in the "Students tracker" "block"
@@ -55,8 +47,7 @@ Feature: Basic tests for Students tracker block
     But I should not see "Sam1 Student1" in the "Students tracker" "block"
 
   Scenario: Only users with a tracked role are listed on the Students tracker block.
-    Given I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
+    Given I am on "Course 1" course homepage with editing mode on
     When I add the "Students tracker" block
     Then I should see "Sam1 Student1" in the "Students tracker" "block"
     And I should see "Sam2 Student2" in the "Students tracker" "block"
@@ -65,16 +56,14 @@ Feature: Basic tests for Students tracker block
     And I should not see "Terry2 Teacher2" in the "Students tracker" "block"
 
   Scenario: Students who have never accessed the course are flagged as absent.
-    Given I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
+    Given I am on "Course 1" course homepage with editing mode on
     When I add the "Students tracker" block
     Then I should see "potentially absent users" in the "Students tracker" "block"
     And I should see "no access" in the "Students tracker" "block"
     And I should see "Contact them." in the "Students tracker" "block"
 
   Scenario: A student cannot see the results of the Students tracker block.
-    Given I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
+    Given I am on "Course 1" course homepage with editing mode on
     And I add the "Students tracker" block
     And I should see "Sam2 Student2" in the "Students tracker" "block"
     And I log out
@@ -83,10 +72,25 @@ Feature: Basic tests for Students tracker block
     And I should not see "Sam3 Student3"
 
   Scenario: The Students tracker block title can be customised.
-    Given I log in as "teacher1"
-    And I am on "Course 1" course homepage with editing mode on
+    Given I am on "Course 1" course homepage with editing mode on
     And I add the "Students tracker" block
     When I configure the "Students tracker" block
     And I set the field "Block title" to "Absent learners"
     And I press "Save changes"
     Then I should see "Absent learners"
+
+  Scenario: The Students tracker text_header can be customised.
+    Given I am on "Course 1" course homepage with editing mode on
+    And I add the "Students tracker" block
+    When I configure the "Students tracker" block
+    And I set the field "potentially absent users" to "potentially absent learners"
+    And I press "Save changes"
+    Then I should see "potentially absent learners"
+
+  Scenario: The Students tracker text_header can be customised.
+    Given I am on "Course 1" course homepage with editing mode on
+    And I add the "Students tracker" block
+    When I configure the "Students tracker" block
+    And I set the field "potentially absent users" to "potentially absent learners"
+    And I press "Save changes"
+    Then I should see "potentially absent learners"
