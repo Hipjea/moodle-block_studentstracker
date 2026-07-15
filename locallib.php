@@ -81,7 +81,7 @@ class studentstracker {
     /** @var array */
     private $users;
 
-    /** @var integer */
+    /** @var int */
     private $usercount;
 
     /**
@@ -403,7 +403,7 @@ class studentstracker {
         };
     }
 
-    /** 
+    /**
      * Builds the list of users to render.
      *
      * Only users with the required role are included.
