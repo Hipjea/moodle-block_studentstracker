@@ -62,6 +62,7 @@ class main_content implements renderable, templatable {
      * Constructor.
      *
      * @param array $users
+     * @param int $usercount
      * @param bool $truncate
      * @param string $textheader
      * @param string $textfooter
