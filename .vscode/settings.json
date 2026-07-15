@@ -4,8 +4,14 @@
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
   "editor.wordWrap": "on",
-  "prettier.requireConfig": true,
   "editor.rulers": [120],
+  "intelephense.diagnostics.undefinedTypes": true,
+  "intelephense.diagnostics.undefinedFunctions": true,
+  "intelephense.diagnostics.undefinedMethods": true,
+  "intelephense.diagnostics.undefinedProperties": true,
+  "intelephense.diagnostics.typeErrors": true,
+  "intelephense.telemetry.enabled": false,
+  "prettier.requireConfig": true,
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "prettier.htmlWhitespaceSensitivity": "css"

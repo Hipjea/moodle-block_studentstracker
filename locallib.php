@@ -410,6 +410,7 @@ class studentstracker {
      * The function ensures that the truncate limit is
      * respected even when some users are filtered out.
      *
+     * @param array $users List of users to filter.
      * @return array List of users to render.
      */
     private function build_users(array $users): array {
