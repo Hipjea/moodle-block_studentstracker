@@ -15,17 +15,13 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version file
+ * Studentstracker block tasks file.
  *
  * @package    block_studentstracker
- * @copyright  2025 Pierre Duverneix
+ * @copyright  2026 Pierre Duverneix
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version    = 2026071700;
-$plugin->requires   = 2025041400;
-$plugin->release    = '1.8.2';
-$plugin->component  = 'block_studentstracker';
-$plugin->maturity   = MATURITY_STABLE;
+$tasks = [];

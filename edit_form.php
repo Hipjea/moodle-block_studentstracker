@@ -157,6 +157,22 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->setDefault('config_initialsonly', get_config('studentstracker', 'initialsonly'));
             $mform->setType('config_initialsonly', PARAM_BOOL);
             $mform->addHelpButton('config_initialsonly', 'initialsonly', 'block_studentstracker');
+
+            // Message template
+            $mform->addElement(
+                'textarea',
+                'config_messagetemplate',
+                get_string('predefined_messagetemplate', 'block_studentstracker'),
+                array('rows' => 5, 'cols' => 60)
+            );
+            $mform->setType('config_messagetemplate', PARAM_TEXT);
+            $mform->addHelpButton('config_messagetemplate', 'predefined_messagetemplate', 'block_studentstracker');
+            $template = $DB->get_field(
+                'block_studentstracker_messagetemplate',
+                'message',
+                ['userid' => $USER->id]
+            );
+            $mform->setDefault('config_messagetemplate', $template);
         }
     }
 }

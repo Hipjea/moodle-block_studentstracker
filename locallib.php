@@ -123,7 +123,7 @@ class studentstracker {
     }
 
     /**
-     * Set the value of users.
+     * Set the value of tracked users.
      *
      * @param array $users
      * @return $this
@@ -134,6 +134,15 @@ class studentstracker {
         $this->usercount = count($this->users);
 
         return $this;
+    }
+
+    /**
+     * Return the tracked users.
+     *
+     * @return array $users
+     */
+    public function get_users(): array {
+        return $this->users;
     }
 
     /**
@@ -153,9 +162,10 @@ class studentstracker {
      * @param int $courseid The course object id
      * @return $this
      */
-    public function init_users($context, $courseid) {
+    public function init_users($courseid, $external = false) {
         global $DB, $OUTPUT;
 
+        $context = context_course::instance($courseid);
         $groupids = empty($this->trackedgroups) || isset($this->trackedgroups[0]) ? 0 : $this->trackedgroups;
         $users = get_enrolled_users($context, '', $groupids, 'u.*', null, 0, 0, true);
         $course = $DB->get_record('course', ['id' => $courseid], '*', MUST_EXIST);
@@ -182,17 +192,20 @@ class studentstracker {
                     }
                 }
 
+
                 if ($enrol->lastaccesstimestamp > 0) {
                     $enrol->lastaccesscourse = date($this->dateformat, $enrol->lastaccesstimestamp);
                 } else {
                     $enrol->lastaccesscourse = $this->textnever;
                 }
 
-                $enrol->messaging = self::messaging($enrol);
-                $enrol->datelastaccess = date($this->dateformat, $enrol->lastaccess);
-                $enrol->picture = self::profile($enrol, $context, 15, $this->initialsonly, $OUTPUT);
-                $enrol->popoverpicture = htmlspecialchars(self::profile($enrol, $context, 25, $this->initialsonly, $OUTPUT));
-                $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
+                if (!$external) {
+                    $enrol->messaging = self::messaging($enrol);
+                    $enrol->datelastaccess = date($this->dateformat, $enrol->lastaccess);
+                    $enrol->picture = self::profile($enrol, $context, 15, $this->initialsonly, $OUTPUT);
+                    $enrol->popoverpicture = htmlspecialchars(self::profile($enrol, $context, 25, $this->initialsonly, $OUTPUT));
+                    $enrol->lastaccess = date($this->dateformat, $enrol->lastaccess);
+                }
 
                 $initialthreshold = self::get_threshold($this->days);
                 $criticalthreshold = self::get_threshold($this->dayscritical);

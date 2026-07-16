@@ -75,6 +75,19 @@ class main_content implements renderable, templatable {
         $this->textfooter = $textfooter;
     }
 
+    private function getpredefinedmessage() {
+        global $DB, $USER;
+
+        $record = $DB->get_record(
+            'block_studentstracker_messagetemplate',
+            ['userid' => $USER->id],
+            'message',
+            IGNORE_MISSING
+        );
+
+        return $record ? $record->message : get_string('messagetemplate', 'block_studentstracker');
+    }
+
     /**
      * Export the data.
      *
@@ -82,13 +95,18 @@ class main_content implements renderable, templatable {
      * @return stdClass
      */
     public function export_for_template(renderer_base $output): stdClass {
+        global $COURSE;
+
         $data = new stdClass();
+
+        $data->courseid = $COURSE->id;
         $data->users = $this->users;
         $data->usercount = count($this->users);
-        $data->truncate = $this->truncate;
         $data->hastoggle = $this->truncate > 0 && count($this->users) > $this->truncate;
         $data->textheader = $this->textheader;
         $data->textfooter = $this->textfooter;
+        $data->truncate = $this->truncate;
+        $data->predefinedmessage = $this->getpredefinedmessage();
         $data->pluginbaseurl = (new \moodle_url('/blocks/studenstracker'))->out(false);
 
         return $data;

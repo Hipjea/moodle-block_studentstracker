@@ -20,12 +20,25 @@
     </div>
     {{/hastoggle}}
 
-    <div class="studentstracker_footer d-flex">{{{ textfooter }}}</div>
+    <div class="studentstracker_footer d-flex">
+        {{{ textfooter }}}
+
+        <div id="studentstracker-message-content" class="d-none">
+            {{{predefinedmessage}}}
+        </div>
+
+        <a href="#" id="studentstracker-send-button" class="ml-2">
+            <i class="fa fa-paper-plane"></i>
+        </a>
+    </div>
 </div>
 
 {{#js}}
-require(['block_studentstracker/main'], function(StudentsTracker) {
+require(['block_studentstracker/main'], function(Module) {
     const root = document.querySelector("#studentstracker");
-    StudentsTracker.init(root);
+    Module.init(root);
+});
+require(['block_studentstracker/sendmessage'], function(Module) {
+    Module.init({{courseid}});
 });
 {{/js}}

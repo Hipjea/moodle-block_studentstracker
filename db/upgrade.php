@@ -53,8 +53,54 @@ function xmldb_block_studentstracker_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        // Studentstracker savepoint reached.
+        // Savepoint reached.
         upgrade_plugin_savepoint(true, 2025051200, 'block', 'studentstracker');
+        unset($table);
+    }
+
+    if ($oldversion < 2026071600) {
+        $table = new xmldb_table('block_studentstracker_messagetemplate');
+
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('message', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
+
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        upgrade_plugin_savepoint(true, 2026071600, 'block', 'studentstracker');
+        unset($table);
+    }
+
+    if ($oldversion < 2026071700) {
+        // Drop block_studentstracker_notes indexes and add proper foreign keys.
+        $table = new xmldb_table('block_studentstracker_notes');
+
+        $index = new xmldb_index('userid', XMLDB_INDEX_NOTUNIQUE, ['userid']);
+        if ($dbman->index_exists($table, $index)) {
+            $dbman->drop_index($table, $index);
+        }
+
+        $index = new xmldb_index('authorid', XMLDB_INDEX_NOTUNIQUE, ['authorid']);
+        if ($dbman->index_exists($table, $index)) {
+            $dbman->drop_index($table, $index);
+        }
+
+        $dbman->add_key(
+            $table,
+            new xmldb_key('userid', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id'])
+        );
+
+        $dbman->add_key(
+            $table,
+            new xmldb_key('authorid', XMLDB_KEY_FOREIGN, ['authorid'], 'user', ['id'])
+        );
+
+        upgrade_plugin_savepoint(true, 2026071700, 'block', 'studentstracker');
     }
 
     return true;

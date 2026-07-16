@@ -129,6 +129,39 @@ class block_studentstracker extends block_base {
     }
 
     /**
+     * Used to save the form config data
+     * @param stdclass $data
+     * @param bool $nolongerused
+     */
+    public function instance_config_save($data, $nolongerused = false) {
+        global $DB, $USER;
+
+        if (isset($data->messagetemplate)) {
+            // Save message into block_studentstracker_messagetemplate table.
+            $record = $DB->get_record(
+                'block_studentstracker_messagetemplate',
+                ['userid' => $USER->id]
+            );
+
+            if ($record) {
+                $record->message = $data->messagetemplate;
+                $DB->update_record('block_studentstracker_messagetemplate', $record);
+            } else {
+                $record = (object)[
+                    'userid' => $USER->id,
+                    'message' => $data->messagetemplate,
+                ];
+                $DB->insert_record('block_studentstracker_messagetemplate', $record);
+            }
+
+            // Prevent messagetemplate of being stored in configdata.
+            unset($data->messagetemplate);
+        }
+
+        parent::instance_config_save($data);
+    }
+
+    /**
      * The block's main content.
      *
      * @return string|stdClass
@@ -178,7 +211,7 @@ class block_studentstracker extends block_base {
             $this->textfooter,
         );
 
-        $st->init_users($context, $COURSE->id);
+        $st->init_users($COURSE->id);
         $content = $st->generate_content();
         $renderer = $this->page->get_renderer('block_studentstracker');
         $this->content->text = $renderer->render($content);
