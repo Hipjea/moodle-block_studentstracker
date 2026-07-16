@@ -160,6 +160,7 @@ class studentstracker {
      *
      * @param \stdClass $context The context object
      * @param int $courseid The course object id
+     * @param bool $external Set this boolean to true to call the function from external API
      * @return $this
      */
     public function init_users($courseid, $external = false) {
