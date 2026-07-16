@@ -158,12 +158,12 @@ class block_studentstracker_edit_form extends block_edit_form {
             $mform->setType('config_initialsonly', PARAM_BOOL);
             $mform->addHelpButton('config_initialsonly', 'initialsonly', 'block_studentstracker');
 
-            // Message template
+            // Message template.
             $mform->addElement(
                 'textarea',
                 'config_messagetemplate',
                 get_string('predefined_messagetemplate', 'block_studentstracker'),
-                array('rows' => 5, 'cols' => 60)
+                ['rows' => 5, 'cols' => 60]
             );
             $mform->setType('config_messagetemplate', PARAM_TEXT);
             $mform->addHelpButton('config_messagetemplate', 'predefined_messagetemplate', 'block_studentstracker');

@@ -75,6 +75,11 @@ class main_content implements renderable, templatable {
         $this->textfooter = $textfooter;
     }
 
+    /**
+     * Returns the predefined message for the current user.
+     *
+     * @return string The user's predefined message or the default message template.
+     */
     private function getpredefinedmessage() {
         global $DB, $USER;
 

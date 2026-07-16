@@ -24,14 +24,19 @@
 
 namespace block_studentstracker;
 
-defined('MOODLE_INTERNAL') || die();
-
 use core_external\external_api;
 use core_external\external_description;
 use core_external\external_function_parameters;
 use core_external\external_single_structure;
 use core_external\external_value;
 
+/**
+ * External API class.
+ *
+ * @package    block_studentstracker
+ * @copyright  2026 Pierre Duverneix
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class external extends external_api {
     /**
      * Describes the parameters for send_message_parameters.
@@ -41,7 +46,7 @@ class external extends external_api {
     public static function send_message_parameters() {
         return new external_function_parameters([
             'courseid' => new external_value(PARAM_INT, 'The course ID of the block instance'),
-            'message' => new external_value(PARAM_TEXT, 'The message body')
+            'message' => new external_value(PARAM_TEXT, 'The message body'),
         ]);
     }
 
@@ -59,7 +64,7 @@ class external extends external_api {
             self::send_message_parameters(),
             [
                 'courseid' => $courseid,
-                'message' => $message
+                'message' => $message,
             ]
         );
 
@@ -80,17 +85,15 @@ class external extends external_api {
 
         // Send message to the users.
         $task = new \block_studentstracker\task\send_message();
-        $task->set_custom_data(array(
+        $task->set_custom_data([
             'userfrom' => $USER->id,
             'users' => array_map(fn($u) => $u->id, $users),
             'courseid' => $params['courseid'],
             'message' => $params['message'],
-        ));
+        ]);
         \core\task\manager::queue_adhoc_task($task, true);
 
-        return [
-            'success' => true
-        ];
+        return ['success' => true];
     }
 
     /**
@@ -101,9 +104,7 @@ class external extends external_api {
      */
     public static function send_message_returns() {
         return new external_single_structure(
-            array(
-                'success' => new external_value(PARAM_INT, 'Message sent or not')
-            )
+            ['success' => new external_value(PARAM_INT, 'Message sent or not')]
         );
     }
 }

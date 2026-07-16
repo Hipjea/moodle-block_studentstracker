@@ -24,16 +24,19 @@
 
 namespace block_studentstracker\task;
 
-defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Adhoc task for sending messages to users.
+ *
+ * @package block_studentstracker
+ */
 class send_message extends \core\task\adhoc_task {
     /**
      * Execute the task.
      */
     public function execute() {
-        global $CFG, $DB;
-
         require_once($CFG->dirroot . '/message/lib.php');
+
+        global $CFG, $DB;
 
         $data = $this->get_custom_data();
         $userfrom = $DB->get_record('user', ['id' => $data->userfrom], '*', MUST_EXIST);

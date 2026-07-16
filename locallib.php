@@ -192,7 +192,6 @@ class studentstracker {
                     }
                 }
 
-
                 if ($enrol->lastaccesstimestamp > 0) {
                     $enrol->lastaccesscourse = date($this->dateformat, $enrol->lastaccesstimestamp);
                 } else {
