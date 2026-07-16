@@ -172,7 +172,11 @@ class block_studentstracker_edit_form extends block_edit_form {
                 'message',
                 ['userid' => $USER->id]
             );
-            $mform->setDefault('config_messagetemplate', $template);
+            if (!empty($template)) {
+                $mform->setDefault('config_messagetemplate', $template);
+            } else {
+                $mform->setDefault('config_messagetemplate', get_string('messagetemplate', 'block_studentstracker'));
+            }
         }
     }
 }

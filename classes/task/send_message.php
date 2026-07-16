@@ -52,7 +52,6 @@ class send_message extends \core\task\adhoc_task {
             $message->fullmessage = $data->message;
             $message->fullmessageformat = FORMAT_PLAIN;
             $message->fullmessagehtml = '';
-            $message->smallmessage = shorten_text($data->message, 50);
             $message->notification = 0;
 
             message_send($message);
